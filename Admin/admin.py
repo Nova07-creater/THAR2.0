@@ -21,16 +21,17 @@ with open(file_path, 'a', newline='') as file:
 
 class Admin:
     def __init__(self):
-        pass
-        self.temp_1 = input('Admin, Please enter your Name: ')
-        if self.temp_1.lower() == 'narayan':
-            self.temp_2 = input('Please Enter your password: ')
-            if self.temp_2 == 'admin123':
-                self.crud()
-            else:
-                print('Password incorrect')
-        else:
-            print('Incorrect username')
+
+        self.crud()
+        # self.temp_1 = input('Admin, Please enter your Name: ')
+        # if self.temp_1.lower() == 'narayan':
+        #     self.temp_2 = input('Please Enter your password: ')
+        #     if self.temp_2 == 'admin123':
+        #         self.crud()
+        #     else:
+        #         print('Password incorrect')
+        # else:
+        #     print('Incorrect username')
 
     def crud(self):
         user_input = input('''
@@ -38,7 +39,7 @@ class Admin:
                     
                 1. Creation
                 2. Updation
-                3. Deletion
+                3. Removal
                 
                 ''')
         if user_input == '1':
@@ -47,7 +48,7 @@ class Admin:
         elif user_input == '2':
             self.Updation()
         elif user_input == '3':
-            self.Deletion()
+            self.Removal()
         else:
             print(colored('Invalid input', 'red'))
 
@@ -67,17 +68,19 @@ class Admin:
                 """)
 
         if user_input == '1':
-            self.CreateEvent()
+            self.create_event()
         elif user_input == '2':
-            self.CreateExhibition()
+            self.create_exhibition()
         elif user_input == '3':
-            self.CreateWorkshop()
+            self.create_workshop()
         elif user_input == '4':
-            self.CreateProNite()
+            self.create_pro_nite()
         elif user_input == '5':
-            self.CreateOrganiser()
+            self.create_organiser()
         elif user_input == '6':
-            self.CreateCoordinator()
+            self.create_event_coordinator()
+        elif user_input == '7':
+            self.create_judge()
         else:
             print('No such operation available !!')
    
@@ -107,8 +110,42 @@ class Admin:
             self.update_organiser()
         elif user_input == '6':
             self.update_coordinator()
+        elif user_input == '7':
+            self.update_judge()
         else:
             print(colored('No such operation available !!', 'red'))
+
+
+    def Removal(self):
+        user_input = input("""  
+
+                How would you like to proceed?
+                        
+                1. Remove Event
+                2. Remove Exhibiution   
+                3. Remove Workshop
+                4. Remove Pro-Nite
+                5. Remove Organiser
+                6. Remove Event Co-ordinator 
+                7. Remove Judge                     
+                """)
+
+        if user_input == '1':
+            self.remove_event()
+        elif user_input == '2':
+            self.remove_exhibition()
+        elif user_input == '3':
+            self.remove_workshop()
+        elif user_input == '4':
+            self.remove_pro_nite()
+        elif user_input == '5':
+            self.remove_organiser()
+        elif user_input == '6':
+            self.remove_event_coordinator()
+        elif user_input == '7':
+            self.remove_remove_judge()
+        else:
+            print('No such operation available !!')
 
 
 # -------------------------------------    UPDATE EVENTS BY ADMIN    ------------------------------------- #
@@ -120,11 +157,11 @@ class Admin:
             print(f'{i+1}. {item}\n')
         self.user_input = input('What do you want to update? ')
 
-        if self.user_input.lower() == 'event name':
+        if self.user_input == 'event name':
             pass
-        elif self.user_input.lower() == 'venue':
+        elif self.user_input == 'venue':
             pass
-        elif self.user_input.lower() == 'Time':
+        elif self.user_input == 'Time':
             pass
         else:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
@@ -140,11 +177,11 @@ class Admin:
         
         self.user_input = input('What do you want to update? ')
 
-        if self.user_input.lower() == 'exhibition name':
+        if self.user_input == 'exhibition name':
             pass
-        elif self.user_input.lower() == 'venue':
+        elif self.user_input == 'venue':
             pass
-        elif self.user_input.lower() == 'time':
+        elif self.user_input == 'time':
             pass
         else:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
@@ -190,13 +227,31 @@ class Admin:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
 
 
-# -------------------------------------    UPDATE PRO-NITE BY ADMIN    ------------------------------------- #
+# -------------------------------------    UPDATE ORGANISER BY ADMIN    ------------------------------------- #
 
-    def update_pro_nite(self):
-        self.pro_nite_attributes_list = ['Pro Nite', 'Venue', 'Time', 'Date']
+    def update_organiser(self):
+        self.organiser_attributes_list = ['Organiser Name', 'Password']
         print(colored('The attributes which are available to update are: \n'))
 
-        for i, item in enumerate(self.pro_nite_attributes_list):
+        for i, item in enumerate(self.organiser_attributes_list):
+            print(f"{i+1}.{item}")
+        self.user_input = input('What do you want to update? ')
+
+        if self.user_input == '1':
+            pass
+        elif self.user_input == '2':
+            pass
+        else:
+            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
+
+
+# -------------------------------------   UPDATE EVENT COORDINATOR BY ADMIN    ------------------------------------- #
+
+    def update_coordinator(self):
+        self.coordinator_attributes_list = ['Name', 'Event Name', 'Password']
+        print(colored('The attributes which are available to update are: \n'))
+
+        for i, item in enumerate(self.coordinator_attributes_list):
             print(f"{i+1}.{item}")
         self.user_input = input('What do you want to update? ')
 
@@ -209,9 +264,30 @@ class Admin:
         else:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
 
+
+# -------------------------------------   UPDATE JUDGE BY ADMIN    ------------------------------------- #
+
+    def update_judge(self):
+        self.judge_attributes_list = ['Name', 'Event Name', 'Password']
+        print(colored('The attributes which are available to update are: \n'))
+
+        for i, item in enumerate(self.judge_attributes_list):
+            print(f"{i+1}.{item}")
+        self.user_input = input('What do you want to update? ')
+
+        if self.user_input == '1':
+            pass
+        elif self.user_input == '2':
+            pass
+        elif self.user_input == '3':
+            pass
+        else:
+            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
+
+
 # -------------------------------------    CREATE EVENTS BY ADMIN    ------------------------------------- #
 
-    def CreateEvent(self):
+    def create_event(self):
         self.event_name = input('Event name: ')
         self.event_venue = input('Event place: ')
         self.event_time = input('Event Time: ')
@@ -229,7 +305,7 @@ class Admin:
 
 # -------------------------------------    CREATE JUDGES BY ADMIN    ------------------------------------- #
 
-    def CreateJudge(self):
+    def create_judge(self):
         self.judge_name = input('Judge name: ')
         self.judge_event_name = input('Event to be Judged: ')
         self.judge_pass = input('Set password: ')
@@ -246,7 +322,7 @@ class Admin:
 
 # -------------------------------------    CREATE EXHIBITIONS BY ADMIN    ------------------------------------- #
 
-    def CreateExhibition(self):
+    def create_exhibition(self):
         self.ex_name = input('Set exhibition name: ')
         self.ex_venue = input('Exhibition place: ')
         self.ex_time = input('What will be time: ')
@@ -266,7 +342,7 @@ class Admin:
 
 # -------------------------------------    CREATE WORKSHOPS BY ADMIN    ------------------------------------- #
 
-    def CreateWorkshop(self):
+    def create_workshop(self):
         self.work_name = input('Set workshop name: ')
         self.work_venue = input('Workshop place: ')
         self.work_time = input('What will be time: ')
@@ -289,9 +365,9 @@ class Admin:
 
 # -------------------------------------    CREATE PRO-NITES BY ADMIN    ------------------------------------- #
 
-    def CreateProNite(self):
+    def create_pro_nite(self):
         self.name_pro_nite = input('Set "Pro Nite" name: ')
-        self.pro_venue = input('Where it will be helo: ')
+        self.pro_venue = input('Where it will be held: ')
         self.pro_time = input('What time will it start: ')
         self.pro_date = input('Date of pro-nite being organised: ')
         print(colored('Pro-Nite created succesfully', 'green'))
@@ -314,7 +390,7 @@ class Admin:
 
 # -------------------------------------    CREATE ORGANISER BY ADMIN    ------------------------------------- #
 
-    def CreateOrganiser(self):
+    def create_organiser(self):
         self.org_name = input('Name of Organiser: ')
         self.org_pass = input('Set Password: ')
         self.path = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
@@ -330,7 +406,7 @@ class Admin:
 
 # -------------------------------------    CREATE CO-ORDINATOR BY ADMIN    ------------------------------------- #
 
-    def CreateCoordinator(self):
+    def create_event_coordinator(self):
         self.cor_name = input('Name of Coordinator: ')
         self.cor_event = input('Coordinate which event: ')
         self.cor_pass = input('Set password: ')
