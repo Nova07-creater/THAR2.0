@@ -2,24 +2,26 @@ import os
 import csv
 from prettytable import PrettyTable
 from termcolor import colored
-# So I have used prettyTable library here to show the table content of csv created beolow in a pretty manner!!
 
-x = PrettyTable()
+
+# -------------------------------------    CREATED CSV FILE FOR STORING ROLES    ------------------------------------- #
+
+
 file_path = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
-with open(file_path, 'w', newline='') as file:
+with open(file_path, 'a', newline='') as file:
     writer = csv.writer(file)
-    writer.writerow(["Name", "Password", "Role"])
-    writer.writerow(['Narayan', 'admin123', 'Administrator'])
-    x.field_names = ["Name", "Password", "Role"]
-    x.add_row(['Narayan', 'admin123', 'Administrator'])
-    print(x)
+    is_file_empty = os.stat(file_path).st_size == 0
+    if is_file_empty:
+        writer.writerow(["Name", "Password", "Role"])
+        writer.writerow(['Narayan', 'admin123', 'Administrator'])
 
-text = colored('Table is created', 'green')
-print(text)
+
+# -------------------------------------    ADMIN    ------------------------------------- #
 
 
 class Admin:
     def __init__(self):
+        pass
         self.temp_1 = input('Admin, Please enter your Name: ')
         if self.temp_1.lower() == 'narayan':
             self.temp_2 = input('Please Enter your password: ')
@@ -71,6 +73,9 @@ class Admin:
         else:
             print('Choose correct option!!')
 
+
+# -------------------------------------    CREATE EVENTS BY ADMIN    ------------------------------------- #
+
     def CreateEvent(self):
         self.event_name = input('Event name: ')
         self.event_venue = input('Event place: ')
@@ -82,6 +87,9 @@ class Admin:
             self.writer.writerow(
                 [self.event_name, self.event_venue, self.event_time])
 
+
+# -------------------------------------    CREATE JUDGES BY ADMIN    ------------------------------------- #
+
     def CreateJudge(self):
         self.judge_name = input('Judge name: ')
         self.judge_event_name = input('Event to be Judged: ')
@@ -91,6 +99,9 @@ class Admin:
         with open(self.path, 'a', newline='') as file:
             self.writer = csv.writer(file)
             self.writer.writerow([self.judge_name, self.judge_pass, 'Judge'])
+
+
+# -------------------------------------    CREATE EXHIBITIONS BY ADMIN    ------------------------------------- #
 
     def CreateExhibition(self):
         self.ex_name = input('Set exhibition name: ')
@@ -108,6 +119,9 @@ class Admin:
         self.y.field_names = ["Exhibition", "Venue", "Time"]
         self.y.add_row([self.ex_name, self.ex_venue, self.ex_time])
         print(self.y)
+
+
+# -------------------------------------    CREATE WORKSHOPS BY ADMIN    ------------------------------------- #
 
     def CreateWorkshop(self):
         self.work_name = input('Set workshop name: ')
@@ -127,6 +141,9 @@ class Admin:
         self.z.add_row([self.work_name, self.work_venue, self.work_time])
         print(self.z)
 
+
+# -------------------------------------    CREATE PRO-NITES BY ADMIN    ------------------------------------- #
+
     def CreateProNite(self):
         self.name_pro_nite = input('Set "Pro Nite" name: ')
         self.pro_venue = input('Where it will be helo: ')
@@ -143,15 +160,20 @@ class Admin:
             self.writer.writerow(
                 [self.name_pro_nite, self.pro_venue, self.pro_time, self.pro_date])
 
+
+# -------------------------------------    CREATE ORGANISER BY ADMIN    ------------------------------------- #
+
     def CreateOrganiser(self):
         self.org_name = input('Name of Organiser: ')
-        # self.org_username = input('Set Username: ')
         self.org_pass = input('Set Password: ')
         print('Organiser created succesfully')
         self.path = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
         with open(self.path, 'a', newline='') as file:
             self.writer = csv.writer(file)
             self.writer.writerow([self.org_name, self.org_pass, 'Organiser'])
+
+
+# -------------------------------------    CREATE CO-ORDINATOR BY ADMIN    ------------------------------------- #
 
     def CreateCoordinator(self):
         self.cor_name = input('Name of Coordinator: ')
@@ -161,30 +183,11 @@ class Admin:
             self.writer = csv.writer(file)
             self.writer.writerow(
                 [self.cor_name, self.cor_event, 'Co-ordinator'])
+        
 
-
-obj = Admin()
-
-
+# -------------------------------------    ORGANISER CLASS    ------------------------------------- #
 class Organiser:
     def __init__(self):
-
-        # Made a list of all the passwords saved in the csv to cross check the password at login time of login.
-        self.password_list = []
-        self.file_path = open(
-            '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r')
-        self.file = csv.DictReader(self.file_path)
-        for col in self.file:
-            self.password_list.append(col['Password'])
-
-        # Made a list of all the people having specific roles to put a check point whether the person is present in
-        # the list or not (user inputs his name and we have to check it)
-        self.everyone_list = []
-        self.file_path = open(
-            '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r')
-        self.file = csv.DictReader(self.file_path)
-        for col in self.file:
-            self.everyone_list.append(col['Name'])
 
         self.temp_1 = input('Please enter your Name: ')
 
@@ -200,4 +203,29 @@ class Organiser:
                 print('No role found with this name!')
 
 
-obj1 = Organiser()
+if __name__ == "__main__":
+    # Made a list of all the passwords saved in the csv to cross check the password at login time of login.
+    password_list = []
+    file_path = open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r')
+    file = csv.DictReader(file_path)
+    for col in file:
+        password_list.append(col['Password'])
+
+    print(password_list)
+
+    everyone_list = []
+    file_path = open(
+        '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r')
+    file = csv.DictReader(file_path)
+    for col in file:
+        everyone_list.append(col['Name'])
+    print(everyone_list)
+
+    temp_1 = input('Please enter your Name: ')
+    temp_2 = input('Please enter your password: ')
+    if temp_1.lower() == 'narayan' and temp_2 == 'admin123':
+        obj = Admin()
+    elif temp_1 in everyone_list and temp_2 in password_list:
+        obj1 = Organiser()
+    else:
+        print('Incorrect name or password. Exiting...')
