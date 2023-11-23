@@ -1,5 +1,6 @@
 import os
 import csv
+import pandas as pd
 from prettytable import PrettyTable, from_csv, ALL
 from termcolor import colored
 
@@ -23,29 +24,33 @@ class Admin:
     def __init__(self):
         print(colored('Welcome Narayan, Admin Detected!!', 'cyan'))
         self.crud()
+
     def crud(self):
         user_input = input('''
                 What operation you want to preceed with?
                     
-                1. Creation
+                1. CREATE
 
-                2. Updation
+                2. READ
 
-                3. Removal
+                3. UPDATE
+                           
+                4. DELETE
                 
                 ''')
         if user_input == '1':
-            self.creation()
+            self.create()
 
         elif user_input == '2':
-            self.Updation()
+            self.read()
         elif user_input == '3':
-            self.Removal()
+            self.update()
+        elif user_input == '4':
+            self.delete()
         else:
             print(colored('Invalid input', 'red'))
 
-
-    def creation(self):
+    def create(self):
         user_input = input("""  
 
                 How would you like to proceed?
@@ -82,8 +87,37 @@ class Admin:
         else:
             print('No such operation available !!')
 
+    def read(self):
+        user_input = input("""  
 
-    def Updation(self):
+                How would you like to proceed?
+                        
+                1. Read Event
+               
+                2. Read Exhibiution   
+               
+                3. Read Workshop
+               
+                4. Read Pro-Nite
+               
+                5. Read Roles
+                                    
+                """)
+
+        if user_input == '1':
+            self.read_event()
+        elif user_input == '2':
+            self.read_exhibition()
+        elif user_input == '3':
+            self.read_workshop()
+        elif user_input == '4':
+            self.read_pro_nite()
+        elif user_input == '5':
+            self.read_roles()
+        else:
+            print('No such operation available !!')
+
+    def update(self):
         user_input = input(""" 
                 How would you like to proceed?
                 
@@ -119,38 +153,34 @@ class Admin:
         else:
             print(colored('No such operation available !!', 'red'))
 
-
-    def Removal(self):
+    def delete(self):
         user_input = input("""  
 
                 How would you like to proceed?
                         
-                1. Remove Event
+                1. Delete Event
                 
-                2. Remove Exhibiution   
+                2. Delete Exhibiution   
                 
-                3. Remove Workshop
+                3. Delete Workshop
                 
-                4. Remove Pro-Nite
+                4. Delete Pro-Nite
                 
-                5. Remove Organiser
+                5. Delete Organiser
                 
-                6. Remove Event Co-ordinator 
+                6. Delete Event Co-ordinator 
                 
-                7. Remove Judge                     
+                7. Delete Judge                     
                 """)
 
         if user_input == '1':
-            self.remove_event()
+            self.delete_event()
         elif user_input == '2':
-            pass
-            # self.remove_exhibition()
+            self.delete_exhibition()
         elif user_input == '3':
-            pass
-            # self.remove_workshop()
+            self.delete_workshop()
         elif user_input == '4':
-            pass
-            # self.remove_pro_nite()
+            self.delete_pro_nite()
         elif user_input == '5':
             pass
             # self.remove_organiser()
@@ -163,287 +193,11 @@ class Admin:
         else:
             print('No such operation available !!')
 
-# -------------------------------------    REMOVE EVENTS BY ADMIN    ------------------------------------- #
-    def remove_event(self):
-        file_path = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
-        with open(file_path, 'r') as file:
-            reader = csv.DictReader(file)
-            event_name_list = []
-            for col in reader:
-                event_name_list.append(col['Event Name'])
-        
-        
-        for i,item in enumerate(event_name_list):
-            print(f'{i+1}.{item}\n')        
-        ch_event = input((colored('Which event you want to remove: \n', 'yellow') ))     
-        if ch_event in event_name_list:     
-            index_to_remove = event_name_list.index(ch_event)
-            event_name_list.pop(index_to_remove)
-
-            with open(file_path, 'w', newline='') as file:
-                writer = csv.DictWriter(file, fieldnames = reader.fieldnames)
-                writer.writeheader()
-                writer.writerows(event_name_list)
-            print(colored('Events has been removed', 'green'))
-            with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
-                x = from_csv(fp)
-                x.hrules = ALL
-                print(colored('Events after update are as follows: \n'))
-                print(x)              
-
-        else:
-            print(colored('The entered event not found ', 'red'))
-
-# -------------------------------------    UPDATE EVENTS BY ADMIN    ------------------------------------- #
-
-    def update_event(self):
-        self.event_attributes_list = ['Event Name', 'Venue', 'Time']
-        print(colored('The attributes which are available to update are: \n', 'yellow'))
-        for i, item in enumerate(self.event_attributes_list):
-            print(f'{i+1}. {item}\n')
-        self.user_input = input(colored('What do you want to update? \n', 'yellow'))
-
-        if self.user_input == '1':
-            
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
-            with open(file_path, 'r') as file:
-                reader = csv.DictReader(file)
-                event_name_list = []
-                for col in reader:
-                    event_name_list.append(col['Event Name'])
-           
-           
-            for i,item in enumerate(event_name_list):
-                print(f'{i+1}.{item}\n')
-           
-           
-            ch_event = input((colored('Which event name you want to change: ', 'yellow') ))     
-            if ch_event in event_name_list:
-                chd_event = input(colored('Enter the event name reaplace value: ', 'yellow'))
-                
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
-                    reader = csv.DictReader(file)
-                    rows = list(reader)
-                for row in rows:
-                    if row['Event Name'] == ch_event:
-                        row['Event Name'] = chd_event   
-                fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'w', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=fieldnames)
-                    writer.writeheader()
-                    writer.writerows(rows)
-
-                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
-                    x = from_csv(fp)
-                    x.hrules = ALL
-                    print(colored('Events after update are as follows: \n'))
-                    print(x)
-            else:
-                print(colored('The entered event', {ch_event},'not found ', 'red'))
-
-
-
-        elif self.user_input == '2':
-
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
-            with open(file_path, 'r') as file:
-                reader = csv.DictReader(file)
-                venue_list = []
-                for col in reader:
-                    venue_list.append(col['Venue'])
-           
-           
-            for i,item in enumerate(venue_list):
-                print(f'{i+1}.{item}\n')
-           
-           
-            ch_venue = input((colored('Which venue you want to change: ', 'yellow') ))     
-            if ch_venue in venue_list:
-                chd_venue = input(colored('Enter the event name reaplace value: ', 'yellow'))
-                
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
-                    reader = csv.DictReader(file)
-                    rows = list(reader)
-                for row in rows:
-                    if row['Venue'] == ch_venue:
-                        row['Venue'] = chd_venue   
-                fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'w', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=fieldnames)
-                    writer.writeheader()
-                    writer.writerows(rows)
-
-                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
-                    x = from_csv(fp)
-                    x.hrules = ALL
-                    print(colored('Venue updated : \n'))
-                    print(x)
-            else:
-                print(colored('The entered venue', {ch_event},'not found ', 'red'))
-
-
-
-
-        elif self.user_input == '3':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
-            with open(file_path, 'r') as file:
-                reader = csv.DictReader(file)
-                time_list = []
-                for col in reader:
-                    time_list.append(col['Time'])
-           
-           
-            for i,item in enumerate(time_list):
-                print(f'{i+1}.{item}\n')
-           
-           
-            ch_time = input((colored('What time you want to change: ', 'yellow') ))     
-            if ch_time in time_list:
-                chd_time = input(colored('Enter the time reaplace value: ', 'yellow'))
-                
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
-                    reader = csv.DictReader(file)
-                    rows = list(reader)
-                for row in rows:
-                    if row['Time'] == ch_time:
-                        row['Time'] = chd_time   
-                fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'w', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=fieldnames)
-                    writer.writeheader()
-                    writer.writerows(rows)
-
-                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
-                    x = from_csv(fp)
-                    x.hrules = ALL
-                    print('\n')
-                    print(colored('Time updated : \n'))
-
-                    print(x)
-            else:
-                print(colored('The entered venue', {ch_event},'not found ', 'red'))
-
-        else:
-            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
-            
-# -------------------------------------    UPDATE EXHIBTION BY ADMIN    ------------------------------------- #
-
-    def update_exhibition(self):
-        self.exhibition_attributes_list = ['Exhibition Name', 'Venue', 'Time']
-        print(colored('The attributes which are available to update are: \n', 'green'))
-
-        for i, item in enumerate(self.exhibition_attributes_list):
-            print(f'{i+1}.{item}\n')
-
-        self.user_input = input('What do you want to update? ')
-
-        if self.user_input == '1':
-            pass
-        elif self.user_input == '2':
-            pass
-        elif self.user_input == '3':
-            pass
-        else:
-            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
-
-
-# -------------------------------------    UPDATE WORKSHOP BY ADMIN    ------------------------------------- #
-
-    def update_workshop(self):
-        self.workshop_attributes_list = ['Workshop Name', 'Venue', 'Time']
-        print(colored('The attributes which are available to update are: \n', 'green'))
-
-        for i, item in enumerate(self.workshop_attributes_list):
-            print(f"{i+1}.{item}\n")
-        self.user_input = input('What do you want to update? ')
-
-        if self.user_input == '1':
-            pass
-        elif self.user_input == '2':
-            pass
-        elif self.user_input == '3':
-            pass
-        else:
-            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
-
-
-# -------------------------------------    UPDATE PRO-NITE BY ADMIN    ------------------------------------- #
-
-    def update_pro_nite(self):
-        self.pro_nite_attributes_list = ['Pro Nite', 'Venue', 'Time', 'Date']
-        print(colored('The attributes which are available to update are: \n'))
-
-        for i, item in enumerate(self.pro_nite_attributes_list):
-            print(f"{i+1}.{item}")
-        self.user_input = input('What do you want to update? ')
-
-        if self.user_input == '1':
-            pass
-        elif self.user_input == '2':
-            pass
-        elif self.user_input == '3':
-            pass
-        else:
-            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
-
-
-# -------------------------------------    UPDATE ORGANISER BY ADMIN    ------------------------------------- #
-
-    def update_organiser(self):
-        self.organiser_attributes_list = ['Organiser Name', 'Password']
-        print(colored('The attributes which are available to update are: \n'))
-
-        for i, item in enumerate(self.organiser_attributes_list):
-            print(f"{i+1}.{item}")
-        self.user_input = input('What do you want to update? ')
-
-        if self.user_input == '1':
-            pass
-        elif self.user_input == '2':
-            pass
-        else:
-            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
-
-
-# -------------------------------------   UPDATE EVENT COORDINATOR BY ADMIN    ------------------------------------- #
-
-    def update_coordinator(self):
-        self.coordinator_attributes_list = ['Name', 'Event Name', 'Password']
-        print(colored('The attributes which are available to update are: \n'))
-
-        for i, item in enumerate(self.coordinator_attributes_list):
-            print(f"{i+1}.{item}")
-        self.user_input = input('What do you want to update? ')
-
-        if self.user_input == '1':
-            pass
-        elif self.user_input == '2':
-            pass
-        elif self.user_input == '3':
-            pass
-        else:
-            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
-
-
-# -------------------------------------   UPDATE JUDGE BY ADMIN    ------------------------------------- #
-
-    def update_judge(self):
-        self.judge_attributes_list = ['Name', 'Event Name', 'Password']
-        print(colored('The attributes which are available to update are: \n'))
-
-        for i, item in enumerate(self.judge_attributes_list):
-            print(f"{i+1}.{item}")
-        self.user_input = input('What do you want to update? ')
-
-        if self.user_input == '1':
-            pass
-        elif self.user_input == '2':
-            pass
-        elif self.user_input == '3':
-            pass
-        else:
-            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
-
+  ########################################################################################################
+  #                                                                                                      #
+  #                             <--------- CREATION STARTED HERE --------->                              #
+  #                                                                                                      #
+  ########################################################################################################
 
 # -------------------------------------    CREATE EVENTS BY ADMIN    ------------------------------------- #
 
@@ -505,6 +259,7 @@ class Admin:
 
 # -------------------------------------    CREATE WORKSHOPS BY ADMIN    ------------------------------------- #
 
+
     def create_workshop(self):
         self.work_name = input('Set workshop name: ')
         self.work_venue = input('Workshop place: ')
@@ -527,6 +282,7 @@ class Admin:
 
 
 # -------------------------------------    CREATE PRO-NITES BY ADMIN    ------------------------------------- #
+
 
     def create_pro_nite(self):
         self.name_pro_nite = input('Set "Pro Nite" name: ')
@@ -552,6 +308,7 @@ class Admin:
 
 
 # -------------------------------------    CREATE ORGANISER BY ADMIN    ------------------------------------- #
+
 
     def create_organiser(self):
         self.org_name = input('Name of Organiser: ')
@@ -585,6 +342,492 @@ class Admin:
               'red', attrs=['reverse', 'blink']))
         print(x)
 
+  ########################################################################################################
+  #                                                                                                      #
+  #                             <--------- READ STARTED HERE --------->                                  #
+  #                                                                                                      #
+  ########################################################################################################
+
+# -------------------------------------    READ EVENTS BY ADMIN    ------------------------------------- #
+
+    def read_event(self):
+        print(colored('The Events we are organising are: \n',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+# -------------------------------------    READ EXHIBITON BY ADMIN    ------------------------------------- #
+
+    def read_exhibition(self):
+        print(colored('The Exhibitions are scheduled as: \n',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+# -------------------------------------    READ WORKSHOPS BY ADMIN    ------------------------------------- #
+
+    def read_workshop(self):
+        print(colored('The Workshops are scheduled as : \n',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+# -------------------------------------    READ PRO-NITES BY ADMIN    ------------------------------------- #
+
+    def read_pro_nite(self):
+        print(colored('The Pro-Nites are scheduled as: \n',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+# -------------------------------------    READ ROLES BY ADMIN    ------------------------------------- #
+
+    def read_roles(self):
+        print(colored('The role distribution is as follows: \n',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/everyone.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+  ########################################################################################################
+  #                                                                                                      #
+  #                             <--------- UPDATE STARTED HERE --------->                                #
+  #                                                                                                      #
+  ########################################################################################################
+
+
+# -------------------------------------    UPDATE EVENTS BY ADMIN    ------------------------------------- #
+
+
+    def update_event(self):
+        self.event_attributes_list = ['Event Name', 'Venue', 'Time']
+        print(colored('The attributes which are available to update are: \n', 'yellow'))
+        for i, item in enumerate(self.event_attributes_list):
+            print(f'{i+1}. {item}\n')
+        self.user_input = input(
+            colored('What do you want to update? \n', 'yellow'))
+
+        if self.user_input == '1':
+
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
+            with open(file_path, 'r') as file:
+                reader = csv.DictReader(file)
+                event_name_list = []
+                for col in reader:
+                    event_name_list.append(col['Event Name'])
+
+            for i, item in enumerate(event_name_list):
+                print(f'{i+1}.{item}\n')
+
+            ch_event = input(
+                (colored('Which event name you want to change: ', 'yellow')))
+            if ch_event in event_name_list:
+                chd_event = input(
+                    colored('Enter the event name reaplace value: ', 'yellow'))
+
+                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
+                    reader = csv.DictReader(file)
+                    rows = list(reader)
+                for row in rows:
+                    if row['Event Name'] == ch_event:
+                        row['Event Name'] = chd_event
+                fieldnames = reader.fieldnames
+                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'w', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(rows)
+
+                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(colored('Events after update are as follows: \n'))
+                    print(x)
+            else:
+                print(colored('The entered event', {
+                      ch_event}, 'not found ', 'red'))
+
+        elif self.user_input == '2':
+
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
+            with open(file_path, 'r') as file:
+                reader = csv.DictReader(file)
+                venue_list = []
+                for col in reader:
+                    venue_list.append(col['Venue'])
+
+            for i, item in enumerate(venue_list):
+                print(f'{i+1}.{item}\n')
+
+            ch_venue = input(
+                (colored('Which venue you want to change: ', 'yellow')))
+            if ch_venue in venue_list:
+                chd_venue = input(
+                    colored('Enter the event name reaplace value: ', 'yellow'))
+
+                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
+                    reader = csv.DictReader(file)
+                    rows = list(reader)
+                for row in rows:
+                    if row['Venue'] == ch_venue:
+                        row['Venue'] = chd_venue
+                fieldnames = reader.fieldnames
+                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'w', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(rows)
+
+                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(colored('Venue updated : \n'))
+                    print(x)
+            else:
+                print(colored('The entered venue', {
+                      ch_event}, 'not found ', 'red'))
+
+        elif self.user_input == '3':
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
+            with open(file_path, 'r') as file:
+                reader = csv.DictReader(file)
+                time_list = []
+                for col in reader:
+                    time_list.append(col['Time'])
+
+            for i, item in enumerate(time_list):
+                print(f'{i+1}.{item}\n')
+
+            ch_time = input(
+                (colored('What time you want to change: ', 'yellow')))
+            if ch_time in time_list:
+                chd_time = input(
+                    colored('Enter the time reaplace value: ', 'yellow'))
+
+                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
+                    reader = csv.DictReader(file)
+                    rows = list(reader)
+                for row in rows:
+                    if row['Time'] == ch_time:
+                        row['Time'] = chd_time
+                fieldnames = reader.fieldnames
+                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'w', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(rows)
+
+                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print('\n')
+                    print(colored('Time updated : \n'))
+
+                    print(x)
+            else:
+                print(colored('The entered venue', {
+                      ch_event}, 'not found ', 'red'))
+
+        else:
+            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
+
+# -------------------------------------    UPDATE EXHIBTION BY ADMIN    ------------------------------------- #
+
+    def update_exhibition(self):
+        self.exhibition_attributes_list = ['Exhibition Name', 'Venue', 'Time']
+        print(colored('The attributes which are available to update are: \n', 'green'))
+
+        for i, item in enumerate(self.exhibition_attributes_list):
+            print(f'{i+1}.{item}\n')
+
+        self.user_input = input('What do you want to update? ')
+
+        if self.user_input == '1':
+            pass
+        elif self.user_input == '2':
+            pass
+        elif self.user_input == '3':
+            pass
+        else:
+            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
+
+
+# -------------------------------------    UPDATE WORKSHOP BY ADMIN    ------------------------------------- #
+
+
+    def update_workshop(self):
+        self.workshop_attributes_list = ['Workshop Name', 'Venue', 'Time']
+        print(colored('The attributes which are available to update are: \n', 'green'))
+
+        for i, item in enumerate(self.workshop_attributes_list):
+            print(f"{i+1}.{item}\n")
+        self.user_input = input('What do you want to update? ')
+
+        if self.user_input == '1':
+            pass
+        elif self.user_input == '2':
+            pass
+        elif self.user_input == '3':
+            pass
+        else:
+            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
+
+
+# -------------------------------------    UPDATE PRO-NITE BY ADMIN    ------------------------------------- #
+
+
+    def update_pro_nite(self):
+        self.pro_nite_attributes_list = ['Pro Nite', 'Venue', 'Time', 'Date']
+        print(colored('The attributes which are available to update are: \n'))
+
+        for i, item in enumerate(self.pro_nite_attributes_list):
+            print(f"{i+1}.{item}")
+        self.user_input = input('What do you want to update? ')
+
+        if self.user_input == '1':
+            pass
+        elif self.user_input == '2':
+            pass
+        elif self.user_input == '3':
+            pass
+        else:
+            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
+
+
+# -------------------------------------    UPDATE ORGANISER BY ADMIN    ------------------------------------- #
+
+
+    def update_organiser(self):
+        self.organiser_attributes_list = ['Organiser Name', 'Password']
+        print(colored('The attributes which are available to update are: \n'))
+
+        for i, item in enumerate(self.organiser_attributes_list):
+            print(f"{i+1}.{item}")
+        self.user_input = input('What do you want to update? ')
+
+        if self.user_input == '1':
+            pass
+        elif self.user_input == '2':
+            pass
+        else:
+            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
+
+
+# -------------------------------------   UPDATE EVENT COORDINATOR BY ADMIN    ------------------------------------- #
+
+
+    def update_coordinator(self):
+        self.coordinator_attributes_list = ['Name', 'Event Name', 'Password']
+        print(colored('The attributes which are available to update are: \n'))
+
+        for i, item in enumerate(self.coordinator_attributes_list):
+            print(f"{i+1}.{item}")
+        self.user_input = input('What do you want to update? ')
+
+        if self.user_input == '1':
+            pass
+        elif self.user_input == '2':
+            pass
+        elif self.user_input == '3':
+            pass
+        else:
+            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
+
+
+# -------------------------------------   UPDATE JUDGE BY ADMIN    ------------------------------------- #
+
+
+    def update_judge(self):
+        self.judge_attributes_list = ['Name', 'Event Name', 'Password']
+        print(colored('The attributes which are available to update are: \n'))
+
+        for i, item in enumerate(self.judge_attributes_list):
+            print(f"{i+1}.{item}")
+        self.user_input = input('What do you want to update? ')
+
+        if self.user_input == '1':
+            pass
+        elif self.user_input == '2':
+            pass
+        elif self.user_input == '3':
+            pass
+        else:
+            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
+
+  ########################################################################################################
+  #                                                                                                      #
+  #                             <--------- DELETION STARTED HERE --------->                              #
+  #                                                                                                      #
+  ########################################################################################################
+
+# -------------------------------------    DELETE EVENTS BY ADMIN    ------------------------------------- #
+
+    def delete_event(self):
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+
+        with open(filePath, 'r') as file:
+            reader_1= csv.DictReader(file)
+            event_names =[]
+            for col in reader_1:
+                event_names.append(col['Event Name'])
+
+        print(colored('List of Events: \n', 'green'))
+        for i, item in enumerate(event_names):
+            print(f'{i+1}.{item}\n')
+            
+            
+        rem_event = input(colored('Which event you want to remove: ', 'green'))
+        print(colored('Events before deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+        for row in data:
+            if rem_event in row:
+                data.remove(row)
+
+        with open(filePath, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+
+        with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(colored('Events after deletion: ','magenta', attrs=['reverse', 'blink']))
+            print(x)
+
+
+# -------------------------------------    DELETE EXHIBITION BY ADMIN    ------------------------------------- #
+    def delete_exhibition(self):
+        
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv'    
+        with open(filePath, 'r') as file:
+            reader_1= csv.DictReader(file)
+            exhibitions =[]
+            for col in reader_1:
+                exhibitions.append(col['Exhibition'])
+            print(colored('List of exhibitions: \n', 'green'))
+        for i, item in enumerate(exhibitions):
+            print(f'{i+1}.{item}\n')
+
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+        del_exhibition = input(colored('Which exhibtion you want to delete: ', 'green'))
+        print('\n')
+        print(colored('Exhibitions before deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+        for row in data:
+            if del_exhibition in row:
+                data.remove(row)
+        with open(filePath,'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+                
+        with open(filePath, 'r') as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print('\n')
+        print(colored('Exhibitions after deletion: ','magenta', attrs=['reverse', 'blink']))
+        print(x)
+
+
+
+# -------------------------------------    DELETE EXHIBITION BY ADMIN    ------------------------------------- #
+    def delete_workshop(self):
+        
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv'    
+        with open(filePath, 'r') as file:
+            reader_1= csv.DictReader(file)
+            Workshop =[]
+            for col in reader_1:
+                Workshop.append(col['Workshop'])
+            print(colored('List of Workshops: \n', 'green'))
+        for i, item in enumerate(Workshop):
+            print(f'{i+1}.{item}\n')
+
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+        del_workshop = input(colored('Which Workshop you want to delete: ', 'green'))
+        print(colored('Workshop before deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+        for row in data:
+            if del_workshop in row:
+                data.remove(row)
+        with open(filePath,'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+                
+        with open(filePath, 'r') as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print('\n')
+        print(colored('Workshop after deletion: ','magenta', attrs=['reverse', 'blink']))
+        print(x)
+
+
+
+# -------------------------------------    DELETE EXHIBITION BY ADMIN    ------------------------------------- #
+    def delete_pro_nite(self):
+        
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/pronite.csv'    
+        with open(filePath, 'r') as file:
+            reader_1= csv.DictReader(file)
+            pronites =[]
+            for col in reader_1:
+                pronites.append(col['Pro Nite'])
+            print(colored('List of Workshops: \n', 'green'))
+        for i, item in enumerate(pronites):
+            print(f'{i+1}.{item}\n')
+
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+        del_pronite = input(colored('Which Pro Nite you want to delete: ', 'green'))
+        print(colored('Pro Nites before deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+        for row in data:
+            if del_pronite in row:
+                data.remove(row)
+        with open(filePath,'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+                
+        with open(filePath, 'r') as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print('\n')
+        print(colored('Pro Nites after deletion: ','magenta', attrs=['reverse', 'blink']))
+        print(x)
+
+
+
 # -------------------------------------    ORGANISER CLASS    ------------------------------------- #
 
 
@@ -608,8 +851,8 @@ class UserAuthenticator:
         self.authenticate_user()
 
     def authenticate_user(self):
-        name = input("Please enter your Name: ")
-        password = input("Please enter your password: ")
+        name = input("Please enter your Name: ") or "Narayan"
+        password = input("Please enter your password: ") or "admin123"
 
         with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r') as file:
             reader = csv.DictReader(file)
