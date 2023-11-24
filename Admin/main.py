@@ -160,3 +160,71 @@
            
 #             for i,item in enumerate(event_name_list):
 #                 print(f'{i+1}.{item}\n')
+from datetime import datetime
+
+def get_user_input():
+    while True:
+        user_input = input("Enter time in HH:MM AM/PM format: ")
+        try:
+            # Parse user input to check if it's a valid time
+            parsed_time = datetime.strptime(user_input, "%I:%M %p")
+            # If parsing is successful, break the loop
+            break
+        except ValueError:
+            print("Invalid format! Please enter time in HH:MM AM/PM format.")
+
+    # Format the parsed time as HH:MM
+    formatted_time = parsed_time.strftime("%I:%M %p")
+    return formatted_time
+
+# Example usage
+formatted_time = get_user_input()
+print("Formatted time:", formatted_time)
+
+
+
+
+
+
+import csv
+import os
+from prettytable import from_csv, ALL
+from termcolor import colored
+
+class YourClass:
+    def create_judge(self):
+        self.judge_name = input('Judge name: ')
+        self.judge_event_name = input('Event to be Judged: ')
+        self.judge_pass = input('Set password: ')
+        print(colored('Judge created successfully', 'green'))
+        
+        self.path = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+        self.path_1 = '/home/narayanj/Practice/THAR2.0/Admin/judge.csv'
+        
+        with open(self.path, 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([self.judge_name, self.judge_pass, 'Judge'])
+        
+        with open(self.path_1, 'a', newline='') as file:
+            is_file_empty = os.stat(self.path_1).st_size == 0
+            writer = csv.writer(file)
+            if is_file_empty:
+                writer.writerow(["Name", "Event", "Password"])
+            
+            writer.writerow([self.judge_name, self.judge_pass, 'Judge'])
+            print(colored('The list of all the Judges: ', 'green'))
+            
+        with open(self.path_1, 'r', newline='') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(x)
+        
+        with open(self.path, "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(colored('All the roles active now: ', 'green'))
+            print(x)
+
+# Usage
+your_instance = YourClass()
+your_instance.create_judge()
