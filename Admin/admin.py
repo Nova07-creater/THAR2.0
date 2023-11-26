@@ -2190,13 +2190,25 @@ class Coordinator:
         print(colored('Co-ordinator class called', 'green'))
 
 
+class Participant:
+    def __init__(self, username, password):
+        self.password = password
+        self.username = username
+        print(f'Welcome {username}! You are now logged in as a participant.')
+        with open('participants.csv', 'w') as file:
+            writer = csv.writer(file)
+            is_file_empty = os.stat('participants.csv').st_size == 0
+            if is_file_empty:
+                writer.writerow(["Name", "Password"])
+        with open('participants.csv', 'a', newline = '') as file:
+            writer = csv.writer(file)
+            writer.writerow(self.username, self.password)
 class UserAuthenticator:
     def __init__(self):
         self.authenticate_user()
-
     def authenticate_user(self):
-        name = input("Please enter your Name: ") or 'Narayan'
-        password = input("Please enter your password: ") or 'admin123'
+        name = input("Please enter your Name: ")
+        password = input("Please enter your password: ")
 
         with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r') as file:
             reader = csv.DictReader(file)
@@ -2212,6 +2224,11 @@ class UserAuthenticator:
                    >>> Welcome {name} to your Dashboard...''', 'cyan'))
                         Admin()
                     elif role.lower() == 'co-ordinator':
+                        print('\n')
+                        print(colored('''
+                             CO-ORDINATOR DASHBOARD''', 'green', attrs=['bold']))
+                        print(colored(f'''
+                   >>> Welcome {name} to your Dashboard...''', 'cyan'))
                         Coordinator()
                     elif role.lower() == 'organiser':
                         print('\n')
@@ -2221,6 +2238,11 @@ class UserAuthenticator:
                    >>> Welcome {name} to your Dashboard...''', 'cyan'))
                         Organiser()
                     elif role.lower() == 'judge':
+                        print('\n')
+                        print(colored('''
+                             JUDGE DASHBOARD''', 'green', attrs=['bold']))
+                        print(colored(f'''
+                   >>> Welcome {name} to your Dashboard...''', 'cyan'))
                         Judge()
                     else:
                         print("Invalid role detected.")
@@ -2230,4 +2252,13 @@ class UserAuthenticator:
 
 
 if __name__ == "__main__":
-    UserAuthenticator()
+    user_input = input('Want "Participant Login" or "Authority Login"? ')
+    if user_input.lower() == 'authority login':
+        # Handle authority login here if needed
+        pass
+    elif user_input.lower() == 'participant login':
+        username = input("Please enter your Participant Username: ") 
+        password = input("Please enter your Participant Password: ") 
+        Participant(username, password)
+    else:
+        print('Welcome buddy, Participate in our fest...')
