@@ -603,7 +603,7 @@ class Admin:
 
 # -------------------------------------    UPDATE EVENTS BY ADMIN    ------------------------------------- #
 
-    def update_event(self):
+def update_event(self):
         self.event_attributes_list = ['Event Name', 'Venue', 'Time']
         print(colored('The attributes which are available to update are: \n', 'yellow'))
         for i, item in enumerate(self.event_attributes_list):
@@ -613,112 +613,122 @@ class Admin:
 
         if self.user_input == '1':
 
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
+            file_path = 'events.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 event_name_list = []
                 for col in reader:
                     event_name_list.append(col['Event Name'])
 
-            for i, item in enumerate(event_name_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(event_name_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('events.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_event = input(
                 (colored('Which event name you want to change: ', 'yellow')))
             if ch_event in event_name_list:
                 chd_event = input(
                     colored('Enter the event name reaplace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
+                with open('events.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Event Name'] == ch_event:
                         row['Event Name'] = chd_event
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'w', newline='') as file:
+                with open('events.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+                with open("events.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Events after update are as follows: \n'))
                     print(x)
             else:
-                print(colored('The entered event', {
-                      ch_event}, 'not found ', 'red'))
+                print(colored('The entered event not found ', 'red'))
 
         elif self.user_input == '2':
 
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
+            file_path = 'events.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 venue_list = []
                 for col in reader:
                     venue_list.append(col['Venue'])
 
-            for i, item in enumerate(venue_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(venue_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('events.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_venue = input(
                 (colored('Which venue you want to change: ', 'yellow')))
             if ch_venue in venue_list:
                 chd_venue = input(
                     colored('Enter the event name reaplace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
+                with open('events.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Venue'] == ch_venue:
                         row['Venue'] = chd_venue
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'w', newline='') as file:
+                with open('events.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+                with open("events.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Venue updated : \n'))
                     print(x)
             else:
-                print(colored('The entered venue', {
-                      ch_event}, 'not found ', 'red'))
+                print(colored('The entered venue not found ', 'red'))
 
         elif self.user_input == '3':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
+            file_path = 'events.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 time_list = []
                 for col in reader:
                     time_list.append(col['Time'])
 
-            for i, item in enumerate(time_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(time_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('file_path', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_time = input(
                 (colored('What time you want to change: ', 'yellow')))
             if ch_time in time_list:
                 chd_time = input(
                     colored('Enter the time reaplace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
+                with open('events.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Time'] == ch_time:
                         row['Time'] = chd_time
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'w', newline='') as file:
+                with open('events.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+                with open("events.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
@@ -726,137 +736,147 @@ class Admin:
 
                     print(x)
             else:
-                print(colored('The entered time', {
-                      ch_time}, 'not found ', 'red'))
+                print(colored('The entered time not found ', 'red'))
 
         else:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
-
 # -------------------------------------    UPDATE EXHIBTION BY ADMIN    ------------------------------------- #
 
     def update_exhibition(self):
         self.exhibition_attributes_list = ['Exhibition Name', 'Venue', 'Time']
-        print(colored('The attributes which are available to update are: \n', 'green'))
-
+        print(colored('The attributes which are available to update are: \n', 'yellow'))
         for i, item in enumerate(self.exhibition_attributes_list):
-            print(f'{i+1}.{item}\n')
-
-        self.user_input = input('What do you want to update? ')
+            print(f'{i+1}. {item}\n')
+        self.user_input = input(
+            colored('What do you want to update? \n', 'yellow'))
 
         if self.user_input == '1':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv'
+
+            file_path = 'exhibions.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 exhibition_name_list = []
                 for col in reader:
-                    exhibition_name_list.append(col['Exhibition Name'])
+                    event_name_list.append(col['Exhibition'])
 
-            for i, item in enumerate(exhibition_name_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(event_name_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('exhibions.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_exhibition = input(
-                (colored('Which Exhibition you want to update: ', 'yellow')))
+                (colored('Which Exhibition name you want to change: ', 'yellow')))
             if ch_exhibition in exhibition_name_list:
                 chd_exhibition = input(
-                    colored('Enter the Exhibition reaplace value: ', 'yellow'))
+                    colored('Enter the event name replace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv', 'r') as file:
+                with open('exhibions.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
-                    if row['Exhibition Name'] == ch_exhibition:
-                        row['Exhibition Name'] = chd_exhibition
+                    if row['Exhibition'] == ch_exhibition:
+                        row['Exhibition'] = chd_exhibition
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv', 'w', newline='') as file:
+                with open('exhibions.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
+                with open("exhibions.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
-                    print(colored('Exhibtions after update are as follows: \n'))
+                    print(colored('Exhibitions after update are as follows: \n'))
                     print(x)
             else:
-                print(colored('The entered Exhibition', {
-                      ch_exhibition}, 'not found ', 'red'))
+                print(colored('The entered exhibition not found ', 'red'))
 
         elif self.user_input == '2':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv'
+
+            file_path = 'exhibions.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 venue_list = []
                 for col in reader:
                     venue_list.append(col['Venue'])
 
-            for i, item in enumerate(venue_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(venue_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('exhibions.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_venue = input(
-                (colored('Which Venue you want to change: ', 'yellow')))
+                (colored('Which venue you want to change: ', 'yellow')))
             if ch_venue in venue_list:
                 chd_venue = input(
-                    colored('Enter the Venue reaplace value: ', 'yellow'))
+                    colored('Enter the venue reaplace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv', 'r') as file:
+                with open('exhibions.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Venue'] == ch_venue:
                         row['Venue'] = chd_venue
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv', 'w', newline='') as file:
+                with open('exhibions.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
+                with open("exhibions.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Venue updated : \n'))
                     print(x)
             else:
-                print(colored('The entered venue', {
-                      ch_venue}, 'not found ', 'red'))
+                print(colored('The entered venue not found ', 'red'))
 
         elif self.user_input == '3':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv'
+            file_path = 'exhibions.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 time_list = []
                 for col in reader:
                     time_list.append(col['Time'])
 
-            for i, item in enumerate(time_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(time_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('file_path', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_time = input(
                 (colored('What time you want to change: ', 'yellow')))
             if ch_time in time_list:
                 chd_time = input(
-                    colored('Enter the time reaplace value: ', 'yellow'))
+                    colored('Enter the time replace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv', 'r') as file:
+                with open('exhibions.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Time'] == ch_time:
                         row['Time'] = chd_time
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv', 'w', newline='') as file:
+                with open('exhibions.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
+                with open("exhibions.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
                     print(colored('Time updated : \n'))
+
                     print(x)
             else:
-                print(colored('The entered time', {
-                      ch_time}, 'not found ', 'red'))
+                print(colored('The entered time not found ', 'red'))
+
         else:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
 
@@ -864,126 +884,140 @@ class Admin:
 # -------------------------------------    UPDATE WORKSHOP BY ADMIN    ------------------------------------- #
 
     def update_workshop(self):
-        print(colored('The attributes which are available to update are: \n', 'green'))
         self.workshop_attributes_list = ['Workshop Name', 'Venue', 'Time']
-
+        print(colored('The attributes which are available to update are: \n', 'yellow'))
         for i, item in enumerate(self.workshop_attributes_list):
-            print(f"{i+1}.{item}\n")
-        self.user_input = input('What do you want to update? ')
+            print(f'{i+1}. {item}\n')
+        self.user_input = input(
+            colored('What do you want to update? \n', 'yellow'))
 
         if self.user_input == '1':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv'
+
+            file_path = 'wrokshops.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 workshop_name_list = []
                 for col in reader:
-                    workshop_name_list.append(col['Workshop Name'])
+                    workshop_name_list.append(col['Workshop'])
 
-            for i, item in enumerate(workshop_name_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(event_name_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('wrokshops.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_workshop = input(
-                (colored('Which Workshop you want to update: ', 'yellow')))
+                (colored('Which Workshop name you want to change: ', 'yellow')))
             if ch_workshop in workshop_name_list:
                 chd_workshop = input(
-                    colored('Enter the Workshop reaplace value: ', 'yellow'))
+                    colored('Enter the workshop name replace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv', 'r') as file:
+                with open('wrokshops.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
-                    if row['Workshop Name'] == ch_workshop:
-                        row['Workshop Name'] = chd_workshop
+                    if row['Workshop'] == ch_workshop:
+                        row['Workshop'] = chd_workshop
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv', 'w', newline='') as file:
+                with open('wrokshops.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv", "r") as fp:
+                with open("wrokshops.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Workshops after update are as follows: \n'))
                     print(x)
             else:
-                print(colored('The entered Workshop', {
-                      ch_workshop}, 'not found ', 'red'))
+                print(colored('The entered workshop not found ', 'red'))
 
         elif self.user_input == '2':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv'
+
+            file_path = 'wrokshops.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 venue_list = []
                 for col in reader:
                     venue_list.append(col['Venue'])
-            for i, item in enumerate(venue_list):
-                print(f'{i+1}.{item}\n')
 
+            # for i, item in enumerate(venue_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('wrokshops.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_venue = input(
-                (colored('Which Venue you want to change: ', 'yellow')))
+                (colored('Which venue you want to change: ', 'yellow')))
             if ch_venue in venue_list:
                 chd_venue = input(
-                    colored('Enter the Venue reaplace value: ', 'yellow'))
+                    colored('Enter the venue replace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv', 'r') as file:
+                with open('exhibions.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Venue'] == ch_venue:
                         row['Venue'] = chd_venue
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv', 'w', newline='') as file:
+                with open('wrokshops.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv", "r") as fp:
+                with open("wrokshops.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Venue updated : \n'))
                     print(x)
             else:
-                print(colored('The entered venue', {
-                      ch_venue}, 'not found ', 'red'))
+                print(colored('The entered venue not found ', 'red'))
 
         elif self.user_input == '3':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv'
+            file_path = 'wrokshops.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 time_list = []
                 for col in reader:
                     time_list.append(col['Time'])
 
-            for i, item in enumerate(time_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(time_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('file_path', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_time = input(
                 (colored('What time you want to change: ', 'yellow')))
             if ch_time in time_list:
                 chd_time = input(
                     colored('Enter the time reaplace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv', 'r') as file:
+                with open('wrokshops.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Time'] == ch_time:
                         row['Time'] = chd_time
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv', 'w', newline='') as file:
+                with open('wrokshops.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshop.csv", "r") as fp:
+                with open("wrokshops.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
                     print(colored('Time updated : \n'))
+
                     print(x)
             else:
-                print(colored('The entered time', {
-                      ch_time}, 'not found ', 'red'))
+                print(colored('The entered time not found ', 'red'))
+
         else:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
 
@@ -992,164 +1026,180 @@ class Admin:
 
     def update_pro_nite(self):
         self.pro_nite_attributes_list = ['Pro Nite', 'Venue', 'Time', 'Date']
-        print(colored('The attributes which are available to update are: \n'))
-
+        print(colored('The attributes which are available to update are: \n', 'yellow'))
         for i, item in enumerate(self.pro_nite_attributes_list):
-            print(f"{i+1}.{item}")
-        self.user_input = input('What do you want to update? ')
+            print(f'{i+1}. {item}\n')
+        self.user_input = input(
+            colored('What do you want to update? \n', 'yellow'))
 
         if self.user_input == '1':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/pronite.csv'
+
+            file_path = 'pronite.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
-                pro_nite_list = []
+                pronite_name_list = []
                 for col in reader:
-                    pro_nite_list.append(col['Pro Nite'])
+                    pronite_name_list.append(col['Pro Nite'])
 
-            for i, item in enumerate(pro_nite_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(event_name_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('pronite.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_pronite = input(
                 (colored('Which Pro Nite you want to change: ', 'yellow')))
-            if ch_pronite in pro_nite_list:
+            if ch_pronite in pronite_name_list:
                 chd_pronite = input(
-                    colored('Enter the Pro Nite reaplace value: ', 'yellow'))
+                    colored('Enter the pro-nite name replace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/pronite.csv', 'r') as file:
+                with open('pronite.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Pro Nite'] == ch_pronite:
                         row['Pro Nite'] = chd_pronite
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/pronite.csv', 'w', newline='') as file:
+                with open('pronite.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+                with open("pronite.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
-                    print(colored('Pro Nites after update are as follows: \n'))
+                    print(colored('Pro Nite after update are as follows: \n'))
                     print(x)
             else:
-                print(colored('The entered Pro Nite', {
-                      ch_pronite}, 'not found ', 'red'))
+                print(colored('The entered pro-nite not found ', 'red'))
 
         elif self.user_input == '2':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/pronite.csv'
+
+            file_path = 'pronite.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 venue_list = []
                 for col in reader:
                     venue_list.append(col['Venue'])
-            for i, item in enumerate(venue_list):
-                print(f'{i+1}.{item}\n')
 
+            # for i, item in enumerate(venue_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('pronite.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_venue = input(
-                (colored('Which Venue you want to change: ', 'yellow')))
+                (colored('Which venue you want to change: ', 'yellow')))
             if ch_venue in venue_list:
                 chd_venue = input(
-                    colored('Enter the Venue reaplace value: ', 'yellow'))
+                    colored('Enter the venue replace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/pronite.csv', 'r') as file:
+                with open('pronite.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Venue'] == ch_venue:
                         row['Venue'] = chd_venue
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/pronite.csv', 'w', newline='') as file:
+                with open('pronite.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+                with open("pronite.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Venue updated : \n'))
                     print(x)
             else:
-                print(colored('The entered venue', {
-                      ch_venue}, 'not found ', 'red'))
+                print(colored('The entered venue not found ', 'red'))
 
         elif self.user_input == '3':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/pronite.csv'
+            file_path = 'pronite.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 time_list = []
                 for col in reader:
                     time_list.append(col['Time'])
 
-            for i, item in enumerate(time_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(time_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('file_path', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_time = input(
                 (colored('What time you want to change: ', 'yellow')))
             if ch_time in time_list:
                 chd_time = input(
                     colored('Enter the time reaplace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/pronite.csv', 'r') as file:
+                with open('pronite.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Time'] == ch_time:
                         row['Time'] = chd_time
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/pronite.csv', 'w', newline='') as file:
+                with open('pronite.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+                with open("pronite.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
                     print(colored('Time updated : \n'))
+
                     print(x)
             else:
-                print(colored('The entered time', {
-                      ch_time}, 'not found ', 'red'))
+                print(colored('The entered time not found ', 'red'))
 
         elif self.user_input == '4':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/pronite.csv'
+            file_path = 'pronite.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 date_list = []
                 for col in reader:
                     date_list.append(col['Date'])
 
-            for i, item in enumerate(date_list):
-                print(f'{i+1}.{item}\n')
-
+            # for i, item in enumerate(time_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('file_path', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
             ch_date = input(
                 (colored('What Date you want to change: ', 'yellow')))
             if ch_date in date_list:
-                chd_date = input(
-                    colored('Enter the Data reaplace value: ', 'yellow'))
+                ch_date = input(
+                    colored('Enter the Date reaplace value: ', 'yellow'))
 
-                with open('/home/narayanj/Practice/THAR2.0/Admin/pronite.csv', 'r') as file:
+                with open('pronite.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Date'] == ch_date:
                         row['Date'] = chd_date
                 fieldnames = reader.fieldnames
-                with open('/home/narayanj/Practice/THAR2.0/Admin/pronite.csv', 'w', newline='') as file:
+                with open('pronite.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+                with open("pronite.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
                     print(colored('Date updated : \n'))
                     print(x)
-            else:
-                print(colored('The entered Date', {
-                      ch_time}, 'not found ', 'red'))
+            else: 
+                print(colored('The Date entered doesn\'t match any..', 'red'))
         else:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
 
@@ -1176,10 +1226,14 @@ class Admin:
                 organisers = []
                 for col in reader:
                     organisers.append(col['Name'])
-
-            for i, item in enumerate(organisers):
-                print(f'''
-                 {i+1}.{item}''')
+            with open(file_path, 'r') as file:
+              x = from_csv(file)
+              x.hrules = ALL
+              print(x)
+              print('\n')
+            # for i, item in enumerate(organisers):
+            #     print(f'''
+            #      {i+1}.{item}''')
             ch_name = input(
                 (colored('''
                 Which Organiser name you want to change: ''', 'green')))
@@ -1236,9 +1290,15 @@ class Admin:
                 passwords = []
                 for col in reader:
                     passwords.append(col['Password'])
+           
+           with open(file_path, 'r') as file:
+                x = from_csv(file)
+                x.hrules = ALL
+                print(x)
+                print('\n')
 
-            for i, item in enumerate(passwords):
-                print(f'{i+1}.{item}\n')
+            # for i, item in enumerate(passwords):
+            #     print(f'{i+1}.{item}\n')
 
             ch_Password = input(
                 (colored('Which Password you want to change: ', 'green')))
@@ -1283,8 +1343,7 @@ class Admin:
                     print(x)
 
             else:
-                print(colored('The entered Password', {
-                      ch_Password}, 'not found ', 'red'))
+                print(colored('The entered Password not found ', 'red'))
         else:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
 
@@ -1307,10 +1366,14 @@ class Admin:
                 coordinators = []
                 for col in reader:
                     coordinators.append(col['Name'])
-
-            for i, item in enumerate(coordinators):
-                print(f'''
-                 {i+1}.{item}''')
+            with open(file_path, 'r') as file:
+                x = from_csv(file)
+                x.hrules = ALL
+                print(x)
+                print('\n')
+            # for i, item in enumerate(coordinators):
+            #     print(f'''
+            #      {i+1}.{item}''')
             ch_name = input(
                 (colored('''
                 Which Co-ordinators name you want to change: ''', 'green')))
@@ -1360,9 +1423,108 @@ class Admin:
                       ch_name}, 'not found ', 'red'))
 
         elif self.user_input == '2':
-            pass
+            file_path = 'coordinator.csv'
+            with open(file_path, 'r') as file:
+                reader = csv.DictReader(file)
+                event_name_list = []
+                for col in reader:
+                    event_name_list.append(col['Event'])
+
+            # for i, item in enumerate(event_name_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('coordinator.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
+            ch_event = input(
+                (colored('Which event you want to change: ', 'yellow')))
+            if ch_event in event_name_list:
+                chd_event = input(
+                    colored('Enter the event name reaplace value: ', 'yellow'))
+
+                with open('coordinator.csv', 'r') as file:
+                    reader = csv.DictReader(file)
+                    rows = list(reader)
+                for row in rows:
+                    if row['Event'] == ch_event:
+                        row['Event'] = chd_event
+                fieldnames = reader.fieldnames
+                with open('coordinator.csv', 'w', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(rows)
+
+                with open("coordinator.csv", "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(colored('Events after update are as follows: \n'))
+                    print(x)
+            else:
+                print(colored('The entered event not found ', 'red'))
+
         elif self.user_input == '3':
-            pass
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/coordinator.csv'
+            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+            with open(file_path, 'r') as file:
+                reader = csv.DictReader(file)
+                passwords = []
+                for col in reader:
+                    passwords.append(col['Password'])
+           
+           with open(file_path, 'r') as file:
+                x = from_csv(file)
+                x.hrules = ALL
+                print(x)
+                print('\n')
+
+            # for i, item in enumerate(passwords):
+            #     print(f'{i+1}.{item}\n')
+
+            ch_Password = input(
+                (colored('Which Password you want to change: ', 'green')))
+            if ch_Password in passwords:
+                chd_Password = input(
+                    colored('Enter the Password reaplace value: ', 'green'))
+                print('\n')
+                with open(file_path, 'r') as file:
+                    reader = csv.DictReader(file)
+                    rows = list(reader)
+                for row in rows:
+                    if row['Password'] == ch_Password:
+                        row['Password'] = chd_Password
+                fieldnames = reader.fieldnames
+                with open(file_path, 'w', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(rows)
+
+                with open(file_path, "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(colored('Password has been updated in organisers file: ', 'green'))
+                    print(x)
+
+                with open(file_path_1, 'r') as file:
+                    reader = csv.reader(file)
+                    data_1 = list(reader)
+
+                for row in data_1:
+                    if ch_Password in row:
+                        data_1.remove(row)
+                with open(file_path_1, 'w', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerows(data_1)
+                
+                with open(file_path_1, 'r') as file:
+                    x = from_csv(file)
+                    x.hrules = ALL
+                    print('\n')
+                    print(colored('Password has been updated in main file: '))
+                    print(x)
+
+            else:
+                print(colored('The entered Password not found ', 'red'))
         else:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
 
@@ -1378,11 +1540,171 @@ class Admin:
         self.user_input = input('What do you want to update? ')
 
         if self.user_input == '1':
-            pass
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/judge.csv'
+            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+            with open(file_path, 'r') as file:
+                reader = csv.DictReader(file)
+                judges = []
+                for col in reader:
+                    judges.append(col['Name'])
+            with open(file_path, 'r') as file:
+                x = from_csv(file)
+                x.hrules = ALL
+                print(x)
+                print('\n')
+            # for i, item in enumerate(coordinators):
+            #     print(f'''
+            #      {i+1}.{item}''')
+            ch_name = input(
+                (colored('''
+                Which Judge name you want to change: ''', 'green')))
+            if ch_name in judges:
+                chd_name = input(
+                    colored('''
+                Enter the name reaplace value: ''', 'green'))
+
+                with open(file_path, 'r') as file:
+                    reader = csv.DictReader(file)
+                    rows = list(reader)
+                for row in rows:
+                    if row['Name'] == ch_name:
+                        row['Name'] = chd_name
+                fieldnames = reader.fieldnames
+                with open(file_path, 'w', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(rows)
+
+                with open(file_path, "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print('\n')
+                    print(colored('Judge data updated: ', 'green'))
+                    print(x)
+                
+                with open(file_path_1, 'r') as file:
+                    reader = csv.reader(file)
+                    data = list(reader)
+                
+                for row in data:
+                    if ch_name in row:
+                        data.remove(row)
+                with open(file_path_1, 'w', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerows(data)
+                print('\n')
+                print(colored('The main file is also updated: ', 'green'))
+                with open(file_path_1, 'r') as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(x)
+
+            else:
+                print(colored('The entered Judge not found ', 'red'))
+
         elif self.user_input == '2':
-            pass
+            file_path = 'judge.csv'
+            with open(file_path, 'r') as file:
+                reader = csv.DictReader(file)
+                event_name_list = []
+                for col in reader:
+                    event_name_list.append(col['Event'])
+
+            # for i, item in enumerate(event_name_list):
+            #     print(f'{i+1}.{item}\n')
+            with open('judge.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules= ALL
+                print(x)
+                print('\n')
+            ch_event = input(
+                (colored('Which event you want to change: ', 'yellow')))
+            if ch_event in event_name_list:
+                chd_event = input(
+                    colored('Enter the event name reaplace value: ', 'yellow'))
+
+                with open('judge.csv', 'r') as file:
+                    reader = csv.DictReader(file)
+                    rows = list(reader)
+                for row in rows:
+                    if row['Event'] == ch_event:
+                        row['Event'] = chd_event
+                fieldnames = reader.fieldnames
+                with open('judge.csv', 'w', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(rows)
+
+                with open("judge.csv", "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(colored('Events after update are as follows: \n'))
+                    print(x)
+            else:
+                print(colored('The entered event not found ', 'red'))
+
         elif self.user_input == '3':
-            pass
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/judge.csv'
+            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+            with open(file_path, 'r') as file:
+                reader = csv.DictReader(file)
+                passwords = []
+                for col in reader:
+                    passwords.append(col['Password'])
+           
+           with open(file_path, 'r') as file:
+                x = from_csv(file)
+                x.hrules = ALL
+                print(x)
+                print('\n')
+
+            # for i, item in enumerate(passwords):
+            #     print(f'{i+1}.{item}\n')
+
+            ch_Password = input(
+                (colored('Which Password you want to change: ', 'green')))
+            if ch_Password in passwords:
+                chd_Password = input(
+                    colored('Enter the Password reaplace value: ', 'green'))
+                print('\n')
+                with open(file_path, 'r') as file:
+                    reader = csv.DictReader(file)
+                    rows = list(reader)
+                for row in rows:
+                    if row['Password'] == ch_Password:
+                        row['Password'] = chd_Password
+                fieldnames = reader.fieldnames
+                with open(file_path, 'w', newline='') as file:
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(rows)
+
+                with open(file_path, "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(colored('Password has been updated in organisers file: ', 'green'))
+                    print(x)
+
+                with open(file_path_1, 'r') as file:
+                    reader = csv.reader(file)
+                    data_1 = list(reader)
+
+                for row in data_1:
+                    if ch_Password in row:
+                        data_1.remove(row)
+                with open(file_path_1, 'w', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerows(data_1)
+                
+                with open(file_path_1, 'r') as file:
+                    x = from_csv(file)
+                    x.hrules = ALL
+                    print('\n')
+                    print(colored('Password has been updated in main file: '))
+                    print(x)
+
+            else:
+                print(colored('The entered Password not found ', 'red'))
         else:
             print(colored('Sorry, The attribute you entered is not available !!', 'red'))
 
