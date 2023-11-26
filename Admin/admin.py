@@ -211,7 +211,7 @@ class Admin:
     def create_event(self):
         self.events_list = []
 
-        with open('events.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.events_list.append(row['Event Name'])
@@ -224,7 +224,7 @@ class Admin:
             else:
                 self.event_venue = input('Event place: ')
                 self.event_time = input('Event Time: ')
-                self.path = "events.csv"
+                self.path = "/home/narayanj/Practice/THAR2.0/Admin/events.csv"
                 self.is_file_empty = os.stat(self.path).st_size == 0
 
                 with open(self.path, 'a', newline='') as file:
@@ -236,32 +236,14 @@ class Admin:
 
                     self.writer.writerow({'Event Name': self.event_name, 'Venue': self.event_venue, 'Time': self.event_time})
 
-                with open("events.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Event created successfully', 'green'))
                     print(x)
                     
                 break
-            
-                self.event_venue = input('Event place: ')
-                self.event_time = input('Event Time: ')
-                print(colored('Event created succesfully', 'green'))
-                self.path = "/home/narayanj/Practice/THAR2.0/Admin/events.csv"
-                self.is_file_empty = os.stat(self.path).st_size == 0
-                if self.is_file_empty:
-                    self.writer.writerow(["Event Name", "Venue", "Time"])
-                with open(self.path, 'a', newline='') as file:
-                    self.writer = csv.writer(file)
-                    self.writer.writerow(
-                        [self.event_name, self.event_venue, self.event_time])
-
-                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
-                    x = from_csv(fp)
-                    x.hrules = ALL
-                    print(x)
-                break
-
+                
 # -------------------------------------    CREATE JUDGES BY ADMIN    ------------------------------------- #
 
     def create_judge(self):
