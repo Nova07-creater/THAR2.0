@@ -10,6 +10,7 @@ from datetime import datetime
 
 class Admin:
     def __init__(self):
+        print('\n')
         print(colored('Welcome Narayan, Admin Detected!!', 'cyan'))
         self.crud()
 
@@ -25,9 +26,7 @@ class Admin:
 
     def crud(self):
         while True:
-            user_input = input('''
-                    
-                               
+            user_input = input('''      
                     What operation you want to preceed with?
                         
                     1. CREATE
@@ -76,6 +75,8 @@ class Admin:
                 6. Create Event Co-ordinator 
                
                 7. Create Judge                     
+
+                8. Back to main 
                 
                 Enter your preffered operation: """)
 
@@ -93,9 +94,14 @@ class Admin:
             self.create_event_coordinator()
         elif user_input == '7':
             self.create_judge()
+        elif user_input == '8':
+            self.back()
+            return False
         else:
             print('No such operation available !!')
-
+    def back(self):
+        print(colored('''
+                Going back to main crud... ''', 'cyan'))
     def read(self):
         user_input = input("""  
 
@@ -109,8 +115,14 @@ class Admin:
                
                 4. Read Pro-Nite
                
-                5. Read Roles
-                                    
+                5. Read Organisers
+
+                6. Read Judges
+
+                7. Read Co-ordinators
+
+                8. Read All the Roles
+                
                 Enter your preffered operation: """)
 
         if user_input == '1':
@@ -122,7 +134,16 @@ class Admin:
         elif user_input == '4':
             self.read_pro_nite()
         elif user_input == '5':
-            self.read_roles()
+            self.read_organisers()
+        elif user_input == '6':
+            self.read_judges()
+        elif user_input == '7':
+            self.read_coordinators()
+        elif user_input == '8':
+            self.read_all_roles()
+        elif user_input == '9':
+            self.back()
+            return False
         else:
             print('No such operation available !!')
 
@@ -300,70 +321,114 @@ class Admin:
  # -------------------------------------    CREATE EXHIBITIONS BY ADMIN    ------------------------------------- #
 
     def create_exhibition(self):
-        self.ex_name = input('Set exhibition name: ')
-        self.ex_venue = input('Exhibition place: ')
-        self.ex_time = input('What will be time: ')
-        print(colored('Exhibition created succesfully', 'green'))
-        self.path = '/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv'
-        self.is_file_empty = os.stat(self.path).st_size == 0
-        if self.is_file_empty:
-            self.writer.writerow(["Exhibition", "Venue", "Time"])
-        with open(self.path, 'a', newline='') as file:
-            self.writer = csv.writer(file)
-            self.writer.writerow([self.ex_name, self.ex_venue, self.ex_time])
-        self.y = PrettyTable()
-        self.y.field_names = ["Exhibition", "Venue", "Time"]
-        self.y.add_row([self.ex_name, self.ex_venue, self.ex_time])
-        print(self.y)
+        self.exhibitions_list = []
+        with open('exhibions.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                self.exhibitions_list.append(row['Exhibition'])
+        while True:
+            self.ex_name = input('''
+                Set exhibition name: ''')
+            if self.ex_name.lower() in (name.lower() for name in self.exhibitions_list):
+                print(colored('''
+                Sorry, The Exhibition already exist, Enter another..''', 'red'))
+            else:
+                self.ex_venue = input('''
+                Exhibition place: ''')
+                self.ex_time = input('''
+                What will be time: ''')
+                print(colored('''
+                Exhibition created succesfully''', 'green'))
+                self.path = 'exhibions.csv'
+                self.is_file_empty = os.stat(self.path).st_size == 0
+                if self.is_file_empty:
+                    self.writer.writerow(["Exhibition", "Venue", "Time"])
+                with open(self.path, 'a', newline='') as file:
+                    self.writer = csv.writer(file)
+                    self.writer.writerow([self.ex_name, self.ex_venue, self.ex_time])
+                with open(self.path, "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print('\n')
+                    print(colored('Exhibtion Created: ', 'green'))
+                    print(x)
+                break
 
 
 # -------------------------------------    CREATE WORKSHOPS BY ADMIN    ------------------------------------- #
 
     def create_workshop(self):
-        self.work_name = input('Set workshop name: ')
-        self.work_venue = input('Workshop place: ')
-        self.work_time = input('What will be time: ')
-        print(colored('Wrokshop created succesfully', 'green'))
-        self.path = '/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv'
-        file_empty = os.stat(self.path).st_size == 0
-        if file_empty:
-            self.writer.writerow(['Workshop', 'Venue', 'Time'])
-        with open(self.path, 'a', newline='') as file:
-            self.writer = csv.writer(file)
-            self.writer.writerow(
-                [self.work_name, self.work_venue, self.work_time])
-        with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv", "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-        print(colored(' <--- New Workshop added ---> !!!\n',
-              'red', attrs=['reverse', 'blink']))
-        print(x)
-
+        self.workshop_list = []
+        with open('wrokshops.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                self.workshop_list.append(row['Workshop'])
+        while True:
+            self.work_name = input('''
+                Set workshop name: ''')
+            if self.work_name.lower() in (name.lower() for name in self.workshop_list):
+                print(colored('''
+                Sorry, The Exhibition already exist, Enter another.. ''', 'red'))
+            else:
+                self.work_venue = input('''
+                Workshop place: ''')
+                self.work_time = input('''
+                What will be time: ''')
+                print(colored('''
+                Wrokshop created succesfully''', 'green'))
+                self.path = '/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv'
+                file_empty = os.stat(self.path).st_size == 0
+                if file_empty:
+                    self.writer.writerow(['Workshop', 'Venue', 'Time'])
+                with open(self.path, 'a', newline='') as file:
+                    self.writer = csv.writer(file)
+                    self.writer.writerow(
+                        [self.work_name, self.work_venue, self.work_time])
+                with open(self.path, "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(colored('Workshop Created: ', 'green'))
+                    print(x)
+                break
 
 # -------------------------------------    CREATE PRO-NITES BY ADMIN    ------------------------------------- #
 
     def create_pro_nite(self):
-        self.name_pro_nite = input('Set "Pro Nite" name: ')
-        self.pro_venue = input('Where it will be held: ')
-        self.pro_time = input('What time will it start: ')
-        self.pro_date = input('Date of pro-nite being organised: ')
-        print(colored('Pro-Nite created succesfully', 'green'))
-        self.path = '/home/narayanj/Practice/THAR2.0/Admin/pronite.csv'
-
-        with open(self.path, 'a', newline='') as file:
-            self.writer = csv.writer(file)
-            is_file_empty = os.stat(self.path).st_size == 0
-            if is_file_empty:
-                self.writer.writerow(['Pro Nite', 'Venue', 'Time', 'Date'])
-            self.writer.writerow(
-                [self.name_pro_nite, self.pro_venue, self.pro_time, self.pro_date])
-        with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-        print(colored(' <--- New Pro-Nite added ---> !!!\n',
-              'red', attrs=['reverse', 'blink']))
-        print(x)
-
+        self.pronites = []
+        with open('pronite.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                self.pronites.append(row['Pro Nite'])
+        while True:
+            self.name_pro_nite = input('''
+                Set 'Pro Nite' name: ''')
+            if self.name_pro_nite.lower() in (name.lower() for name in self.pronites):
+                print(colored('''
+                Pro Nite already exist, Enter another.. ''', 'red'))
+            else:    
+                self.pro_venue = input('''
+                Where it will be held: ''')
+                self.pro_time = input('''
+                What time will it start: ''')
+                self.pro_date = input('''
+                Date of pro-nite being organised: ''')
+                print(colored('''
+                Pro-Nite created succesfully''', 'green'))
+                self.path = '/home/narayanj/Practice/THAR2.0/Admin/pronite.csv'
+        
+                with open(self.path, 'a', newline='') as file:
+                    self.writer = csv.writer(file)
+                    is_file_empty = os.stat(self.path).st_size == 0
+                    if is_file_empty:
+                        self.writer.writerow(['Pro Nite', 'Venue', 'Time', 'Date'])
+                    self.writer.writerow(
+                        [self.name_pro_nite, self.pro_venue, self.pro_time, self.pro_date])
+                with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(colored('Pro Nite Created: ', 'green'))
+                    print(x)
+                break
 
 # -------------------------------------    CREATE ORGANISER BY ADMIN    ------------------------------------- #
 
@@ -444,7 +509,7 @@ class Admin:
         with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
-        print(x)
+            print(x)
 
 # -------------------------------------    READ EXHIBITON BY ADMIN    ------------------------------------- #
 
@@ -454,7 +519,7 @@ class Admin:
         with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
-        print(x)
+            print(x)
 
 # -------------------------------------    READ WORKSHOPS BY ADMIN    ------------------------------------- #
 
@@ -464,7 +529,7 @@ class Admin:
         with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
-        print(x)
+            print(x)
 
 # -------------------------------------    READ PRO-NITES BY ADMIN    ------------------------------------- #
 
@@ -474,18 +539,49 @@ class Admin:
         with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
-        print(x)
+            print(x)
 
 # -------------------------------------    READ ROLES BY ADMIN    ------------------------------------- #
 
-    def read_roles(self):
+    def read_all_roles(self):
         print(colored('The role distribution is as follows: \n',
               'magenta', attrs=['reverse', 'blink']))
         with open("/home/narayanj/Practice/THAR2.0/Admin/everyone.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
-        print(x)
+            print(x)
 
+
+# -------------------------------------    READ ORGANISERS BY ADMIN    --------------------------------- #
+    
+    def read_organisers(self):
+        print(colored('The Organisers are: \n','magenta'))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/organiser.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+
+# -------------------------------------    READ JUDGES BY ADMIN    --------------------------------- #
+    
+    def read_judges(self):
+        print(colored('The Judges are: \n','magenta'))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/judge.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+
+# -------------------------------------    READ COORDINATORS BY ADMIN    --------------------------------- #
+    
+    def read_coordinators(self):
+        print(colored('The Co-ordinators are: \n','magenta'))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/coordinator.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+  
   ########################################################################################################
   #                                                                                                      #
   #                             <--------- UPDATE STARTED HERE --------->                                #
