@@ -210,30 +210,39 @@ class Admin:
 
     def create_event(self):
         self.events_list = []
-        with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
+
+        with open('events.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.events_list.append(row['Event Name'])
+
         while True:
             self.event_name = input('Event name: ')
+
             if self.event_name.lower() in (name.lower() for name in self.events_list):
-                print(colored('Sorry, The event you entered is already present, Please enter another event..'))
-            elif self.event_name.lower() not in (name.lower() for name in self.events_list):
+                print(colored('Sorry, The event you entered is already present. Please enter another event..', 'red'))
+            else:
                 self.event_venue = input('Event place: ')
                 self.event_time = input('Event Time: ')
-                print(colored('Event created succesfully', 'green'))
-                self.path = "/home/narayanj/Practice/THAR2.0/Admin/events.csv"
+                self.path = "events.csv"
                 self.is_file_empty = os.stat(self.path).st_size == 0
-                if self.is_file_empty:
-                    self.writer.writerow(["Event Name", "Venue", "Time"])
-                with open(self.path, 'a', newline='') as file:
-                    self.writer = csv.writer(file)
-                    self.writer.writerow(
-                        [self.event_name, self.event_venue, self.event_time])
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+                with open(self.path, 'a', newline='') as file:
+                    fieldnames = ["Event Name", "Venue", "Time"]
+                    self.writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+                    if self.is_file_empty:
+                        self.writer.writeheader()
+
+                    self.writer.writerow({'Event Name': self.event_name, 'Venue': self.event_venue, 'Time': self.event_time})
+
+                with open("events.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
+                    print(colored('Event created successfully', 'green'))
+                    print(x)
+                    
+                break
             
                 self.event_venue = input('Event place: ')
                 self.event_time = input('Event Time: ')
