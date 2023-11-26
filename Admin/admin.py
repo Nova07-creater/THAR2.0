@@ -10,8 +10,6 @@ from datetime import datetime
 
 class Admin:
     def __init__(self):
-        print('\n')
-        print(colored('Welcome Narayan, Admin Detected!!', 'cyan'))
         self.crud()
 
         # _____EVERYONE.CSV_____#
@@ -256,10 +254,18 @@ class Admin:
             if self.event_name.lower() in (name.lower() for name in self.events_list):
                 print(colored('Sorry, The event you entered is already present. Please enter another event..', 'red'))
             else:
+                while True:
+                    try:
+                        self.event_time = input('''
+                  Event Time (e.g., 08:30 PM/AM): ''')
+                        datetime.strptime(self.event_time, "%I:%M %p")
+                        break 
+                    except ValueError:
+                        print(colored('Invalid time format. Please enter time again.', 'red'))
                 self.event_venue = input('''
-                Event place: ''')
-                self.event_time = input('''
-                Event Time: ''')
+                # Event place: ''')
+                # self.event_time = input('''
+                # Event Time: ''')
                 self.path = "/home/narayanj/Practice/THAR2.0/Admin/events.csv"
                 self.is_file_empty = os.stat(self.path).st_size == 0
 
@@ -347,8 +353,17 @@ class Admin:
             else:
                 self.ex_venue = input('''
                 Exhibition place: ''')
-                self.ex_time = input('''
-                What will be time: ''')
+                while True:
+                    try:
+                        self.ex_time = input('''
+                  What will be time (e.g., 08:30 PM/AM): ''')
+                        datetime.strptime(self.event_time, "%I:%M %p")
+                        break 
+                    except ValueError:
+                        print(colored('Invalid time format. Please enter time again.', 'red'))
+
+                # self.ex_time = input('''
+                # What will be time: ''')
                 print(colored('''
                 Exhibition created succesfully''', 'green'))
                 self.path = 'exhibions.csv'
@@ -384,8 +399,17 @@ class Admin:
             else:
                 self.work_venue = input('''
                 Workshop place: ''')
-                self.work_time = input('''
-                What will be time: ''')
+                while True:
+                    try:
+                        self.work_time = input('''
+                  What will be time (e.g., 08:30 PM/AM): ''')
+                        datetime.strptime(self.event_time, "%I:%M %p")
+                        break 
+                    except ValueError:
+                        print(colored('Invalid time format. Please enter time again.', 'red'))
+
+                # self.work_time = input('''
+                # What will be time: ''')
                 print(colored('''
                 Wrokshop created succesfully''', 'green'))
                 self.path = '/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv'
@@ -420,8 +444,17 @@ class Admin:
             else:    
                 self.pro_venue = input('''
                 Where it will be held: ''')
-                self.pro_time = input('''
-                What time will it start: ''')
+                while True:
+                    try:
+                        self.pro_time = input('''
+                  What will be time (e.g., 08:30 PM/AM): ''')
+                        datetime.strptime(self.event_time, "%I:%M %p")
+                        break 
+                    except ValueError:
+                        print(colored('Invalid time format. Please enter time again.', 'red'))
+
+                # self.pro_time = input('''
+                # What time will it start: ''')
                 self.pro_date = input('''
                 Date of pro-nite being organised: ''')
                 print(colored('''
@@ -710,12 +743,25 @@ def update_event(self):
                 x.hrules= ALL
                 print(x)
                 print('\n')
-            ch_time = input(
-                (colored('What time you want to change: ', 'yellow')))
+            while True:
+                try:
+                    ch_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
+                    datetime.strptime(self.event_time, "%I:%M %p")
+                    break 
+                except ValueError:
+                    print(colored('Invalid time format. Please enter time again.', 'red'))
+            # ch_time = input(
+            #     (colored('What time you want to change: ', 'yellow')))
             if ch_time in time_list:
-                chd_time = input(
-                    colored('Enter the time reaplace value: ', 'yellow'))
-
+                while True:
+                    try:
+                        chd_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
+                        datetime.strptime(self.event_time, "%I:%M %p")
+                        break 
+                    except ValueError:
+                    print(colored('Invalid time format. Please enter time again.', 'red'))
+                # chd_time = input(
+                #     colored('Enter the time reaplace value: ', 'yellow'))
                 with open('events.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
@@ -849,11 +895,25 @@ def update_event(self):
                 x.hrules= ALL
                 print(x)
                 print('\n')
-            ch_time = input(
-                (colored('What time you want to change: ', 'yellow')))
+         while True:
+             try:
+                ch_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
+                datetime.strptime(self.event_time, "%I:%M %p")
+                break 
+             except:
+                 print(colored('Invalid time format. Please enter time again.', 'red'))
+            # ch_time = input(
+            #     (colored('What time you want to change: ', 'yellow')))
             if ch_time in time_list:
-                chd_time = input(
-                    colored('Enter the time replace value: ', 'yellow'))
+                while True:
+                    try:
+                        chd_time = input('Enter the time replace value (e.g., 08:30 PM/AM): ')
+                        datetime.strptime(self.event_time, "%I:%M %p")
+                        break 
+                    except ValueError:
+                        print(colored('Invalid time format. Please enter time again.', 'red'))
+                # chd_time = input(
+                #     colored('Enter the time replace value: ', 'yellow'))
 
                 with open('exhibions.csv', 'r') as file:
                     reader = csv.DictReader(file)
@@ -990,11 +1050,31 @@ def update_event(self):
                 x.hrules= ALL
                 print(x)
                 print('\n')
-            ch_time = input(
-                (colored('What time you want to change: ', 'yellow')))
+            while True:
+                 try:
+                    ch_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
+                    datetime.strptime(self.event_time, "%I:%M %p")
+                    break 
+                 except:
+                     print(colored('Invalid time format. Please enter time again.', 'red'))
+            # ch_time = input(
+            #     (colored('What time you want to change: ', 'yellow')))
             if ch_time in time_list:
-                chd_time = input(
-                    colored('Enter the time reaplace value: ', 'yellow'))
+                while True:
+                    try:
+                        chd_time = input('Enter the time replace value (e.g., 08:30 PM/AM): ')
+                        datetime.strptime(self.event_time, "%I:%M %p")
+                        break 
+                    except:
+                        print(colored('Invalid time format. Please enter time again.', 'red'))
+                # chd_time = input(
+                #     colored('Enter the time replace value: ', 'yellow'))
+
+            # ch_time = input(
+            #     (colored('What time you want to change: ', 'yellow')))
+            # if ch_time in time_list:
+            #     chd_time = input(
+            #         colored('Enter the time reaplace value: ', 'yellow'))
 
                 with open('wrokshops.csv', 'r') as file:
                     reader = csv.DictReader(file)
@@ -2063,7 +2143,41 @@ def update_event(self):
 
 class Organiser:
     def __init__(self):
-        print(colored('Organiser class called', 'green'))
+        self.crud()
+    def crud(self):
+        while True:
+            user_input = input('''      
+                    What operation you want to preceed with?
+                        
+                    1. CREATE
+    
+                    2. READ
+                                   
+                    3. DELETE
+
+                    4. CHANGE PASSWORD
+                    
+                    5. EXIT
+                     
+                    Enter your preffered operation: ''')
+            if user_input == '1':
+                self.create()
+            elif user_input == '2':
+                self.read()
+            elif user_input == '3':
+                self.delete()
+            elif user_input == '4':
+                self.change_pass()            
+            elif user_input == '5':
+                self.exit()
+                break
+            else:
+                print(colored(''''
+                    Invalid input''', 'red'))
+    def exit(self):
+        print(colored(''' 
+                    Exiting from Organiser operations... ''', 'green'))
+    
 
 
 class Judge:
@@ -2091,10 +2205,20 @@ class UserAuthenticator:
                 if row['Name'] == name and row['Password'] == password:
                     role = row['Role']
                     if role.lower() == 'administrator':
+                        print('\n')
+                        print(colored('''
+                             ADMIN DASHBOARD''', 'green', attrs=['bold']))
+                        print(colored(f'''
+                   >>> Welcome {name} to your Dashboard...''', 'cyan'))
                         Admin()
                     elif role.lower() == 'co-ordinator':
                         Coordinator()
                     elif role.lower() == 'organiser':
+                        print('\n')
+                        print(colored('''
+                             ORGANISER DASHBOARD''', 'green', attrs=['bold']))
+                        print(colored(f'''
+                   >>> Welcome {name} to your Dashboard...''', 'cyan'))
                         Organiser()
                     elif role.lower() == 'judge':
                         Judge()
