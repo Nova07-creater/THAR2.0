@@ -122,6 +122,8 @@ class Admin:
                 7. Read Co-ordinators
 
                 8. Read All the Roles
+
+                9. Back to main
                 
                 Enter your preffered operation: """)
 
@@ -164,7 +166,9 @@ class Admin:
                 6. Update Event Co-ordinator 
                 
                 7. Update Judge                   
-                           
+
+                8. Back to main
+                
                 Enter your preffered operation: """)
         if user_input == '1':
             self.update_event()
@@ -180,6 +184,9 @@ class Admin:
             self.update_coordinator()
         elif user_input == '7':
             self.update_judge()
+        elif user_input == '8':
+            self.back()
+            return False
         else:
             print(colored('No such operation available !!', 'red'))
 
@@ -200,7 +207,9 @@ class Admin:
                 
                 6. Delete Event Co-ordinator 
                 
-                7. Delete Judge                     
+                7. Delete Judge     
+
+                8. Back to main
                 
                 Enter your preffered operation: """)
 
@@ -218,6 +227,9 @@ class Admin:
             self.delete_coordinator()
         elif user_input == '7':
             self.delete_judge()
+        elif user_input == '8':
+            self.back()
+            return False
         else:
             print('No such operation available !!')
 
