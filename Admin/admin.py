@@ -217,13 +217,16 @@ class Admin:
                 self.events_list.append(row['Event Name'])
 
         while True:
-            self.event_name = input('Event name: ')
+            self.event_name = input('''
+            Event name: ''')
 
             if self.event_name.lower() in (name.lower() for name in self.events_list):
                 print(colored('Sorry, The event you entered is already present. Please enter another event..', 'red'))
             else:
-                self.event_venue = input('Event place: ')
-                self.event_time = input('Event Time: ')
+                self.event_venue = input('''
+                Event place: ''')
+                self.event_time = input('''
+                Event Time: ''')
                 self.path = "/home/narayanj/Practice/THAR2.0/Admin/events.csv"
                 self.is_file_empty = os.stat(self.path).st_size == 0
 
@@ -248,37 +251,52 @@ class Admin:
 # -------------------------------------    CREATE JUDGES BY ADMIN    ------------------------------------- #
 
     def create_judge(self):
-        self.judge_name = input('Judge name: ')
-        self.judge_event_name = input('Event to be Judged: ')
-        self.judge_pass = input('Set password: ')
-        print(colored('Judge created successfully', 'green'))
+        self.judges_list = []
+        with open('judge.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                self.judges_list.append(row['Name'])
+        while True:
+            self.judge_name = input('''
+                Judge name: ''')
+            if self.judge_name.lower() in (name.lower() for name in self.judges_list):
+                print(colored('Sorry, The Judge is already there, Enter another..', 'red'))
+            else:
+                self.judge_event_name = input('''
+                Event to be Judged: ''')
+                self.judge_pass = input('''
+                Set password: ''')
+                print(colored('''
+                Judge created successfully''', 'green'))
 
-        self.path = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
-        self.path_1 = '/home/narayanj/Practice/THAR2.0/Admin/judge.csv'
+                self.path = 'everyone.csv'
+                self.path_1 = 'judge.csv'
 
-        with open(self.path, 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([self.judge_name, self.judge_pass, 'Judge'])
+                with open(self.path, 'a', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow([self.judge_name, self.judge_pass, 'Judge'])
 
-        with open(self.path_1, 'a', newline='') as file:
-            is_file_empty = os.stat(self.path_1).st_size == 0
-            writer = csv.writer(file)
-            if is_file_empty:
-                writer.writerow(["Name", "Event", "Password"])
+                with open(self.path_1, 'a', newline='') as file:
+                    is_file_empty = os.stat(self.path_1).st_size == 0
+                    writer = csv.writer(file)
+                    if is_file_empty:
+                        writer.writerow(["Name", "Event", "Password"])
 
-            writer.writerow([self.judge_name, self.judge_pass, 'Judge'])
-            print(colored('The list of all the Judges: ', 'green'))
+                    writer.writerow([self.judge_name, self.judge_pass, 'Judge'])
+                    print(colored('The list of all the Judges: ', 'green'))
 
-        with open(self.path_1, 'r', newline='') as file:
-            x = from_csv(file)
-            x.hrules = ALL
-            print(x)
+                with open(self.path_1, 'r', newline='') as file:
+                    x = from_csv(file)
+                    x.hrules = ALL
+                    print(x)
 
-        with open(self.path, "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-            print(colored('All the roles active now: ', 'green'))
-            print(x)
+                with open(self.path, "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print('\n')
+                    print(colored('All the roles active now: ', 'green'))
+                    print(x)
+                break
  # -------------------------------------    CREATE EXHIBITIONS BY ADMIN    ------------------------------------- #
 
     def create_exhibition(self):
