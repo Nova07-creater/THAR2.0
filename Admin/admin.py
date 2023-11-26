@@ -239,6 +239,7 @@ class Admin:
                 with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
+                    print(\n)
                     print(colored('Event created successfully', 'green'))
                     print(x)
                     
