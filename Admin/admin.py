@@ -24,32 +24,40 @@ class Admin:
                 writer.writerow(['Narayan', 'admin123', 'Administrator'])
 
     def crud(self):
-        user_input = input('''
-                
-                           
-                What operation you want to preceed with?
+        while True:
+            user_input = input('''
                     
-                1. CREATE
+                               
+                    What operation you want to preceed with?
+                        
+                    1. CREATE
+    
+                    2. READ
+    
+                    3. UPDATE
+                               
+                    4. DELETE
 
-                2. READ
-
-                3. UPDATE
-                           
-                4. DELETE
-                
-                Enter your preffered operation: ''')
-        if user_input == '1':
-            self.create()
-
-        elif user_input == '2':
-            self.read()
-        elif user_input == '3':
-            self.update()
-        elif user_input == '4':
-            self.delete()
-        else:
-            print(colored('Invalid input', 'red'))
-
+                    5. EXIT
+                     
+                    Enter your preffered operation: ''')
+            if user_input == '1':
+                self.create()
+            elif user_input == '2':
+                self.read()
+            elif user_input == '3':
+                self.update()
+            elif user_input == '4':
+                self.delete()
+            elif user_input == '5':
+                self.exit()
+                break
+            else:
+                print(colored(''''
+                            Invalid input''', 'red'))
+    def exit(self):
+        print(colored(''' 
+                    Exiting from Admin CRUD... ''', 'green'))
     def create(self):
         user_input = input("""  
 
