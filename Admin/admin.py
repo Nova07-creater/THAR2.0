@@ -209,23 +209,49 @@ class Admin:
 # -------------------------------------    CREATE EVENTS BY ADMIN    ------------------------------------- #
 
     def create_event(self):
-        self.event_name = input('Event name: ')
-        self.event_venue = input('Event place: ')
-        self.event_time = input('Event Time: ')
-        print(colored('Event created succesfully', 'green'))
-        self.path = "/home/narayanj/Practice/THAR2.0/Admin/events.csv"
-        self.is_file_empty = os.stat(self.path).st_size == 0
-        if self.is_file_empty:
-            self.writer.writerow(["Event Name", "Venue", "Time"])
-        with open(self.path, 'a', newline='') as file:
-            self.writer = csv.writer(file)
-            self.writer.writerow(
-                [self.event_name, self.event_venue, self.event_time])
+        self.events_list = []
+        with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                self.events_list.append(row['Event Name'])
+        while True:
+            self.event_name = input('Event name: ')
+            if self.event_name.lower() in (name.lower() for name in self.events_list):
+                print(colored('Sorry, The event you entered is already present, Please enter another event..'))
+            elif self.event_name.lower() not in (name.lower() for name in self.events_list):
+                self.event_venue = input('Event place: ')
+                self.event_time = input('Event Time: ')
+                print(colored('Event created succesfully', 'green'))
+                self.path = "/home/narayanj/Practice/THAR2.0/Admin/events.csv"
+                self.is_file_empty = os.stat(self.path).st_size == 0
+                if self.is_file_empty:
+                    self.writer.writerow(["Event Name", "Venue", "Time"])
+                with open(self.path, 'a', newline='') as file:
+                    self.writer = csv.writer(file)
+                    self.writer.writerow(
+                        [self.event_name, self.event_venue, self.event_time])
 
-        with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-        print(x)
+                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+            
+                self.event_venue = input('Event place: ')
+                self.event_time = input('Event Time: ')
+                print(colored('Event created succesfully', 'green'))
+                self.path = "/home/narayanj/Practice/THAR2.0/Admin/events.csv"
+                self.is_file_empty = os.stat(self.path).st_size == 0
+                if self.is_file_empty:
+                    self.writer.writerow(["Event Name", "Venue", "Time"])
+                with open(self.path, 'a', newline='') as file:
+                    self.writer = csv.writer(file)
+                    self.writer.writerow(
+                        [self.event_name, self.event_venue, self.event_time])
+
+                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(x)
+                break
 
 # -------------------------------------    CREATE JUDGES BY ADMIN    ------------------------------------- #
 
