@@ -4,7 +4,8 @@ import pandas as pd
 from prettytable import PrettyTable, from_csv, ALL
 from termcolor import colored
 from datetime import datetime
-
+import getpass
+import emoji
 # -------------------------------------    ADMIN    ------------------------------------- #
 
 
@@ -281,11 +282,7 @@ class Admin:
                 with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
-<<<<<<< HEAD
                     print("\n")
-=======
-                    print(\n)
->>>>>>> d6f7ad52cae9b41fa0df2301c4927afd84956851
                     print(colored('Event created successfully', 'green'))
                     print(x)
                     
@@ -640,7 +637,6 @@ class Admin:
 
 # -------------------------------------    UPDATE EVENTS BY ADMIN    ------------------------------------- #
 
-<<<<<<< HEAD
     def update_event(self):
             self.event_attributes_list = ['Event Name', 'Venue', 'Time']
             print(colored('The attributes which are available to update are: \n', 'yellow'))
@@ -795,10 +791,6 @@ class Admin:
 
     def update_exhibition(self):
         self.exhibition_attributes_list = ['Exhibition Name', 'Venue', 'Time']
-=======
-def update_event(self):
-        self.event_attributes_list = ['Event Name', 'Venue', 'Time']
->>>>>>> d6f7ad52cae9b41fa0df2301c4927afd84956851
         print(colored('The attributes which are available to update are: \n', 'yellow'))
         for i, item in enumerate(self.exhibition_attributes_list):
             print(f'{i+1}. {item}\n')
@@ -807,161 +799,6 @@ def update_event(self):
 
         if self.user_input == '1':
 
-<<<<<<< HEAD
-=======
-            file_path = 'events.csv'
-            with open(file_path, 'r') as file:
-                reader = csv.DictReader(file)
-                event_name_list = []
-                for col in reader:
-                    event_name_list.append(col['Event Name'])
-
-            # for i, item in enumerate(event_name_list):
-            #     print(f'{i+1}.{item}\n')
-            with open('events.csv', 'r') as file:
-                x = from_csv(file)
-                x.hrules= ALL
-                print(x)
-                print('\n')
-            ch_event = input(
-                (colored('Which event name you want to change: ', 'yellow')))
-            if ch_event in event_name_list:
-                chd_event = input(
-                    colored('Enter the event name reaplace value: ', 'yellow'))
-
-                with open('events.csv', 'r') as file:
-                    reader = csv.DictReader(file)
-                    rows = list(reader)
-                for row in rows:
-                    if row['Event Name'] == ch_event:
-                        row['Event Name'] = chd_event
-                fieldnames = reader.fieldnames
-                with open('events.csv', 'w', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=fieldnames)
-                    writer.writeheader()
-                    writer.writerows(rows)
-
-                with open("events.csv", "r") as fp:
-                    x = from_csv(fp)
-                    x.hrules = ALL
-                    print(colored('Events after update are as follows: \n'))
-                    print(x)
-            else:
-                print(colored('The entered event not found ', 'red'))
-
-        elif self.user_input == '2':
-
-            file_path = 'events.csv'
-            with open(file_path, 'r') as file:
-                reader = csv.DictReader(file)
-                venue_list = []
-                for col in reader:
-                    venue_list.append(col['Venue'])
-
-            # for i, item in enumerate(venue_list):
-            #     print(f'{i+1}.{item}\n')
-            with open('events.csv', 'r') as file:
-                x = from_csv(file)
-                x.hrules= ALL
-                print(x)
-                print('\n')
-            ch_venue = input(
-                (colored('Which venue you want to change: ', 'yellow')))
-            if ch_venue in venue_list:
-                chd_venue = input(
-                    colored('Enter the event name reaplace value: ', 'yellow'))
-
-                with open('events.csv', 'r') as file:
-                    reader = csv.DictReader(file)
-                    rows = list(reader)
-                for row in rows:
-                    if row['Venue'] == ch_venue:
-                        row['Venue'] = chd_venue
-                fieldnames = reader.fieldnames
-                with open('events.csv', 'w', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=fieldnames)
-                    writer.writeheader()
-                    writer.writerows(rows)
-
-                with open("events.csv", "r") as fp:
-                    x = from_csv(fp)
-                    x.hrules = ALL
-                    print(colored('Venue updated : \n'))
-                    print(x)
-            else:
-                print(colored('The entered venue not found ', 'red'))
-
-        elif self.user_input == '3':
-            file_path = 'events.csv'
-            with open(file_path, 'r') as file:
-                reader = csv.DictReader(file)
-                time_list = []
-                for col in reader:
-                    time_list.append(col['Time'])
-
-            # for i, item in enumerate(time_list):
-            #     print(f'{i+1}.{item}\n')
-            with open('file_path', 'r') as file:
-                x = from_csv(file)
-                x.hrules= ALL
-                print(x)
-                print('\n')
-            while True:
-                try:
-                    ch_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
-                    datetime.strptime(self.event_time, "%I:%M %p")
-                    break 
-                except ValueError:
-                    print(colored('Invalid time format. Please enter time again.', 'red'))
-            # ch_time = input(
-            #     (colored('What time you want to change: ', 'yellow')))
-            if ch_time in time_list:
-                while True:
-                    try:
-                        chd_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
-                        datetime.strptime(self.event_time, "%I:%M %p")
-                        break 
-                    except ValueError:
-                    print(colored('Invalid time format. Please enter time again.', 'red'))
-                # chd_time = input(
-                #     colored('Enter the time reaplace value: ', 'yellow'))
-                with open('events.csv', 'r') as file:
-                    reader = csv.DictReader(file)
-                    rows = list(reader)
-                for row in rows:
-                    if row['Time'] == ch_time:
-                        row['Time'] = chd_time
-                fieldnames = reader.fieldnames
-                with open('events.csv', 'w', newline='') as file:
-                    writer = csv.DictWriter(file, fieldnames=fieldnames)
-                    writer.writeheader()
-                    writer.writerows(rows)
-
-                with open("events.csv", "r") as fp:
-                    x = from_csv(fp)
-                    x.hrules = ALL
-                    print('\n')
-                    print(colored('Time updated : \n'))
-
-                    print(x)
-            else:
-                print(colored('The entered time not found ', 'red'))
-
-        else:
-            print(colored('Sorry, The attribute you entered is not available !!', 'red'))
-# -------------------------------------    UPDATE EXHIBTION BY ADMIN    ------------------------------------- #
-
-    def update_exhibition(self):
-        self.exhibition_attributes_list = ['Exhibition Name', 'Venue', 'Time']
-        print(colored('The attributes which are available to update are: \n', 'yellow'))
-        for i, item in enumerate(self.exhibition_attributes_list):
-            print(f'{i+1}. {item}\n')
-        self.user_input = input(
-            colored('What do you want to update? \n', 'yellow'))
-
-        if self.user_input == '1':
-
->>>>>>> d6f7ad52cae9b41fa0df2301c4927afd84956851
             file_path = 'exhibions.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
@@ -1059,7 +896,6 @@ def update_event(self):
                 x.hrules= ALL
                 print(x)
                 print('\n')
-<<<<<<< HEAD
             while True:
                 try:
                     ch_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
@@ -1067,15 +903,6 @@ def update_event(self):
                     break 
                 except:
                     print(colored('Invalid time format. Please enter time again.', 'red'))
-=======
-         while True:
-             try:
-                ch_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
-                datetime.strptime(self.event_time, "%I:%M %p")
-                break 
-             except:
-                 print(colored('Invalid time format. Please enter time again.', 'red'))
->>>>>>> d6f7ad52cae9b41fa0df2301c4927afd84956851
             # ch_time = input(
             #     (colored('What time you want to change: ', 'yellow')))
             if ch_time in time_list:
@@ -1545,11 +1372,7 @@ def update_event(self):
                 for col in reader:
                     passwords.append(col['Password'])
            
-<<<<<<< HEAD
             with open(file_path, 'r') as file:
-=======
-           with open(file_path, 'r') as file:
->>>>>>> d6f7ad52cae9b41fa0df2301c4927afd84956851
                 x = from_csv(file)
                 x.hrules = ALL
                 print(x)
@@ -1730,11 +1553,7 @@ def update_event(self):
                 for col in reader:
                     passwords.append(col['Password'])
            
-<<<<<<< HEAD
             with open(file_path, 'r') as file:
-=======
-           with open(file_path, 'r') as file:
->>>>>>> d6f7ad52cae9b41fa0df2301c4927afd84956851
                 x = from_csv(file)
                 x.hrules = ALL
                 print(x)
@@ -1914,11 +1733,7 @@ def update_event(self):
                 for col in reader:
                     passwords.append(col['Password'])
            
-<<<<<<< HEAD
             with open(file_path, 'r') as file:
-=======
-           with open(file_path, 'r') as file:
->>>>>>> d6f7ad52cae9b41fa0df2301c4927afd84956851
                 x = from_csv(file)
                 x.hrules = ALL
                 print(x)
@@ -2376,25 +2191,247 @@ class Coordinator:
         print(colored('Co-ordinator class called', 'green'))
 
 
+
+
+
 class Participant:
-    def __init__(self, username, password):
-        self.password = password
-        self.username = username
-        print(f'Welcome {username}! You are now logged in as a participant.')
-        with open('participants.csv', 'w') as file:
-            writer = csv.writer(file)
+# Participant can do :
+# 1) Change his password
+# 2) Participate in Events, Exhibitions, Workshops, Pro-Nites.
+# 3) Cancel participation from any at any time 
+# 4) Read all his data
+# 5) Read Events, Exhibitions, Workshops, Pro-Nites being organised in the fest
+# 6) Update his/her details
+    def __init__(self):
+        self.user_input = input(colored('''
+                Are you a new user? ''', 'grey', attrs = ["bold"])+ colored("""
+            
+                1. Yes
+            
+                2. No
+            
+                Enter (1/2) accordingly:  """, 'grey', attrs= ['bold']))
+        if self.user_input == '1':
+            self.login_participant()
+        elif self.user_input == '2':
+            self.participant_login()
+        else:
+            print('''Incorrect input...''', 'red', attrs=['bold'])
+    def login_participant(self):
+        self.part_name = input(colored('''
+                Enter Name:  ''', 'grey',attrs = ['bold']))
+        self.part_pass = input(colored('''
+                Enter Password:  ''', 'grey' ,attrs = ['bold']))
+        print('\n')
+ 
+        with open('participants.csv', 'a', newline='') as file:
             is_file_empty = os.stat('participants.csv').st_size == 0
+            self.writer = csv.writer(file)
             if is_file_empty:
-                writer.writerow(["Name", "Password"])
-        with open('participants.csv', 'a', newline = '') as file:
-            writer = csv.writer(file)
-            writer.writerow([self.username, self.password])
+                self.writer.writerow(["Name", "Password"])
+            self.writer.writerow([self.part_name, self.part_pass])
+
+        with open('participants.csv', "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(colored('New Participant added: ', 'green', attrs = ['bold']))
+        print(x)
+
+
+    def participant_login(self):
+        self.part_name = input(colored('''
+                Enter Name:  ''','grey' ,attrs = ['bold']))
+        self.part_pass = input(colored('''
+                Enter Password:  ''','grey' ,attrs = ['bold']))
+        print('\n')
+
+        with open('participants.csv', 'r') as file:
+            self.reader = csv.DictReader(file)
+            for row in self.reader:
+                if row['Name'] == self.part_name and row['Password'] == self.part_pass:
+                    print(colored(f'''
+                Hearttiest Welcome {self.part_name}, In our National Level Techno-Management Fest
+                
+                Please proceed further with the operations accordingly \U0001F607''', 'cyan', attrs = ['bold'])) 
+                    self.participant_operations()
+
+    def participant_operations(self):
+        while True:
+            print('\n')
+            user_input = input(colored('''      
+                What operation you want to preceed with?''', 'cyan', attrs = ['bold'])
+                + colored('''    
+
+                1. READ
+
+                2. PARTICIPATE
+
+                3. UPDATE
+                            
+                4. DELETE
+
+                5. CHANGE PASSWORD
+                    
+                6. EXIT
+                
+                Enter your preffered operation: ''', 'grey', attrs= ['bold']))
+            if user_input == '1':
+                self.part_read()
+            elif user_input == '2':
+                self.participate()
+            elif user_input == '3':
+                self.update()
+            elif user_input == '4':
+                self.delete()
+            elif user_input == '5':
+                self.change_pass()
+            elif user_input == '6':
+                self.exit()
+                break
+            else:
+                print(colored(''''
+                Invalid input''', 'red', attrs = ['bold']))
+    def exit(self):
+        print(colored(''' 
+                Exiting from Participant operarions... ''', 'cyan'))
+    def participate(self):
+        self.user_input = input(colored("""  
+
+                How would you like to proceed? """, 'cyan', attrs = ['bold'])
+                + colored("""        
+                1. Participate in Event
+                
+                2. Participate in Exhibiution   
+                
+                3. Participate in Workshop
+                
+                4. Participate in Pro-Nite
+
+                5. Back to main
+
+                Enter your preffered operation: """, 'grey', attrs = ['bold']))
+
+        if self.user_input == '1':
+            self.participate_event()
+        elif self.user_input == '2':
+            self.part_read_exhibition()
+        elif self.user_input == '3':
+            self.part_read_workshop()
+        elif self.user_input == '4':
+            self.part_read_pro_nite()
+        elif user_input == '5':
+            self.back()
+            return False
+        else:
+            print(colored('''
+               No such operation available !!''', 'red', attrs = ['bold']))
+
+
+    def participate_event(self):
+
+        print(colored('''The Events you can participate are: ''', 'cyan', attrs = ['bold']))
+
+        with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(x)
+
+
+
+  ########################################################################################################
+  #                                                                                                      #
+  #                             <--------- READ STARTED HERE --------->                                  #
+  #                                                                                                      #
+  ########################################################################################################
+
+# -------------------------------------    READ EVENTS      ------------------------------------- #
+    def part_read(self):
+        self.user_input = input(colored("""  
+
+                How would you like to proceed? """, 'cyan', attrs = ['bold'])
+                + colored("""        
+                1. Read Event
+                
+                2. Read Exhibiution   
+                
+                3. Read Workshop
+                
+                4. Read Pro-Nite
+
+                5. Back to main
+
+                Enter your preffered operation: """, 'grey', attrs = ['bold']))
+
+        if self.user_input == '1':
+            self.part_read_event()
+        elif self.user_input == '2':
+            self.part_read_exhibition()
+        elif self.user_input == '3':
+            self.part_read_workshop()
+        elif self.user_input == '4':
+            self.part_read_pro_nite()
+        elif user_input == '5':
+            self.back()
+            return False
+        else:
+            print(colored('''
+               No such operation available !!''', 'red', attrs = ['bold']))
+
+
+# -------------------------------------    READ EVENTS    ------------------------------------- #
+
+    def part_read_event(self):
+        print(colored('The Events we are organising are: ',
+              'cyan', attrs=['bold']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+# -------------------------------------    READ EXHIBITON    ------------------------------------- #
+
+    def part_read_exhibition(self):
+        print(colored('The Exhibitions are scheduled as: ',
+              'cyan', attrs=['bold']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+# -------------------------------------    READ WORKSHOPS     ------------------------------------- #
+
+    def part_read_workshop(self):
+        print(colored('The Workshops are scheduled as : ',
+              'cyan', attrs=['bold']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+# -------------------------------------    READ PRO-NITES     ------------------------------------- #
+
+    def part_read_pro_nite(self):
+        print(colored('The Pro-Nites are scheduled as: ',
+              'cyan', attrs=['bold']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+
+
+
+
+
+
 class UserAuthenticator:
     def __init__(self):
         self.authenticate_user()
     def authenticate_user(self):
-        name = input("Please enter your Name: ")
-        password = input("Please enter your password: ")
+        name = input(colored("""
+                        Please enter your Name:""", 'green', attrs = ['bold']) )
+        password = input(colored("""
+                        Please enter your Password:""", 'green', attrs = ['bold']) )
 
         with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r') as file:
             reader = csv.DictReader(file)
@@ -2407,57 +2444,54 @@ class UserAuthenticator:
                         print(colored('''
                              ADMIN DASHBOARD''', 'green', attrs=['bold']))
                         print(colored(f'''
-                   >>> Welcome {name} to your Dashboard...''', 'cyan'))
+                   >>> Welcome {name} to your Dashboard...''', 'cyan', attrs=['bold']))
                         Admin()
                     elif role.lower() == 'co-ordinator':
                         print('\n')
                         print(colored('''
                              CO-ORDINATOR DASHBOARD''', 'green', attrs=['bold']))
                         print(colored(f'''
-                   >>> Welcome {name} to your Dashboard...''', 'cyan'))
+                   >>> Welcome {name} to your Dashboard...''', 'cyan', attrs=['bold']))
                         Coordinator()
                     elif role.lower() == 'organiser':
                         print('\n')
                         print(colored('''
                              ORGANISER DASHBOARD''', 'green', attrs=['bold']))
                         print(colored(f'''
-                   >>> Welcome {name} to your Dashboard...''', 'cyan'))
+                   >>> Welcome {name} to your Dashboard...''', 'cyan', attrs=['bold']))
                         Organiser()
                     elif role.lower() == 'judge':
                         print('\n')
                         print(colored('''
                              JUDGE DASHBOARD''', 'green', attrs=['bold']))
                         print(colored(f'''
-                   >>> Welcome {name} to your Dashboard...''', 'cyan'))
+                   >>> Welcome {name} to your Dashboard...''', 'cyan', attrs=['bold']))
                         Judge()
                     else:
-                        print("Invalid role detected.")
+                        print(colored(("""Invalid role detected.""", 'red')))
                     break
             else:
-                print("Incorrect name or password. Exiting...")
+                print(colored("""
+                       Incorrect name or password. Exiting...""", 'red', attrs=['bold']))
 
 
 if __name__ == "__main__":
     user_input = input(colored('''
                       
                       
-                        Login as a "Participant" or "Authority" ? ''', 'cyan', attrs = ['bold'])+
-                        ''' 
-                        
-                        1. Authority
-                        
-                        2. Participant
-                        
-                        Enter your preffered login: ''')
+                Login as a "Participant" or "Authority" ? ''', 'cyan', attrs = ['bold'])+ colored(
+                ''' 
+
+                1. Authority
+                
+                2. Participant
+                
+                Enter your preffered login: ''', 'grey', attrs = ['bold']))
 
     if user_input == '1':
         UserAuthenticator()
     elif user_input == '2':
-        username = input('''
-                        Please enter your Participant Username: ''') 
-        password = input('''
-                        Please enter your Participant Password: ''') 
-        Participant(username, password)
+        Participant()
     else:
         print(colored('''
                 Welcome buddy, Come, Enjoy, Learn & Participate in our National Level Techno Management Festival...''', 'green', attrs = ['bold']))
