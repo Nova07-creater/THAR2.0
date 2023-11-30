@@ -1,11 +1,10 @@
 import os
 import csv
-import pandas as pd
+import re
 from prettytable import PrettyTable, from_csv, ALL
 from termcolor import colored
 from datetime import datetime
-import getpass
-import emoji
+
 # -------------------------------------    ADMIN    ------------------------------------- #
 
 
@@ -25,9 +24,10 @@ class Admin:
 
     def crud(self):
         while True:
-            user_input = input('''      
-                    What operation you want to preceed with?
-                        
+            user_input = input(      
+            colored(''' What operation you want to preceed with?''', 'cyan', attrs = ['bold'])+
+                       
+                   colored('''      
                     1. CREATE
     
                     2. READ
@@ -36,9 +36,12 @@ class Admin:
                                
                     4. DELETE
 
-                    5. EXIT
+                    5. SWITCH USER
                      
-                    Enter your preffered operation: ''')
+                    6. EXIT
+                               
+                    Enter your preffered operation: ''', 'grey', attrs =['bold']))
+           
             if user_input == '1':
                 self.create()
             elif user_input == '2':
@@ -48,14 +51,58 @@ class Admin:
             elif user_input == '4':
                 self.delete()
             elif user_input == '5':
+                self.switch()
+            elif user_input == '6':
                 self.exit()
                 break
             else:
                 print(colored(''''
                             Invalid input''', 'red'))
+
+    def switch(self):
+        while True:
+            print('\n')
+            user_input = input(colored('''      
+                Login to which User?''', 'cyan', attrs = ['bold'])
+                + colored('''    
+
+                1. ADMIN 
+
+                2. ORGANISER
+
+                3. PARTICIPANT
+                            
+                4. JUDGE
+
+                5. CO-ORDINATOR
+                    
+                6. EXIT
+                          
+                Enter your preffered operation: ''', 'grey', attrs= ['bold']))
+            # if user_input == '1':
+            #     self.authenticate_user()
+            # elif user_input == '2':
+            #     self.authenticate_user()
+            # elif user_input == '3':
+            #     self.authenticate_user()
+            # elif user_input == '4':
+            #     self.authenticate_user()
+            # elif user_input == '5':
+            #     self.authenticate_user()    
+            # elif user_input == '6':
+            #     self.exit()
+            #     break 
+            # else:
+            #     print(colored(''''
+            #     Invalid input''', 'red', attrs = ['bold']))
+
+   
+   
+   
     def exit(self):
         print(colored(''' 
                     Exiting from Admin CRUD... ''', 'green'))
+    
     def create(self):
         user_input = input("""  
 
@@ -449,17 +496,24 @@ class Admin:
                     try:
                         self.pro_time = input('''
                   What will be time (e.g., 08:30 PM/AM): ''')
-                        datetime.strptime(self.event_time, "%I:%M %p")
+                        datetime.strptime(self.pro_time, "%I:%M %p")
                         break 
                     except ValueError:
                         print(colored('Invalid time format. Please enter time again.', 'red'))
-
-                # self.pro_time = input('''
-                # What time will it start: ''')
-                self.pro_date = input('''
-                Date of pro-nite being organised: ''')
+                
+                while True:      
+                    self.pro_date = input("Date of pro-nite being organised: (DD/MM/YYYY): ")         
+                    date_pattern = re.compile(r'^\d{2}/\d{2}/\d{4}$')
+                    if date_pattern.match(self.pro_date):         
+                        print(f"Valid date: {self.pro_date}")        
+                        break      
+                    else:          
+                        print("""
+                  Invalid date format. Please enter the date in the format (DD/MM/YYYY).""")
+                # self.pro_date = input('''
+                # Date of pro-nite being organised: ''')
                 print(colored('''
-                Pro-Nite created succesfully''', 'green'))
+                Pro-Nite created succesfully''', 'green', attrs = ['bold']))
                 self.path = '/home/narayanj/Practice/THAR2.0/Admin/pronite.csv'
         
                 with open(self.path, 'a', newline='') as file:
@@ -469,10 +523,10 @@ class Admin:
                         self.writer.writerow(['Pro Nite', 'Venue', 'Time', 'Date'])
                     self.writer.writerow(
                         [self.name_pro_nite, self.pro_venue, self.pro_time, self.pro_date])
-                with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+                with open("pronite.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
-                    print(colored('Pro Nite Created: ', 'green'))
+                    print(colored('Pro Nite Created: ', 'green', attrs = ['bold']))
                     print(x)
                 break
 
@@ -804,8 +858,7 @@ class Admin:
                 reader = csv.DictReader(file)
                 exhibition_name_list = []
                 for col in reader:
-                    event_name_list.append(col['Exhibition'])
-
+                    self.exhibition_attributes_list.append(col['Exhibition'])
             # for i, item in enumerate(event_name_list):
             #     print(f'{i+1}.{item}\n')
             with open('exhibions.csv', 'r') as file:
@@ -1216,7 +1269,7 @@ class Admin:
                 (colored('What time you want to change: ', 'yellow')))
             if ch_time in time_list:
                 chd_time = input(
-                    colored('Enter the time reaplace value: ', 'yellow'))
+                    colored('Enter the time replace value: ', 'yellow'))
 
                 with open('pronite.csv', 'r') as file:
                     reader = csv.DictReader(file)
@@ -1255,11 +1308,30 @@ class Admin:
                 x.hrules= ALL
                 print(x)
                 print('\n')
-            ch_date = input(
-                (colored('What Date you want to change: ', 'yellow')))
+            while True:      
+                ch_date = input(colored('''What Date you want to change: (DD/MM/YYYY): ''', 'yellow'))         
+                date_pattern = re.compile(r'^\d{2}/\d{2}/\d{4}$')
+                if date_pattern.match(ch_date):         
+                    print(f"Entered date: {ch_date}")        
+                    break      
+                else:          
+                    print(colored(""" 
+                Invalid date format. Please enter the date in the format (DD/MM/YYYY).""", 'red', attrs = ['bold']))
+            # ch_date = input(
+            #     (colored('What Date you want to change: ', 'yellow')))
             if ch_date in date_list:
-                ch_date = input(
-                    colored('Enter the Date reaplace value: ', 'yellow'))
+                while True:      
+                    chd_date = input(colored('Enter the Date reaplace value (DD/MM/YYYY):  ', 'yellow'))         
+                    date_pattern = re.compile(r'^\d{2}/\d{2}/\d{4}$')
+                    if date_pattern.match(chd_date):         
+                        print(f"Entered date: {chd_date}")        
+                        break      
+                    else:          
+                        print("""
+                    Invalid date format. Please enter the date in the format (DD/MM/YYYY).""")
+                
+                # chd_date = input(
+                #     colored('Enter the Date reaplace value: ', 'yellow'))
 
                 with open('pronite.csv', 'r') as file:
                     reader = csv.DictReader(file)
@@ -2137,361 +2209,3 @@ class Admin:
             x.hrules = ALL
             print(colored('Roles active after deletion of Organiser: ', 'green'))
             print(x)
-
-
-# -------------------------------------    ORGANISER CLASS    ------------------------------------- #
-
-
-class Organiser:
-    def __init__(self):
-        self.crud()
-    def crud(self):
-        while True:
-            user_input = input('''      
-                    What operation you want to preceed with?
-                        
-                    1. CREATE
-    
-                    2. READ
-                                   
-                    3. DELETE
-
-                    4. CHANGE PASSWORD
-                    
-                    5. EXIT
-                     
-                    Enter your preffered operation: ''')
-            if user_input == '1':
-                self.create()
-            elif user_input == '2':
-                self.read()
-            elif user_input == '3':
-                self.delete()
-            elif user_input == '4':
-                self.change_pass()            
-            elif user_input == '5':
-                self.exit()
-                break
-            else:
-                print(colored(''''
-                    Invalid input''', 'red'))
-    def exit(self):
-        print(colored(''' 
-                    Exiting from Organiser operations... ''', 'green'))
-    
-
-
-class Judge:
-    def __init__(self):
-        print(colored('Judge class called', 'green'))
-
-
-class Coordinator:
-    def __init__(self):
-        print(colored('Co-ordinator class called', 'green'))
-
-
-
-
-
-class Participant:
-# Participant can do :
-# 1) Change his password
-# 2) Participate in Events, Exhibitions, Workshops, Pro-Nites.
-# 3) Cancel participation from any at any time 
-# 4) Read all his data
-# 5) Read Events, Exhibitions, Workshops, Pro-Nites being organised in the fest
-# 6) Update his/her details
-    def __init__(self):
-        self.user_input = input(colored('''
-                Are you a new user? ''', 'grey', attrs = ["bold"])+ colored("""
-            
-                1. Yes
-            
-                2. No
-            
-                Enter (1/2) accordingly:  """, 'grey', attrs= ['bold']))
-        if self.user_input == '1':
-            self.login_participant()
-        elif self.user_input == '2':
-            self.participant_login()
-        else:
-            print('''Incorrect input...''', 'red', attrs=['bold'])
-    def login_participant(self):
-        self.part_name = input(colored('''
-                Enter Name:  ''', 'grey',attrs = ['bold']))
-        self.part_pass = input(colored('''
-                Enter Password:  ''', 'grey' ,attrs = ['bold']))
-        print('\n')
- 
-        with open('participants.csv', 'a', newline='') as file:
-            is_file_empty = os.stat('participants.csv').st_size == 0
-            self.writer = csv.writer(file)
-            if is_file_empty:
-                self.writer.writerow(["Name", "Password"])
-            self.writer.writerow([self.part_name, self.part_pass])
-
-        with open('participants.csv', "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-        print(colored('New Participant added: ', 'green', attrs = ['bold']))
-        print(x)
-
-
-    def participant_login(self):
-        self.part_name = input(colored('''
-                Enter Name:  ''','grey' ,attrs = ['bold']))
-        self.part_pass = input(colored('''
-                Enter Password:  ''','grey' ,attrs = ['bold']))
-        print('\n')
-
-        with open('participants.csv', 'r') as file:
-            self.reader = csv.DictReader(file)
-            for row in self.reader:
-                if row['Name'] == self.part_name and row['Password'] == self.part_pass:
-                    print(colored(f'''
-                Hearttiest Welcome {self.part_name}, In our National Level Techno-Management Fest
-                
-                Please proceed further with the operations accordingly \U0001F607''', 'cyan', attrs = ['bold'])) 
-                    self.participant_operations()
-
-    def participant_operations(self):
-        while True:
-            print('\n')
-            user_input = input(colored('''      
-                What operation you want to preceed with?''', 'cyan', attrs = ['bold'])
-                + colored('''    
-
-                1. READ
-
-                2. PARTICIPATE
-
-                3. UPDATE
-                            
-                4. DELETE
-
-                5. CHANGE PASSWORD
-                    
-                6. EXIT
-                
-                Enter your preffered operation: ''', 'grey', attrs= ['bold']))
-            if user_input == '1':
-                self.part_read()
-            elif user_input == '2':
-                self.participate()
-            elif user_input == '3':
-                self.update()
-            elif user_input == '4':
-                self.delete()
-            elif user_input == '5':
-                self.change_pass()
-            elif user_input == '6':
-                self.exit()
-                break
-            else:
-                print(colored(''''
-                Invalid input''', 'red', attrs = ['bold']))
-    def exit(self):
-        print(colored(''' 
-                Exiting from Participant operarions... ''', 'cyan'))
-    def participate(self):
-        self.user_input = input(colored("""  
-
-                How would you like to proceed? """, 'cyan', attrs = ['bold'])
-                + colored("""        
-                1. Participate in Event
-                
-                2. Participate in Exhibiution   
-                
-                3. Participate in Workshop
-                
-                4. Participate in Pro-Nite
-
-                5. Back to main
-
-                Enter your preffered operation: """, 'grey', attrs = ['bold']))
-
-        if self.user_input == '1':
-            self.participate_event()
-        elif self.user_input == '2':
-            self.part_read_exhibition()
-        elif self.user_input == '3':
-            self.part_read_workshop()
-        elif self.user_input == '4':
-            self.part_read_pro_nite()
-        elif user_input == '5':
-            self.back()
-            return False
-        else:
-            print(colored('''
-               No such operation available !!''', 'red', attrs = ['bold']))
-
-
-    def participate_event(self):
-
-        print(colored('''The Events you can participate are: ''', 'cyan', attrs = ['bold']))
-
-        with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
-            x = from_csv(file)
-            x.hrules = ALL
-            print(x)
-
-
-
-  ########################################################################################################
-  #                                                                                                      #
-  #                             <--------- READ STARTED HERE --------->                                  #
-  #                                                                                                      #
-  ########################################################################################################
-
-# -------------------------------------    READ EVENTS      ------------------------------------- #
-    def part_read(self):
-        self.user_input = input(colored("""  
-
-                How would you like to proceed? """, 'cyan', attrs = ['bold'])
-                + colored("""        
-                1. Read Event
-                
-                2. Read Exhibiution   
-                
-                3. Read Workshop
-                
-                4. Read Pro-Nite
-
-                5. Back to main
-
-                Enter your preffered operation: """, 'grey', attrs = ['bold']))
-
-        if self.user_input == '1':
-            self.part_read_event()
-        elif self.user_input == '2':
-            self.part_read_exhibition()
-        elif self.user_input == '3':
-            self.part_read_workshop()
-        elif self.user_input == '4':
-            self.part_read_pro_nite()
-        elif user_input == '5':
-            self.back()
-            return False
-        else:
-            print(colored('''
-               No such operation available !!''', 'red', attrs = ['bold']))
-
-
-# -------------------------------------    READ EVENTS    ------------------------------------- #
-
-    def part_read_event(self):
-        print(colored('The Events we are organising are: ',
-              'cyan', attrs=['bold']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-            print(x)
-
-# -------------------------------------    READ EXHIBITON    ------------------------------------- #
-
-    def part_read_exhibition(self):
-        print(colored('The Exhibitions are scheduled as: ',
-              'cyan', attrs=['bold']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-            print(x)
-
-# -------------------------------------    READ WORKSHOPS     ------------------------------------- #
-
-    def part_read_workshop(self):
-        print(colored('The Workshops are scheduled as : ',
-              'cyan', attrs=['bold']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv", "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-            print(x)
-
-# -------------------------------------    READ PRO-NITES     ------------------------------------- #
-
-    def part_read_pro_nite(self):
-        print(colored('The Pro-Nites are scheduled as: ',
-              'cyan', attrs=['bold']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-            print(x)
-
-
-
-
-
-
-
-class UserAuthenticator:
-    def __init__(self):
-        self.authenticate_user()
-    def authenticate_user(self):
-        name = input(colored("""
-                        Please enter your Name:""", 'green', attrs = ['bold']) )
-        password = input(colored("""
-                        Please enter your Password:""", 'green', attrs = ['bold']) )
-
-        with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r') as file:
-            reader = csv.DictReader(file)
-
-            for row in reader:
-                if row['Name'] == name and row['Password'] == password:
-                    role = row['Role']
-                    if role.lower() == 'administrator':
-                        print('\n')
-                        print(colored('''
-                             ADMIN DASHBOARD''', 'green', attrs=['bold']))
-                        print(colored(f'''
-                   >>> Welcome {name} to your Dashboard...''', 'cyan', attrs=['bold']))
-                        Admin()
-                    elif role.lower() == 'co-ordinator':
-                        print('\n')
-                        print(colored('''
-                             CO-ORDINATOR DASHBOARD''', 'green', attrs=['bold']))
-                        print(colored(f'''
-                   >>> Welcome {name} to your Dashboard...''', 'cyan', attrs=['bold']))
-                        Coordinator()
-                    elif role.lower() == 'organiser':
-                        print('\n')
-                        print(colored('''
-                             ORGANISER DASHBOARD''', 'green', attrs=['bold']))
-                        print(colored(f'''
-                   >>> Welcome {name} to your Dashboard...''', 'cyan', attrs=['bold']))
-                        Organiser()
-                    elif role.lower() == 'judge':
-                        print('\n')
-                        print(colored('''
-                             JUDGE DASHBOARD''', 'green', attrs=['bold']))
-                        print(colored(f'''
-                   >>> Welcome {name} to your Dashboard...''', 'cyan', attrs=['bold']))
-                        Judge()
-                    else:
-                        print(colored(("""Invalid role detected.""", 'red')))
-                    break
-            else:
-                print(colored("""
-                       Incorrect name or password. Exiting...""", 'red', attrs=['bold']))
-
-
-if __name__ == "__main__":
-    user_input = input(colored('''
-                      
-                      
-                Login as a "Participant" or "Authority" ? ''', 'cyan', attrs = ['bold'])+ colored(
-                ''' 
-
-                1. Authority
-                
-                2. Participant
-                
-                Enter your preffered login: ''', 'grey', attrs = ['bold']))
-
-    if user_input == '1':
-        UserAuthenticator()
-    elif user_input == '2':
-        Participant()
-    else:
-        print(colored('''
-                Welcome buddy, Come, Enjoy, Learn & Participate in our National Level Techno Management Festival...''', 'green', attrs = ['bold']))

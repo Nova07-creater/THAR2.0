@@ -1,10 +1,10 @@
 import csv
-from termcolor import colored
 from admin import Admin
 from participant import Participant
 from organiser import Organiser
 from coordinators import Coordinator
 from judge import Judge
+from termcolor import colored
 
 
 
@@ -59,23 +59,11 @@ class UserAuthenticator:
                        Incorrect name or password. Exiting...""", 'red', attrs=['bold']))
 
 
-if __name__ == "__main__":
-    user_input = input(colored('''
-                      
-                      
-                Login as a "Participant" or "Authority" ? ''', 'cyan', attrs = ['bold'])+ colored(
-                ''' 
 
-                1. Authority
-                
-                2. Participant
-                
-                Enter your preffered login: ''', 'grey', attrs = ['bold']))
 
-    if user_input == '1':
-        UserAuthenticator()
-    elif user_input == '2':
-        Participant()
-    else:
-        print(colored('''
-                Welcome buddy, Come, Enjoy, Learn & Participate in our National Level Techno Management Festival...''', 'green', attrs = ['bold']))
+
+
+
+
+
+
