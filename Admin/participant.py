@@ -18,6 +18,8 @@ import re
 
 class Participant:
     def __init__(self):
+        self.part_name = None
+        self.part_pass = None
         self.user_input = input(colored('''
                 Are you a new user? ''', 'grey', attrs = ["bold"])+ colored("""
             
@@ -27,19 +29,11 @@ class Participant:
             
                 Enter (1/2) accordingly:  """, 'grey', attrs= ['bold']))
         if self.user_input == '1':
-            self.part_name = input(colored('''
-                Enter Name:  ''', 'grey',attrs = ['bold']))
-            self.part_pass = input(colored('''
-                Enter Password:  ''', 'grey' ,attrs = ['bold']))
             self.old_participant()
         elif self.user_input == '2':
-            self.part_name = input(colored('''
-                Enter Name:  ''','grey' ,attrs = ['bold']))
-            self.part_pass = input(colored('''
-                Enter Password:  ''','grey' ,attrs = ['bold']))
             self.new_participant()
         else:
-            print('''Incorrect input...''', 'red', attrs=['bold'])
+            print(colored('''Incorrect input...''', 'red', attrs=['bold']))
   
   
     
@@ -94,48 +88,69 @@ class Participant:
             x.hrules = ALL
             print(x)
         print(colored('''
-        Thank you for providing your information. Your details have been stored.
+                Thank you for providing your information. Your details have been stored.
     ''', 'green', attrs=['bold'])) 
     
     
     def new_participant(self):
         print('\n')
+        
+        
+        self.part_name = input(colored('''
+                Enter Name:  ''','grey' ,attrs = ['bold']))
+        self.part_pass = input(colored('''
+                Enter Password:  ''','grey' ,attrs = ['bold']))
+        
+        
         self.participant_personal_info() 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/participants.csv', 'a', newline='') as file:
+        with open('participants.csv', 'a', newline='') as file:
             writer = csv.writer(file)
-            is_file_empty = os.stat('/home/narayanj/Practice/THAR2.0/Admin/participants.csv').st_size == 0
+            is_file_empty = os.stat('participants.csv').st_size == 0
             if is_file_empty:
                 writer.writerow(["Name", "Password"])
             writer.writerow([self.part_name, self.part_pass])
 
     
-        with open('/home/narayanj/Practice/THAR2.0/Admin/participants.csv', "r") as fp:
+        with open('participants.csv', "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
         print(colored('New Participant added: ', 'green', attrs = ['bold']))
         print(x)
         print(colored(f'''
+                      
                 Hello {self.part_name}, You are now logged in to your account..''', 'cyan', attrs = ['bold']))
         self.participant_operations()
 
 
     def old_participant(self):
-        with open('participants.csv', 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row['Name'] == self.part_name and row['Password'] == self.part_pass:
-                    print(colored(f'''
-                Hearttiest Welcome {self.part_name}, In our National Level Techno-Management Fest Please proceed further with the operations accordingly \U0001F607''', 'cyan', attrs = ['bold'])) 
-                    self.participant_operations()
-                elif row['Name'] == self.part_name and row['Password'] != self.part_pass:
-                    user_input = input(colored('''
-                Forgot Password... ''', 'cyan', attrs = ['bold']) + colored('''
-                
-                1. YES
-                
-                2. NO 
-            
-                If so we may let you proceed towards rest password''', 'grey', attrs = ['bold']))
+        while True:
+            self.part_name = input(colored('''
+                Enter Name:  ''', 'grey', attrs=['bold']))
+
+            with open('participants.csv', 'r') as file:
+                reader = csv.DictReader(file)
+
+                for row in reader:
+                    if row['Name'] == self.part_name:
+                        while True: 
+                            self.part_pass = input(colored('''
+                Enter Password:  ''', 'grey', attrs=['bold']))
+
+                            if row['Password'] == self.part_pass:
+                                print(colored(f'''
+                Heartiest Welcome {self.part_name}, In our National Level Techno-Management Fest. Please proceed further with the operations accordingly \U0001F607''', 'cyan', attrs=['bold']))
+                                self.participant_operations()
+                                return 
+
+                            print(colored('''
+                Password didn't match. Enter again...''', 'red', attrs=['bold']))
+                        
+                        
+                else:
+                    print(colored('''   
+                Name didn't match. Enter again...''', 'red', attrs=['bold']))
+
+
     def participant_operations(self):
         while True:
             print('\n')
@@ -169,54 +184,14 @@ class Participant:
             elif user_input == '5':
                 self.change_pass()    
             elif user_input == '6':
-                self.exit()
                 break
+                # self.exit()
             elif user_input == '7':
                 pass
                 # self.switch()
             else:
                 print(colored(''''
                 Invalid input''', 'red', attrs = ['bold']))
-
-    # def switch(self):
-    #     while True:
-    #         print('\n')
-    #         user_input = input(colored('''      
-    #             Login to which User?''', 'cyan', attrs = ['bold'])
-    #             + colored('''    
-
-    #             1. ADMIN 
-
-    #             2. ORGANISER
-
-    #             3. PARTICIPANT
-                            
-    #             4. JUDGE
-
-    #             5. CO-ORDINATOR
-                    
-    #             6. EXIT
-                          
-    #             Enter your preffered operation: ''', 'grey', attrs= ['bold']))
-    #         if user_input == '1':
-    #             self.authenticate_user()
-    #         elif user_input == '2':
-    #             self.authenticate_user()
-    #         elif user_input == '3':
-    #             self.authenticate_user()
-    #         elif user_input == '4':
-    #             self.authenticate_user()
-    #         elif user_input == '5':
-    #             self.authenticate_user()    
-    #         elif user_input == '6':
-    #             self.exit()
-    #             break 
-    #         else:
-    #             print(colored(''''
-    #             Invalid input''', 'red', attrs = ['bold']))
-
-
-
 
 
 # ---------------------------   CHANAGE PASSWORD   ------------------------------ #
@@ -245,9 +220,9 @@ class Participant:
  
         if not participant_found:
             print(colored('Participant not found. Password not updated.', 'red', attrs=['bold']))
-    def exit(self):
-        print(colored(''' 
-                Exiting from Participant operarions... ''', 'cyan', attrs = ['bold']))
+    # def exit(self):
+    #     print(colored(''' 
+    #             Exiting from Participant operarions... ''', 'cyan', attrs = ['bold']))
 
 
 
@@ -263,6 +238,7 @@ class Participant:
 
                 How would you like to proceed? """, 'cyan', attrs = ['bold'])
                 + colored("""        
+               
                 1. Read Event
                 
                 2. Read Exhibiution   
@@ -276,6 +252,7 @@ class Participant:
                 6. Back to main
 
                 Enter your preffered operation: """, 'grey', attrs = ['bold']))
+        print('\n')
 
         if self.user_input == '1':
             self.part_read_event()
@@ -298,13 +275,51 @@ class Participant:
 # -------------------------------------    READ EVENTS    ------------------------------------- #
 
     def part_fetch_data(self):
-        print(colored('Your data with us: ',
-              'cyan', attrs=['bold']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-            print(x)
-
+        print(colored('''
+                Your data with us ''',
+              'green', attrs=['bold']))
+        with open('event_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    events = row['Event Participated']
+                    print(colored(f'''
+                1. Events Participated: {events}''', attrs=['bold']))
+        with open('exhibition_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    exhibitions_ = row['Exhibition Participated']
+                    print(colored(f'''
+                2. Exhibitions Participated: {exhibitions_}''', attrs=['bold']))
+        with open('workshop_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    workshops = row['Workshop Participated']
+                    print(colored(f'''
+                3. Workshops Participated: {workshops}''', attrs=['bold']))
+        with open('participate_pro_nite.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    pronite = row['Participate Pro-Nite (Yes/No)']
+                    print(colored(f'''
+                4. Attending in Pro-Nite: {pronite}''', attrs=['bold']))
+        personal_details = {}
+        with open('partbasicdetails.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    personal_details = row
+        print('\n')
+        print(colored('''
+                Personal Details ''', 'green', attrs=['bold']))
+        for key, value in personal_details.items():
+            print(colored(f"""
+                {key.ljust(20)}: {value}""", attrs =['bold']))
+            
+            
 # -------------------------------------    READ EVENTS    ------------------------------------- #
 
     def part_read_event(self):
@@ -399,55 +414,73 @@ class Participant:
 
 
     def participate_event(self):
-
         print(colored('''The Events you can participate in are:''', 'cyan', attrs=['bold']))
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
-           x = from_csv(file)
-           print(x)
-        num_events = int(input(colored('''
-                Number of events you want to participate:  ''', 'grey', attrs=['bold'])))
-        
-        # with open('/home/narayanj/Practice/THAR2.0/Admin/participate_events.csv', 'r') as file:
-        #     reader = csv.DictReader(file)
-        #     data = list(reader)
-
-        #     for row in data:
-        #         if row['Name'] == self.part_name and  len(data[row]) !=2:
-        #             pass
-        events_list = []
-
-        for _ in range(num_events):
-            user_input_event = input(colored('''
-            Enter event name you want to participate:  ''', 'grey', attrs=['bold']))
-            events_list.append(user_input_event)
-
-
-        is_participant_present = False
-        with open('/home/narayanj/Practice/THAR2.0/Admin/participate_events.csv', 'r') as file:
-            reader = csv.reader(file)
-            next(reader)  # header row ko skip karne ke liye
-            for row in reader:
-                if row[0] == self.part_name:
-                    is_participant_present = True
-                    row[1] = eval(row[1]) + events_list
-            print(row[1])
-            # with open('/home/narayanj/Practice/THAR2.0/Admin/participate_events.csv', 'a') as file:
-            #     writer = csv.writer(file)
-            #     writer.writerow([self.part_name, row[1]])            
-
-                
-        if not is_participant_present:
-            with open('/home/narayanj/Practice/THAR2.0/Admin/participate_events.csv', 'a', newline='') as file:
+        # Check if event_participate.csv exists
+        if not os.path.exists("event_participate.csv"):
+            with open("event_participate.csv", "w", newline="") as file:
                 writer = csv.writer(file)
-                if os.stat('/home/narayanj/Practice/THAR2.0/Admin/participate_events.csv').st_size == 0:
-                    writer.writerow(["Name", "Event Participated"])
-                writer.writerow([self.part_name, events_list])
+                writer.writerow(["Name", "Event Participated"])
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/participate_events.csv', 'r') as file:
-            x = from_csv(file)
-            x.hrules = ALL
+        try:
+            with open("event_participate.csv", "r", newline="") as file:
+                reader = csv.reader(file)
+                participate_data = list(reader)
+
+        except FileNotFoundError:
+            print("Error: event_participate.csv not found.")
+            return
+
+        with open('events.csv', 'r', newline="") as file:
+            reader = csv.reader(file)
+            x = list(reader)
             print(x)
+
+        num_events = int(input("Enter the number of events you want to register for: "))
+
+        # Check if participant's name is already in event_participate.csv
+        participant_index = None
+        current_events = []
+        for i, row in enumerate(participate_data):
+            if row[0] == self.part_name:
+                participant_index = i
+                current_events = row[1].split(", ")
+                break
+
+        for i in range(num_events):
+            while True:
+                event_name = input(f"Enter the name of event {i + 1}: ")
+
+                # Check if the event is already registered by the participant
+                if event_name in current_events:
+                    print("You have already registered in this event. Please enter a different event.")
+                    continue
+
+                # Check if the event is present in events.csv
+                with open("events.csv", "r", newline="") as file:
+                    events_reader = csv.reader(file)
+                    events_data = list(events_reader)
+
+                if event_name not in [row[0] for row in events_data]:
+                    print("The event is not present. Please enter a correct event name.")
+                    continue
+
+                # If all checks pass, break out of the loop
+                break
+
+            # Update the participant's record
+            if participant_index is not None:
+                participate_data[participant_index][1] += f", {event_name}"
+            else:
+                participate_data.append([self.part_name, event_name])
+
+        # Save the updated event_participate.csv without changing header row
+        with open("event_participate.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(participate_data)
+
+        print("Registration successful!")
+
 
 
  
@@ -458,43 +491,63 @@ class Participant:
     def participate_exhibition(self):
         print(colored('''The Exhibitions you can participate in are:''', 'cyan', attrs=['bold']))
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv', 'r') as file:
-           x = from_csv(file)
-           print(x)
-        num_exhibitions = int(input(colored('''
-                Number of exhibitions you want to participate:  ''', 'grey', attrs=['bold'])))
-        exhibitions_list = []
-
-        for _ in range(num_exhibitions):
-            user_input_exhibition = input(colored('''
-            Enter exhibition name you want to participate:  ''', 'grey', attrs=['bold']))
-            exhibitions_list.append(user_input_exhibition)
-
-
-        is_participant_present = False
-        if os.path.exists('participate_exhibitions.csv'):
-            with open('participate_exhibitions.csv', 'r') as file:
-                reader = csv.reader(file)
-                next(reader)  # Skip the header row
-                for row in reader:
-                    if row[0] == self.part_name:
-                        is_participant_present = True
-                        # Update the existing row with new exhibitions
-                        row[1] = eval(row[1]) + exhibitions_list
-                
-
-                
-        if not is_participant_present:
-            with open('participate_exhibitions.csv', 'a', newline='') as file:
+        if not os.path.exists("exhibition_participate.csv"):
+            with open("exhibition_participate.csv", "w", newline="") as file:
                 writer = csv.writer(file)
-                if os.stat('participate_exhibitions.csv').st_size == 0:
-                    writer.writerow(["Name", "Exhibition Participated"])
-                writer.writerow([self.part_name, exhibitions_list])
+                writer.writerow(["Name", "Exhibition Participated"])
 
-        with open('participate_exhibitions.csv', 'r') as file:
-            x = from_csv(file)
-            x.hrules = ALL
+        try:
+            with open("exhibition_participate.csv", "r", newline="") as file:
+                reader = csv.reader(file)
+                participate_data = list(reader)
+
+        except FileNotFoundError:
+            print("Error: exhibition_participate.csv not found.")
+            return
+
+        with open('exhibions.csv', 'r', newline="") as file:
+            reader = csv.reader(file)
+            x = list(reader)
             print(x)
+
+        num_exhibitions = int(input("Enter the number of exhibitions you want to register for: "))
+
+        participant_index = None
+        current_exhibitions = []
+        for i, row in enumerate(participate_data):
+            if row[0] == self.part_name:
+                participant_index = i
+                current_exhibitions = row[1].split(", ")
+                break
+
+        for i in range(num_exhibitions):
+            while True:
+                ex_name = input(f"Enter the name of Exhibition {i + 1}: ")
+
+                if ex_name in current_exhibitions:
+                    print("You have already registered in this Exhibition. Please enter a different Exhibition.")
+                    continue
+
+                with open("exhibions.csv", "r", newline="") as file:
+                    exhibitions_reader = csv.reader(file)
+                    exhibiton_data = list(exhibitions_reader)
+
+                if ex_name not in [row[0] for row in exhibiton_data]:
+                    print("The exhibition is not present. Please enter a correct exhibition name.")
+                    continue
+
+                break
+
+            if participant_index is not None:
+                participate_data[participant_index][1] += f", {ex_name}"
+            else:
+                participate_data.append([self.part_name, ex_name])
+
+        with open("exhibition_participate.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(participate_data)
+
+        print("Registration successful!")
 
         with open('participants.csv', 'r') as file:
             x = from_csv(file)
@@ -509,100 +562,119 @@ class Participant:
     def participate_workshop(self):
         print(colored('''The Workshops you can participate in are:''', 'cyan', attrs=['bold']))
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv', 'r') as file:
-           x = from_csv(file)
-           print(x)
-        num_workshop = int(input(colored('''
-                Number of workshop you want to participate:  ''', 'grey', attrs=['bold'])))
-        workshop_list = []
-
-        for _ in range(num_workshop):
-            user_input_workshop = input(colored('''
-            Enter workshop name you want to participate:  ''', 'grey', attrs=['bold']))
-            workshop_list.append(user_input_workshop)
-
-       
-
-        is_participant_present = False
-        if os.path.exists('participate_workshop.csv'):
-            with open('participate_workshop.csv', 'r') as file:
-                reader = csv.reader(file)
-                next(reader)  # Skip the header row
-                for row in reader:
-                    if row[0] == self.part_name:
-                        is_participant_present = True
-                        row[1] = eval(row[1]) + workshop_list
-                
-        if not is_participant_present:
-            with open('participate_workshop.csv', 'a', newline='') as file:
+        if not os.path.exists("workshop_participate.csv"):
+            with open("workshop_participate.csv", "w", newline="") as file:
                 writer = csv.writer(file)
-                if os.stat('participate_workshop.csv').st_size == 0:
-                    writer.writerow(["Name", "Workshop Participated"])
-                writer.writerow([self.part_name, workshop_list])
+                writer.writerow(["Name", "Workshop Participated"])
 
-        with open('participate_workshop.csv', 'r') as file:
-            x = PrettyTable()
-            x = from_csv(file)
-            x.hrules = ALL
+        try:
+            with open("workshop_participate.csv", "r", newline="") as file:
+                reader = csv.reader(file)
+                participate_data = list(reader)
+
+        except FileNotFoundError:
+            print("Error: workshop_participate.csv not found.")
+            return
+
+        with open('wrokshops.csv', 'r', newline="") as file:
+            reader = csv.reader(file)
+            x = list(reader)
             print(x)
 
-        # with ('participants.csv', 'r') as file:
-        #     x = from_csv(file)
-        #     x.hrules = ALL
-        #     print(colored('All Participants:', 'green', attrs=['bold']))
-        #     print(x)
+        num_workshops = int(input("Enter the number of workshops you want to register for: "))
+        participant_index = None
+        current_workshops = []
+        for i, row in enumerate(participate_data):
+            if row[0] == self.part_name:
+                participant_index = i
+                current_workshops = row[1].split(", ")
+                break
+
+        for i in range(num_workshops):
+            while True:
+
+                workshop_name = input(f"Enter the name of workshop {i + 1}: ")
+                if workshop_name in current_workshops:
+                    print("You have already registered in this workshop...")
+                    continue
+
+                with open("wrokshops.csv", "r", newline="") as file:
+                    exhibitions_reader = csv.reader(file)
+                    workshops_data = list(exhibitions_reader)
+
+                if workshop_name not in [row[0] for row in workshops_data]:
+                    print("The workshop is not present...")
+                    continue
+
+                break
+
+            if participant_index is not None:
+                participate_data[participant_index][1] += f", {workshop_name}"
+            else:
+                participate_data.append([self.part_name, workshop_name])
+
+        with open("workshop_participate.csv", "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerows(participate_data)
+
+        print("Registration successful!")
  
+        with open('workshop_participate.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('All Participants:', 'green', attrs=['bold']))
+            print(x)
  
- 
- 
+
+  
 # ---------------------------    PARTICIPATE IN PRO-NITE    ------------------------------ #
   
   
     def participate_pro_nite(self):
- 
-        print(colored('''The Pro-Nite you can participate are: ''', 'cyan', attrs = ['bold']))
- 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/pronite.csv', 'r') as file:
+        print(colored('''The Pro-Nites you can participate in are: ''', 'cyan', attrs=['bold']))
+
+        with open('pronite.csv', 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
             print(x)
-        yesORno = input(colored('''
-                Want to attend Pro-Nites (Yes/No)
-               
-                1) Yes
-               
-                2) No
-               
-                Enter your preference: ''', 'grey', attrs = ['bold']))
-        if yesORno == '1':
-            with open('participate_pro_nite.csv', 'a', newline = '') as file:
+
+        with open('participate_pro_nite.csv', 'r') as file:
+            reader = csv.reader(file)
+
+            for row in reader:
+                if row[0] == self.part_name:
+                    print('You have already given your choice...')
+                    return  
+
+            yesORno = input(colored('''
+                        Want to attend Pro-Nites (Yes/No)
+                        
+                        1) Yes
+                        2) No
+                        
+                        Enter your preference: ''', 'grey', attrs=['bold']))
+
+            with open('participate_pro_nite.csv', 'a', newline='') as file:
                 writer = csv.writer(file)
                 is_file_empty = os.stat('participate_pro_nite.csv').st_size == 0
                 if is_file_empty:
                     writer.writerow(["Name", "Participate Pro-Nite (Yes/No)"])
-                writer.writerow([self.part_name, 'Yes'])
-        else:
-            with open('participate_pro_nite.csv', 'a', newline = '') as file:
-                writer = csv.writer(file)
-                is_file_empty = os.stat('participate_exhibitions.csv').st_size == 0
-                if is_file_empty: 
-                    writer.writerow(["Name", "Participate Pro-Nite (Yes/No)"])
-                writer.writerow([self.part_name, 'No'])
-           
-        with open('participate_pro_nite.csv', 'r') as file:
-            x = from_csv(file)
-            x.hrules = ALL
-            print(colored('Participant details:', 'green', attrs = ['bold']))
-            print(x)
- 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/participants.csv', 'r') as file:
-            x = from_csv(file)
-            x.hrules = ALL
- 
-            print(colored('All Participants:', 'green', attrs = ['bold']))
-            print(x)
- 
- 
+                writer.writerow([self.part_name, 'Yes' if yesORno == '1' else 'No'])
+
+            with open('participate_pro_nite.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules = ALL
+                print(colored('Participant details:', 'green', attrs=['bold']))
+                print(x)
+
+            with open('participants.csv', 'r') as file:
+                x = from_csv(file)
+                x.hrules = ALL
+
+                print(colored('All Participants:', 'green', attrs=['bold']))
+                print(x)
+
+
  
 
   ##################################################################################################
@@ -621,6 +693,7 @@ class Participant:
 
                 From which activity you want to remove your participation? """, 'cyan', attrs = ['bold'])
                 + colored("""        
+                
                 1. From Event
                 
                 2. From Exhibition   
@@ -657,44 +730,150 @@ class Participant:
 # -------------------------------------    REMOVE FROM EVENT    ------------------------------------- #
 
     def from_event(self):
+        with open('event_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
 
-        filePath = '/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv'
-        with open(filePath, 'r') as file:
-            reader_1 = csv.DictReader(file)
-            exhibitions = []
-            for col in reader_1:
-                exhibitions.append(col['Exhibition'])
-            print(colored('List of exhibitions: \n', 'green'))
-        for i, item in enumerate(exhibitions):
-            print(f'{i+1}.{item}\n')
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    events = row['Event Participated']
 
-        with open(filePath, 'r') as file:
-            reader = csv.reader(file)
-            data = list(reader)
-        del_exhibition = input(
-            colored('Which exhibtion you want to delete: ', 'green'))
-        print('\n')
-        print(colored('Exhibitions before deletion: ',
-              'magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
-            x = from_csv(fp)
+        with open('event_participate.csv', 'r') as file:
+            x = from_csv(file)
             x.hrules = ALL
-        print(x)
+            print(colored('Events participated: ', 'green', attrs=['bold']))
+            print(x)
 
-        for row in data:
-            if del_exhibition in row:
-                data.remove(row)
-        with open(filePath, 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerows(data)
-
-        with open(filePath, 'r') as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
         print('\n')
-        print(colored('Exhibitions after deletion: ',
-              'magenta', attrs=['reverse', 'blink']))
-        print(x)
+        print(colored('The events you have registered are: ', 'green', attrs=['bold']))
+        print(events)
+
+        events_list = [event.strip() for event in events.split(',')]
+
+        while True:
+            rem_event = input('Which event you want to remove: ')
+            if rem_event in events_list:
+                events_list.remove(rem_event)
+                events = ', '.join(events_list)
+                break
+            else:
+                print('Event not found. Try again...')
+                continue
+        print(colored('Updated events after removal: ', 'green', attrs=['bold']))
+        print(events)
+
+        rows = []
+        with open('event_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            fieldnames = reader.fieldnames
+
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    row['Event Participated'] = events
+                rows.append(row)
+
+        with open('event_participate.csv', 'w', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
+                
+
+# -------------------------------------    REMOVE FROM EXHIBITIONS    ------------------------------------- #
+
+    def from_exhibition(self):
+        with open('exhibition_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    exhibitions = row['Exhibition Participated']
+
+        with open('exhibition_participate.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('Exhibitions participated: ', 'green', attrs=['bold']))
+            print(x)
+
+        print('\n')
+        print(colored('The exhibition you have registered are: ', 'green', attrs=['bold']))
+        print(exhibitions)
+
+        exhibitions_list = [exhibitions.strip() for event in exhibitions.split(',')]
+
+        while True:
+            rem_event = input('Which event you want to remove: ')
+            if rem_event in exhibitions_list:
+                exhibitions_list.remove(rem_event)
+                events = ', '.join(exhibitions_list)
+                break
+            else:
+                print('Exhibition not found. Try again...')
+                continue
+        print(colored('Updated exhibitions after removal: ', 'green', attrs=['bold']))
+        print(exhibitions)
+
+        rows = []
+        with open('exhibition_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            fieldnames = reader.fieldnames
+
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    row['Exhibition Participated'] = exhibitions
+                rows.append(row)
+
+        with open('exhibition_participate.csv', 'w', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
 
 
 
+# -------------------------------------    REMOVE FROM WORKSHOPS    ------------------------------------- #
+
+    def from_workshop(self):
+        with open('workshop_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    workshops = row['Workshop Participated']
+
+        with open('workshop_participate.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('Workshops participated: ', 'green', attrs=['bold']))
+            print(x)
+
+        print('\n')
+        print(colored('The workshops you have registered are: ', 'green', attrs=['bold']))
+        print(workshops)
+
+        workshops_list = [workshops.strip() for event in workshops.split(',')]
+
+        while True:
+            rem_workshop = input('Which workshop you want to remove: ')
+            if rem_workshop in workshops_list:
+                workshops = ', '.join(workshops_list)
+                workshops_list.remove(rem_workshop)
+                break
+            
+            else:
+                print('Event not found. Try again...')
+                continue
+        print(colored('Updated workshops after removal: ', 'green', attrs=['bold']))
+        print(workshops)
+
+        rows = []
+        with open('workshop_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            fieldnames = reader.fieldnames
+
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    row['Workshop Participated'] = workshops
+                rows.append(row)
+
+        with open('workshop_participate.csv', 'w', newline='') as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
