@@ -14,7 +14,7 @@ class Admin:
 
         # _____EVERYONE.CSV_____#
 
-        file_path = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+        file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
         with open(file_path, 'a', newline='') as file:
             writer = csv.writer(file)
             is_file_empty = os.stat(file_path).st_size == 0
@@ -25,9 +25,11 @@ class Admin:
     def crud(self):
         while True:
             user_input = input(      
-            colored(''' What operation you want to preceed with?''', 'cyan', attrs = ['bold'])+
+            colored(''' 
+                    What operation you want to preceed with?''', 'cyan', attrs = ['bold'])+
                        
                    colored('''      
+                    
                     1. CREATE
     
                     2. READ
@@ -37,8 +39,6 @@ class Admin:
                     4. DELETE
 
                     5. SWITCH USER
-                     
-                    6. EXIT
                                
                     Enter your preffered operation: ''', 'grey', attrs =['bold']))
            
@@ -51,35 +51,35 @@ class Admin:
             elif user_input == '4':
                 self.delete()
             elif user_input == '5':
-                self.switch()
-            elif user_input == '6':
-                self.exit()
+                print(colored('''
+                    Logged out successfully ''', 'green', attrs = ['bold']))
                 break
             else:
                 print(colored(''''
-                            Invalid input''', 'red'))
+                    Invalid input''', 'red'))
 
-    def switch(self):
-        while True:
-            print('\n')
-            user_input = input(colored('''      
-                Login to which User?''', 'cyan', attrs = ['bold'])
-                + colored('''    
 
-                1. ADMIN 
+    # def switch(self):
+    #     while True:
+    #         print('\n')
+    #         user_input = input(colored('''      
+    #             Login to which User?''', 'cyan', attrs = ['bold'])
+    #             + colored('''    
 
-                2. ORGANISER
+    #             1. ADMIN 
 
-                3. PARTICIPANT
+    #             2. ORGANISER
+
+    #             3. PARTICIPANT
                             
-                4. JUDGE
+    #             4. JUDGE
 
-                5. CO-ORDINATOR
+    #             5. CO-ORDINATOR
                     
-                6. EXIT
+    #             6. EXIT
                           
-                Enter your preffered operation: ''', 'grey', attrs= ['bold']))
-            # if user_input == '1':
+    #             Enter your preffered operation: ''', 'grey', attrs= ['bold']))
+    #       # if user_input == '1':
             #     self.authenticate_user()
             # elif user_input == '2':
             #     self.authenticate_user()
@@ -99,9 +99,6 @@ class Admin:
    
    
    
-    def exit(self):
-        print(colored(''' 
-                    Exiting from Admin CRUD... ''', 'green'))
     
     def create(self):
         user_input = input("""  
@@ -168,8 +165,10 @@ class Admin:
                 7. Read Co-ordinators
 
                 8. Read All the Roles
+                           
+                9. Read Participants
 
-                9. Back to main
+               10. Back to main
                 
                 Enter your preffered operation: """)
 
@@ -190,10 +189,68 @@ class Admin:
         elif user_input == '8':
             self.read_all_roles()
         elif user_input == '9':
+            self.read_participants()
+        elif user_input == '10':
             self.back()
             return False
         else:
             print('No such operation available !!')
+    def back(self):
+        print(colored('''
+                Going back to main crud... ''', 'cyan'))
+    def read_participants(self):
+        user_input = input("""  
+
+                How would you like to proceed?
+                        
+                1. Read Event Participants
+               
+                2. Read Exhibition Participants   
+               
+                3. Read Workshop participants
+               
+                4. Back to main
+                
+                Enter your preffered operation: """)
+
+        if user_input == '1':
+            self.read_event_parts()
+        elif user_input == '2':
+            self.read_exhibition_parts()
+        elif user_input == '3':
+            self.read_workshop_parts()
+        elif user_input == '4':
+            self.back()
+            return False
+        else:
+            print('No such operation available !!')
+    def back(self):
+        print(colored('''
+                Going back... ''', 'cyan'))
+        
+    def read_event_parts(self):
+        print('\n')
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_details.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('''Participants in each Event is described as: ''', 'green', attrs = ['bold']))
+            print(x)
+
+    def read_exhibition_parts(self):
+        print('\n')
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_details.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('''Participants in each Event is described as: ''', 'green', attrs = ['bold']))
+            print(x)
+
+    def read_workshop_parts(self):
+        print('\n')
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_details.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('''Participants in each Event is described as: ''', 'green', attrs = ['bold']))
+            print(x)
 
     def update(self):
         user_input = input(""" 
@@ -290,7 +347,7 @@ class Admin:
     def create_event(self):
         self.events_list = []
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/events.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.events_list.append(row['Event Name'])
@@ -314,7 +371,7 @@ class Admin:
                 # Event place: ''')
                 # self.event_time = input('''
                 # Event Time: ''')
-                self.path = "/home/narayanj/Practice/THAR2.0/Admin/events.csv"
+                self.path = "/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv"
                 self.is_file_empty = os.stat(self.path).st_size == 0
 
                 with open(self.path, 'a', newline='') as file:
@@ -326,7 +383,7 @@ class Admin:
 
                     self.writer.writerow({'Event Name': self.event_name, 'Venue': self.event_venue, 'Time': self.event_time})
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print("\n")
@@ -339,7 +396,7 @@ class Admin:
 
     def create_judge(self):
         self.judges_list = []
-        with open('judge.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/judge.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.judges_list.append(row['Name'])
@@ -356,8 +413,8 @@ class Admin:
                 print(colored('''
                 Judge created successfully''', 'green'))
 
-                self.path = 'everyone.csv'
-                self.path_1 = 'judge.csv'
+                self.path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
+                self.path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/judge.csv'
 
                 with open(self.path, 'a', newline='') as file:
                     writer = csv.writer(file)
@@ -388,7 +445,7 @@ class Admin:
 
     def create_exhibition(self):
         self.exhibitions_list = []
-        with open('exhibions.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.exhibitions_list.append(row['Exhibition'])
@@ -414,7 +471,7 @@ class Admin:
                 # What will be time: ''')
                 print(colored('''
                 Exhibition created succesfully''', 'green'))
-                self.path = 'exhibions.csv'
+                self.path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
                 self.is_file_empty = os.stat(self.path).st_size == 0
                 if self.is_file_empty:
                     self.writer.writerow(["Exhibition", "Venue", "Time"])
@@ -434,7 +491,7 @@ class Admin:
 
     def create_workshop(self):
         self.workshop_list = []
-        with open('wrokshops.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.workshop_list.append(row['Workshop'])
@@ -460,7 +517,7 @@ class Admin:
                 # What will be time: ''')
                 print(colored('''
                 Wrokshop created succesfully''', 'green'))
-                self.path = '/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv'
+                self.path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv'
                 file_empty = os.stat(self.path).st_size == 0
                 if file_empty:
                     self.writer.writerow(['Workshop', 'Venue', 'Time'])
@@ -479,7 +536,7 @@ class Admin:
 
     def create_pro_nite(self):
         self.pronites = []
-        with open('pronite.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.pronites.append(row['Pro Nite'])
@@ -514,7 +571,7 @@ class Admin:
                 # Date of pro-nite being organised: ''')
                 print(colored('''
                 Pro-Nite created succesfully''', 'green', attrs = ['bold']))
-                self.path = '/home/narayanj/Practice/THAR2.0/Admin/pronite.csv'
+                self.path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv'
         
                 with open(self.path, 'a', newline='') as file:
                     self.writer = csv.writer(file)
@@ -523,7 +580,7 @@ class Admin:
                         self.writer.writerow(['Pro Nite', 'Venue', 'Time', 'Date'])
                     self.writer.writerow(
                         [self.name_pro_nite, self.pro_venue, self.pro_time, self.pro_date])
-                with open("pronite.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Pro Nite Created: ', 'green', attrs = ['bold']))
@@ -536,8 +593,8 @@ class Admin:
         self.org_name = input('Name of Organiser: ')
         self.org_pass = input('Set Password: ')
         print('\n')
-        self.path = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
-        self.path_1 = '/home/narayanj/Practice/THAR2.0/Admin/organiser.csv'
+        self.path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
+        self.path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/jorganiser.csv'
         with open(self.path, 'a', newline='') as file:
             self.writer = csv.writer(file)
             self.writer.writerow([self.org_name, self.org_pass, 'Organiser'])
@@ -568,8 +625,8 @@ class Admin:
         self.cor_event = input('Coordinate which event: ')
         self.cor_pass = input('Set password: ')
         print('\n')
-        self.path = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
-        self.path_1 = '/home/narayanj/Practice/THAR2.0/Admin/coordinator.csv'
+        self.path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
+        self.path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv'
         with open(self.path, 'a', newline='') as file:
             self.writer = csv.writer(file)
             self.writer.writerow(
@@ -606,7 +663,7 @@ class Admin:
     def read_event(self):
         print(colored('The Events we are organising are: \n',
               'magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(x)
@@ -616,7 +673,7 @@ class Admin:
     def read_exhibition(self):
         print(colored('The Exhibitions are scheduled as: \n',
               'magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(x)
@@ -626,7 +683,7 @@ class Admin:
     def read_workshop(self):
         print(colored('The Workshops are scheduled as : \n',
               'magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(x)
@@ -636,7 +693,7 @@ class Admin:
     def read_pro_nite(self):
         print(colored('The Pro-Nites are scheduled as: \n',
               'magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(x)
@@ -646,7 +703,7 @@ class Admin:
     def read_all_roles(self):
         print(colored('The role distribution is as follows: \n',
               'magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/everyone.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(x)
@@ -656,7 +713,7 @@ class Admin:
     
     def read_organisers(self):
         print(colored('The Organisers are: \n','magenta'))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/organiser.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/jorganiser.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(x)
@@ -666,7 +723,7 @@ class Admin:
     
     def read_judges(self):
         print(colored('The Judges are: \n','magenta'))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/judge.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(x)
@@ -676,7 +733,7 @@ class Admin:
     
     def read_coordinators(self):
         print(colored('The Co-ordinators are: \n','magenta'))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/coordinator.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(x)
@@ -701,7 +758,7 @@ class Admin:
 
             if self.user_input == '1':
 
-                file_path = 'events.csv'
+                file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv'
                 with open(file_path, 'r') as file:
                     reader = csv.DictReader(file)
                     event_name_list = []
@@ -710,7 +767,7 @@ class Admin:
 
                 # for i, item in enumerate(event_name_list):
                 #     print(f'{i+1}.{item}\n')
-                with open('events.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'r') as file:
                     x = from_csv(file)
                     x.hrules= ALL
                     print(x)
@@ -721,19 +778,19 @@ class Admin:
                     chd_event = input(
                         colored('Enter the event name reaplace value: ', 'yellow'))
 
-                    with open('events.csv', 'r') as file:
+                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'r') as file:
                         reader = csv.DictReader(file)
                         rows = list(reader)
                     for row in rows:
                         if row['Event Name'] == ch_event:
                             row['Event Name'] = chd_event
                     fieldnames = reader.fieldnames
-                    with open('events.csv', 'w', newline='') as file:
+                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'w', newline='') as file:
                         writer = csv.DictWriter(file, fieldnames=fieldnames)
                         writer.writeheader()
                         writer.writerows(rows)
 
-                    with open("events.csv", "r") as fp:
+                    with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
                         x = from_csv(fp)
                         x.hrules = ALL
                         print(colored('Events after update are as follows: \n'))
@@ -743,7 +800,7 @@ class Admin:
 
             elif self.user_input == '2':
 
-                file_path = 'events.csv'
+                file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv'
                 with open(file_path, 'r') as file:
                     reader = csv.DictReader(file)
                     venue_list = []
@@ -752,7 +809,7 @@ class Admin:
 
                 # for i, item in enumerate(venue_list):
                 #     print(f'{i+1}.{item}\n')
-                with open('events.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'r') as file:
                     x = from_csv(file)
                     x.hrules= ALL
                     print(x)
@@ -763,19 +820,19 @@ class Admin:
                     chd_venue = input(
                         colored('Enter the event name reaplace value: ', 'yellow'))
 
-                    with open('events.csv', 'r') as file:
+                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'r') as file:
                         reader = csv.DictReader(file)
                         rows = list(reader)
                     for row in rows:
                         if row['Venue'] == ch_venue:
                             row['Venue'] = chd_venue
                     fieldnames = reader.fieldnames
-                    with open('events.csv', 'w', newline='') as file:
+                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'w', newline='') as file:
                         writer = csv.DictWriter(file, fieldnames=fieldnames)
                         writer.writeheader()
                         writer.writerows(rows)
 
-                    with open("events.csv", "r") as fp:
+                    with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
                         x = from_csv(fp)
                         x.hrules = ALL
                         print(colored('Venue updated : \n'))
@@ -784,7 +841,7 @@ class Admin:
                     print(colored('The entered venue not found ', 'red'))
 
             elif self.user_input == '3':
-                file_path = 'events.csv'
+                file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv'
                 with open(file_path, 'r') as file:
                     reader = csv.DictReader(file)
                     time_list = []
@@ -817,19 +874,19 @@ class Admin:
                             print(colored('Invalid time format. Please enter time again.', 'red'))
                     # chd_time = input(
                     #     colored('Enter the time reaplace value: ', 'yellow'))
-                    with open('events.csv', 'r') as file:
+                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'r') as file:
                         reader = csv.DictReader(file)
                         rows = list(reader)
                     for row in rows:
                         if row['Time'] == ch_time:
                             row['Time'] = chd_time
                     fieldnames = reader.fieldnames
-                    with open('events.csv', 'w', newline='') as file:
+                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'w', newline='') as file:
                         writer = csv.DictWriter(file, fieldnames=fieldnames)
                         writer.writeheader()
                         writer.writerows(rows)
 
-                    with open("events.csv", "r") as fp:
+                    with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
                         x = from_csv(fp)
                         x.hrules = ALL
                         print('\n')
@@ -853,7 +910,7 @@ class Admin:
 
         if self.user_input == '1':
 
-            file_path = 'exhibions.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 exhibition_name_list = []
@@ -861,7 +918,7 @@ class Admin:
                     self.exhibition_attributes_list.append(col['Exhibition'])
             # for i, item in enumerate(event_name_list):
             #     print(f'{i+1}.{item}\n')
-            with open('exhibions.csv', 'r') as file:
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'r') as file:
                 x = from_csv(file)
                 x.hrules= ALL
                 print(x)
@@ -872,19 +929,19 @@ class Admin:
                 chd_exhibition = input(
                     colored('Enter the event name replace value: ', 'yellow'))
 
-                with open('exhibions.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Exhibition'] == ch_exhibition:
                         row['Exhibition'] = chd_exhibition
                 fieldnames = reader.fieldnames
-                with open('exhibions.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("exhibions.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Exhibitions after update are as follows: \n'))
@@ -894,7 +951,7 @@ class Admin:
 
         elif self.user_input == '2':
 
-            file_path = 'exhibions.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 venue_list = []
@@ -903,7 +960,7 @@ class Admin:
 
             # for i, item in enumerate(venue_list):
             #     print(f'{i+1}.{item}\n')
-            with open('exhibions.csv', 'r') as file:
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'r') as file:
                 x = from_csv(file)
                 x.hrules= ALL
                 print(x)
@@ -914,19 +971,19 @@ class Admin:
                 chd_venue = input(
                     colored('Enter the venue reaplace value: ', 'yellow'))
 
-                with open('exhibions.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Venue'] == ch_venue:
                         row['Venue'] = chd_venue
                 fieldnames = reader.fieldnames
-                with open('exhibions.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("exhibions.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Venue updated : \n'))
@@ -935,14 +992,14 @@ class Admin:
                 print(colored('The entered venue not found ', 'red'))
 
         elif self.user_input == '3':
-            file_path = 'exhibions.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 time_list = []
                 for col in reader:
                     time_list.append(col['Time'])
 
-            # for i, item in enumerate(time_list):
+            # for i, item in enumerate(time_list):participants
             #     print(f'{i+1}.{item}\n')
             with open('file_path', 'r') as file:
                 x = from_csv(file)
@@ -969,19 +1026,19 @@ class Admin:
                 # chd_time = input(
                 #     colored('Enter the time replace value: ', 'yellow'))
 
-                with open('exhibions.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Time'] == ch_time:
                         row['Time'] = chd_time
                 fieldnames = reader.fieldnames
-                with open('exhibions.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("exhibions.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
@@ -1007,7 +1064,7 @@ class Admin:
 
         if self.user_input == '1':
 
-            file_path = 'wrokshops.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 workshop_name_list = []
@@ -1016,7 +1073,7 @@ class Admin:
 
             # for i, item in enumerate(event_name_list):
             #     print(f'{i+1}.{item}\n')
-            with open('wrokshops.csv', 'r') as file:
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'r') as file:
                 x = from_csv(file)
                 x.hrules= ALL
                 print(x)
@@ -1027,19 +1084,19 @@ class Admin:
                 chd_workshop = input(
                     colored('Enter the workshop name replace value: ', 'yellow'))
 
-                with open('wrokshops.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Workshop'] == ch_workshop:
                         row['Workshop'] = chd_workshop
                 fieldnames = reader.fieldnames
-                with open('wrokshops.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("wrokshops.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Workshops after update are as follows: \n'))
@@ -1049,7 +1106,7 @@ class Admin:
 
         elif self.user_input == '2':
 
-            file_path = 'wrokshops.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 venue_list = []
@@ -1058,7 +1115,7 @@ class Admin:
 
             # for i, item in enumerate(venue_list):
             #     print(f'{i+1}.{item}\n')
-            with open('wrokshops.csv', 'r') as file:
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'r') as file:
                 x = from_csv(file)
                 x.hrules= ALL
                 print(x)
@@ -1069,19 +1126,19 @@ class Admin:
                 chd_venue = input(
                     colored('Enter the venue replace value: ', 'yellow'))
 
-                with open('exhibions.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Venue'] == ch_venue:
                         row['Venue'] = chd_venue
                 fieldnames = reader.fieldnames
-                with open('wrokshops.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("wrokshops.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Venue updated : \n'))
@@ -1090,7 +1147,7 @@ class Admin:
                 print(colored('The entered venue not found ', 'red'))
 
         elif self.user_input == '3':
-            file_path = 'wrokshops.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 time_list = []
@@ -1130,19 +1187,19 @@ class Admin:
             #     chd_time = input(
             #         colored('Enter the time reaplace value: ', 'yellow'))
 
-                with open('wrokshops.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Time'] == ch_time:
                         row['Time'] = chd_time
                 fieldnames = reader.fieldnames
-                with open('wrokshops.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("wrokshops.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
@@ -1168,7 +1225,7 @@ class Admin:
 
         if self.user_input == '1':
 
-            file_path = 'pronite.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 pronite_name_list = []
@@ -1177,7 +1234,7 @@ class Admin:
 
             # for i, item in enumerate(event_name_list):
             #     print(f'{i+1}.{item}\n')
-            with open('pronite.csv', 'r') as file:
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'r') as file:
                 x = from_csv(file)
                 x.hrules= ALL
                 print(x)
@@ -1188,19 +1245,19 @@ class Admin:
                 chd_pronite = input(
                     colored('Enter the pro-nite name replace value: ', 'yellow'))
 
-                with open('pronite.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Pro Nite'] == ch_pronite:
                         row['Pro Nite'] = chd_pronite
                 fieldnames = reader.fieldnames
-                with open('pronite.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("pronite.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Pro Nite after update are as follows: \n'))
@@ -1210,7 +1267,7 @@ class Admin:
 
         elif self.user_input == '2':
 
-            file_path = 'pronite.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 venue_list = []
@@ -1219,7 +1276,7 @@ class Admin:
 
             # for i, item in enumerate(venue_list):
             #     print(f'{i+1}.{item}\n')
-            with open('pronite.csv', 'r') as file:
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'r') as file:
                 x = from_csv(file)
                 x.hrules= ALL
                 print(x)
@@ -1230,19 +1287,19 @@ class Admin:
                 chd_venue = input(
                     colored('Enter the venue replace value: ', 'yellow'))
 
-                with open('pronite.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Venue'] == ch_venue:
                         row['Venue'] = chd_venue
                 fieldnames = reader.fieldnames
-                with open('pronite.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("pronite.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Venue updated : \n'))
@@ -1251,7 +1308,7 @@ class Admin:
                 print(colored('The entered venue not found ', 'red'))
 
         elif self.user_input == '3':
-            file_path = 'pronite.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 time_list = []
@@ -1271,19 +1328,19 @@ class Admin:
                 chd_time = input(
                     colored('Enter the time replace value: ', 'yellow'))
 
-                with open('pronite.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Time'] == ch_time:
                         row['Time'] = chd_time
                 fieldnames = reader.fieldnames
-                with open('pronite.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("pronite.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
@@ -1294,7 +1351,7 @@ class Admin:
                 print(colored('The entered time not found ', 'red'))
 
         elif self.user_input == '4':
-            file_path = 'pronite.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 date_list = []
@@ -1333,19 +1390,19 @@ class Admin:
                 # chd_date = input(
                 #     colored('Enter the Date reaplace value: ', 'yellow'))
 
-                with open('pronite.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Date'] == ch_date:
                         row['Date'] = chd_date
                 fieldnames = reader.fieldnames
-                with open('pronite.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("pronite.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
@@ -1372,8 +1429,8 @@ class Admin:
                 What do you want to update: ''', 'green'))
 
         if self.user_input == '1':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/organiser.csv'
-            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/organiser.csv'
+            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 organisers = []
@@ -1436,8 +1493,8 @@ class Admin:
                       ch_name}, 'not found ', 'red'))
 
         elif self.user_input == '2':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/organiser.csv'
-            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/organiser.csv'
+            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 passwords = []
@@ -1513,7 +1570,7 @@ class Admin:
 
         if self.user_input == '1':
             file_path = '/home/narayanj/Practice/THAR2.0/Admin/coordinators.csv'
-            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 coordinators = []
@@ -1576,7 +1633,7 @@ class Admin:
                       ch_name}, 'not found ', 'red'))
 
         elif self.user_input == '2':
-            file_path = 'coordinator.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 event_name_list = []
@@ -1585,7 +1642,7 @@ class Admin:
 
             # for i, item in enumerate(event_name_list):
             #     print(f'{i+1}.{item}\n')
-            with open('coordinator.csv', 'r') as file:
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv', 'r') as file:
                 x = from_csv(file)
                 x.hrules= ALL
                 print(x)
@@ -1596,19 +1653,19 @@ class Admin:
                 chd_event = input(
                     colored('Enter the event name reaplace value: ', 'yellow'))
 
-                with open('coordinator.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Event'] == ch_event:
                         row['Event'] = chd_event
                 fieldnames = reader.fieldnames
-                with open('coordinator.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("coordinator.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Events after update are as follows: \n'))
@@ -1617,8 +1674,8 @@ class Admin:
                 print(colored('The entered event not found ', 'red'))
 
         elif self.user_input == '3':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/coordinator.csv'
-            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv'
+            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 passwords = []
@@ -1693,8 +1750,8 @@ class Admin:
         self.user_input = input('What do you want to update? ')
 
         if self.user_input == '1':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/judge.csv'
-            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
+            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 judges = []
@@ -1756,7 +1813,7 @@ class Admin:
                 print(colored('The entered Judge not found ', 'red'))
 
         elif self.user_input == '2':
-            file_path = 'judge.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/judge.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 event_name_list = []
@@ -1765,7 +1822,7 @@ class Admin:
 
             # for i, item in enumerate(event_name_list):
             #     print(f'{i+1}.{item}\n')
-            with open('judge.csv', 'r') as file:
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/judge.csv', 'r') as file:
                 x = from_csv(file)
                 x.hrules= ALL
                 print(x)
@@ -1776,19 +1833,19 @@ class Admin:
                 chd_event = input(
                     colored('Enter the event name reaplace value: ', 'yellow'))
 
-                with open('judge.csv', 'r') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/judge.csv', 'r') as file:
                     reader = csv.DictReader(file)
                     rows = list(reader)
                 for row in rows:
                     if row['Event'] == ch_event:
                         row['Event'] = chd_event
                 fieldnames = reader.fieldnames
-                with open('judge.csv', 'w', newline='') as file:
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/judge.csv', 'w', newline='') as file:
                     writer = csv.DictWriter(file, fieldnames=fieldnames)
                     writer.writeheader()
                     writer.writerows(rows)
 
-                with open("judge.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/judge.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print(colored('Events after update are as follows: \n'))
@@ -1797,8 +1854,8 @@ class Admin:
                 print(colored('The entered event not found ', 'red'))
 
         elif self.user_input == '3':
-            file_path = '/home/narayanj/Practice/THAR2.0/Admin/judge.csv'
-            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/everyone.csv'
+            file_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
+            file_path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
             with open(file_path, 'r') as file:
                 reader = csv.DictReader(file)
                 passwords = []
@@ -1870,7 +1927,7 @@ class Admin:
 # -------------------------------------    DELETE EVENTS BY ADMIN    ------------------------------------- #
 
     def delete_event(self):
-        filePath = '/home/narayanj/Practice/THAR2.0/Admin/events.csv'
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv'
         with open(filePath, 'r') as file:
             reader = csv.reader(file)
             data = list(reader)
@@ -1888,7 +1945,7 @@ class Admin:
         rem_event = input(colored('Which event you want to remove: ', 'green'))
         print(colored('Events before deletion: ',
               'magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
         print(x)
@@ -1900,7 +1957,7 @@ class Admin:
             writer = csv.writer(file)
             writer.writerows(data)
 
-        with open("/home/narayanj/Practice/THAR2.0/Admin/events.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(colored('Events after deletion: ',
@@ -1912,7 +1969,7 @@ class Admin:
 
     def delete_exhibition(self):
 
-        filePath = '/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv'
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
         with open(filePath, 'r') as file:
             reader_1 = csv.DictReader(file)
             exhibitions = []
@@ -1930,7 +1987,7 @@ class Admin:
         print('\n')
         print(colored('Exhibitions before deletion: ',
               'magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/exhibions.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
         print(x)
@@ -1955,7 +2012,7 @@ class Admin:
 
     def delete_workshop(self):
 
-        filePath = '/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv'
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv'
         with open(filePath, 'r') as file:
             reader_1 = csv.DictReader(file)
             Workshop = []
@@ -1972,7 +2029,7 @@ class Admin:
             colored('Which Workshop you want to delete: ', 'green'))
         print(colored('Workshop before deletion: ',
               'magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/wrokshops.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
         print(x)
@@ -1997,7 +2054,7 @@ class Admin:
 
     def delete_pro_nite(self):
 
-        filePath = '/home/narayanj/Practice/THAR2.0/Admin/pronite.csv'
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv'
         with open(filePath, 'r') as file:
             reader_1 = csv.DictReader(file)
             pronites = []
@@ -2014,7 +2071,7 @@ class Admin:
             colored('Which Pro Nite you want to delete: ', 'green'))
         print(colored('Pro Nites before deletion: ',
               'magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/pronite.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
         print(x)
@@ -2038,7 +2095,7 @@ class Admin:
 # -------------------------------------    DELETE ORGANISER BY ADMIN    ------------------------------------- #
 
     def delete_organiser(self):
-        filePath = '/home/narayanj/Practice/THAR2.0/Admin/organiser.csv'
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/organiser.csv'
         with open(filePath, 'r') as file:
             reader_1 = csv.DictReader(file)
             organisers = []
@@ -2075,18 +2132,18 @@ class Admin:
 
         print('\n')
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'r') as file:
             read = csv.reader(file)
             DATA = list(read)
 
             for row in DATA:
                 if del_org in row:
                     DATA.remove(row)
-        with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'w') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'w') as file:
             writer = csv.writer(file)
             writer.writerows(DATA)
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
             print(colored('Roles active after deletion of Organiser: ', 'green'))
@@ -2097,7 +2154,7 @@ class Admin:
 
 
     def delete_coordinator(self):
-        filePath = '/home/narayanj/Practice/THAR2.0/Admin/coordinator.csv'
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv'
         with open(filePath, 'r') as file:
             reader_1 = csv.DictReader(file)
             coordinators = []
@@ -2134,18 +2191,18 @@ class Admin:
 
         print('\n')
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'r') as file:
             read = csv.reader(file)
             DATA = list(read)
 
             for row in DATA:
                 if del_coordinator in row:
                     DATA.remove(row)
-        with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'w') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'w') as file:
             writer = csv.writer(file)
             writer.writerows(DATA)
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
             print(colored('Roles active after deletion of Organiser: ', 'green'))
@@ -2156,7 +2213,7 @@ class Admin:
 
 
     def delete_judge(self):
-        filePath = '/home/narayanj/Practice/THAR2.0/Admin/judge.csv'
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
         with open(filePath, 'r') as file:
             reader_1 = csv.DictReader(file)
             judges = []
@@ -2193,18 +2250,18 @@ class Admin:
 
         print('\n')
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'r') as file:
             read = csv.reader(file)
             DATA = list(read)
 
             for row in DATA:
                 if del_judges in row:
                     DATA.remove(row)
-        with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'w') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'w') as file:
             writer = csv.writer(file)
             writer.writerows(DATA)
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/everyone.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
             print(colored('Roles active after deletion of Organiser: ', 'green'))
