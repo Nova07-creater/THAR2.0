@@ -279,52 +279,6 @@ class Participant:
                     No such operation available !!''', 'red', attrs = ['bold']))
 
 
-# -------------------------------------    READ EVENTS    ------------------------------------- #
-
-    def part_fetch_data(self):
-        print(colored('''
-                    Your data with us ''',
-              'green', attrs=['bold']))
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row['Name'] == self.part_name:
-                    events = row['Event Participated']
-                    print(colored(f'''
-                    1. Events Participated: {events}''', attrs=['bold']))
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv', 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row['Name'] == self.part_name:
-                    exhibitions_ = row['Exhibition Participated']
-                    print(colored(f'''
-                    2. Exhibitions Participated: {exhibitions_}''', attrs=['bold']))
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv', 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row['Name'] == self.part_name:
-                    workshops = row['Workshop Participated']
-                    print(colored(f'''
-                    3. Workshops Participated: {workshops}''', attrs=['bold']))
-        with open('participate_pro_nite.csv', 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row['Name'] == self.part_name:
-                    pronite = row['Participate Pro-Nite (Yes/No)']
-                    print(colored(f'''
-                    4. Attending in Pro-Nite: {pronite}''', attrs=['bold']))
-        personal_details = {}
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/partbasicdetails.csv', 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row['Name'] == self.part_name:
-                    personal_details = row
-        print('\n')
-        print(colored('''
-                    Personal Details ''', 'green', attrs=['bold']))
-        for key, value in personal_details.items():
-            print(colored(f"""
-                {key.ljust(20)}: {value}""", attrs =['bold']))
             
             
 # -------------------------------------    READ EVENTS    ------------------------------------- #
@@ -384,7 +338,8 @@ class Participant:
         self.user_input = input(colored("""  
 
                     How would you like to proceed? """, 'cyan', attrs = ['bold'])
-                    + colored("""        
+                    + colored("""
+                                      
                     1. Participate in Event
                     
                     2. Participate in Exhibition   
@@ -496,30 +451,32 @@ class Participant:
 
 
     def participate_exhibition(self):
+        exhibition_csv_path = "/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv"
+        exhibition_participate_csv_path = "/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv"
 
-        if not os.path.exists("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv"):
-            with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv", "w", newline="") as file:
+        if not os.path.exists(exhibition_participate_csv_path):
+            with open(exhibition_participate_csv_path, "w", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerow(["Name", "Exhibition Participated"])
 
         try:
-            with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv", "r", newline="") as file:
+            with open(exhibition_participate_csv_path, "r", newline="") as file:
                 reader = csv.reader(file)
                 participate_data = list(reader)
 
         except FileNotFoundError:
-            print("Error: /home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv not found.")
+            print(f"Error: {exhibition_participate_csv_path} not found.")
             return
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv', 'r', newline="") as file:
-            x = from_csv(file)
-            x.hrules = ALL
+        with open(exhibition_csv_path, 'r', newline="") as file:
+            exhibitions = from_csv(file)
+            exhibitions.hrules = ALL
             print(colored('''
                 The Exhibitions you can participate in are:''', 'cyan', attrs=['bold']))
-            print(x)
+            print(exhibitions)
 
         num_exhibitions = int(input(colored("""
-                Enter the number of exhibitions you want to register for: """, 'grey', attrs = ['bold'])))
+                Enter the number of exhibitions you want to register for: """, 'grey', attrs=['bold'])))
 
         participant_index = None
         current_exhibitions = []
@@ -531,43 +488,40 @@ class Participant:
 
         for i in range(num_exhibitions):
             while True:
-                ex_name = input(colored(f"""
-                Enter the name of Exhibition {i + 1}: """))
+                exhibition_name = input(colored(f"""
+                    Enter the name of exhibition {i + 1}: """, 'grey', attrs=['bold']))
 
-                if ex_name in current_exhibitions:
+                if exhibition_name in current_exhibitions:
                     print(colored("""
-                You have already registered in this Exhibition. Please enter a different Exhibition.""", 'grey', attrs =['bold']))
+                    You have already registered in this exhibition. Please enter a different exhibition.""", 'red',
+                                attrs=['bold']))
                     continue
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r", newline="") as file:
+                with open(exhibition_csv_path, "r", newline="") as file:
                     exhibitions_reader = csv.reader(file)
-                    exhibiton_data = list(exhibitions_reader)
+                    exhibitions_data = list(exhibitions_reader)
 
-                if ex_name not in [row[0] for row in exhibiton_data]:
+                if exhibition_name not in [row[0] for row in exhibitions_data]:
                     print(colored("""
-                The exhibition is not present. Please enter a correct exhibition name.""", 'red', attrs =['bold']))
+                    The exhibition is not present. Please enter a correct exhibition name.""", 'red',
+                                attrs=['bold']))
                     continue
 
                 break
 
             if participant_index is not None:
-                participate_data[participant_index][1] += f", {ex_name}"
+                participate_data[participant_index][1] += f", {exhibition_name}"
             else:
-                participate_data.append([self.part_name, ex_name])
+                participate_data.append([self.part_name, exhibition_name])
 
-        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv", "w", newline="") as file:
+        with open(exhibition_participate_csv_path, "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerows(participate_data)
-        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv", "r") as file:
-            x = from_csv(file)
-            x.hrules = ALL
-            print(colored("""Registration successful!""", 'green', attrs = ['bold']))
-            print(x)
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv', 'r') as file:
+        with open(exhibition_participate_csv_path, 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
-            print(colored('All Participants in Exhibitons:', 'green', attrs=['bold']))
+            print(colored("""Exhibition registration successful!""", 'green', attrs=['bold']))
             print(x)
 
 
@@ -575,29 +529,33 @@ class Participant:
 # ---------------------------    PARTICIPATE IN WORKSHOP    ------------------------------ #
  
     def participate_workshop(self):
+        workshop_csv_path = "/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv"
+        workshop_participate_csv_path = "/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv"
 
-        if not os.path.exists("/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv"):
-            with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv", "w", newline="") as file:
+        if not os.path.exists(workshop_participate_csv_path):
+            with open(workshop_participate_csv_path, "w", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerow(["Name", "Workshop Participated"])
 
         try:
-            with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv", "r", newline="") as file:
+            with open(workshop_participate_csv_path, "r", newline="") as file:
                 reader = csv.reader(file)
                 participate_data = list(reader)
 
         except FileNotFoundError:
-            print("Error: /home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv not found.")
+            print(f"Error: {workshop_participate_csv_path} not found.")
             return
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'r', newline="") as file:
-            x = from_csv(file)
-            x.hrules =ALL
-            print(colored('''The Workshops you can participate in are:''', 'cyan', attrs=['bold']))
-            print(x)
+        with open(workshop_csv_path, 'r', newline="") as file:
+            workshops = from_csv(file)
+            workshops.hrules = ALL
+            print(colored('''
+                The Workshops you can participate in are:''', 'cyan', attrs=['bold']))
+            print(workshops)
 
         num_workshops = int(input(colored("""
-                Enter the number of workshops you want to register for: """, 'grey', attrs =['bold'])))
+                Enter the number of workshops you want to register for: """, 'grey', attrs=['bold'])))
+
         participant_index = None
         current_workshops = []
         for i, row in enumerate(participate_data):
@@ -608,21 +566,23 @@ class Participant:
 
         for i in range(num_workshops):
             while True:
-
                 workshop_name = input(colored(f"""
-                Enter the name of workshop {i + 1}: """, 'grey', attrs = ['bold']))
+                    Enter the name of workshop {i + 1}: """, 'grey', attrs=['bold']))
+
                 if workshop_name in current_workshops:
                     print(colored("""
-                You have already registered in this workshop...""", 'red', attrs = ['bold']))
+                    You have already registered in this workshop. Please enter a different workshop.""", 'red',
+                                attrs=['bold']))
                     continue
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", "r", newline="") as file:
-                    exhibitions_reader = csv.reader(file)
-                    workshops_data = list(exhibitions_reader)
+                with open(workshop_csv_path, "r", newline="") as file:
+                    workshops_reader = csv.reader(file)
+                    workshops_data = list(workshops_reader)
 
                 if workshop_name not in [row[0] for row in workshops_data]:
                     print(colored("""
-                The workshop is not present...""", 'red', attrs = ["bold"]))
+                    The workshop is not present. Please enter a correct workshop name.""", 'red',
+                                attrs=['bold']))
                     continue
 
                 break
@@ -632,23 +592,17 @@ class Participant:
             else:
                 participate_data.append([self.part_name, workshop_name])
 
-        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv", "w", newline="") as file:
+        with open(workshop_participate_csv_path, "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerows(participate_data)
-        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv", "r") as file:
-            x = from_csv(file)
-            x.hrules = ALL
-            print("Registration successful!")
-            print(x)
- 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv', 'r') as file:
-            x = from_csv(file)
-            x.hrules = ALL
-            print(colored('All Participants in workshops:', 'green', attrs=['bold']))
-            print(x)
- 
 
-  
+        with open(workshop_participate_csv_path, 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored("""Workshop registration successful!""", 'green', attrs=['bold']))
+            print(x)
+        
+
 # ---------------------------    PARTICIPATE IN PRO-NITE    ------------------------------ #
   
   
@@ -659,7 +613,8 @@ class Participant:
             x = from_csv(file)
             x.hrules = ALL
             print(x)
-        if not os.path.exists("/home/narayanj/Practice/THAR2.0/Admin/csvs/participate_pro_nite.csv"):
+        is_file_empty = os.stat("/home/narayanj/Practice/THAR2.0/Admin/csvs/participate_pro_nite.csv").st_size ==0
+        if is_file_empty:
             with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/participate_pro_nite.csv", "w", newline="") as file:
                 writer = csv.writer(file)
                 writer.writerow(["Name", "Participate Pro-Nite (Yes/No)"])
@@ -685,7 +640,7 @@ class Participant:
                 is_file_empty = os.stat('/home/narayanj/Practice/THAR2.0/Admin/csvs/participate_pro_nite.csv').st_size == 0
                 if is_file_empty:
                     writer.writerow(["Name", "Participate Pro-Nite (Yes/No)"])
-                writer.writerow([self.part_name, 'Yes' if yesORno == '1' else 'No'])
+                writer.writerow([self.part_name, yesORno.capitalize()])
 
             with open('participate_pro_nite.csv', 'r') as file:
                 x = from_csv(file)
@@ -700,6 +655,52 @@ class Participant:
                 print(colored('All Participants:', 'green', attrs=['bold']))
                 print(x)
 
+# -------------------------------------    FETCH DETAILS    ------------------------------------- #
+
+    def part_fetch_data(self):
+        print(colored('''
+                    Your data with us ''',
+              'green', attrs=['bold']))
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    events = row['Event Participated']
+                    print(colored(f'''
+                    1. Events Participated: {events}''', attrs=['bold']))
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    exhibitions_ = row['Exhibition Participated']
+                    print(colored(f'''
+                    2. Exhibitions Participated: {exhibitions_}''', attrs=['bold']))
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    workshops = row['Workshop Participated']
+                    print(colored(f'''
+                    3. Workshops Participated: {workshops}''', attrs=['bold']))
+        with open('participate_pro_nite.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    pronite = row['Participate Pro-Nite (Yes/No)']
+                    print(colored(f'''
+                    4. Attending in Pro-Nite: {pronite}''', attrs=['bold']))
+        personal_details = {}
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/partbasicdetails.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == self.part_name:
+                    personal_details = row
+        print('\n')
+        print(colored('''
+                    Personal Details ''', 'green', attrs=['bold']))
+        for key, value in personal_details.items():
+            print(colored(f"""
+                {key.ljust(20)}: {value}""", attrs =['bold']))
 
  
 
@@ -709,7 +710,7 @@ class Participant:
   #                                                                                                #
   ##################################################################################################
 
-# -------------------------------------    PARTICIPATE    ---------------------------------------- #
+# -------------------------------------    DELETE    ---------------------------------------- #
 
 
 
@@ -780,8 +781,8 @@ class Participant:
             else:
                 print('Event not found. Try again...')
                 continue
-        print(colored('Updated events after removal: ', 'green', attrs=['bold']))
-        print(events)
+        # print(colored('Updated events after removal: ', 'green', attrs=['bold']))
+        # print(events)
 
         rows = []
         with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
@@ -798,6 +799,12 @@ class Participant:
             writer.writeheader()
             writer.writerows(rows)
                 
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('Event removed','green', attrs = ['bold']))
+            print(x)
+
 
 # -------------------------------------    REMOVE FROM EXHIBITIONS    ------------------------------------- #
 

@@ -101,27 +101,28 @@ class Admin:
    
     
     def create(self):
-        user_input = input("""  
+        user_input = input(colored("""  
 
-                How would you like to proceed?
-                        
-                1. Create Event
-               
-                2. Create Exhibiution   
-               
-                3. Create Workshop
-               
-                4. Create Pro-Nite
-               
-                5. Create Organiser
-               
-                6. Create Event Co-ordinator 
-               
-                7. Create Judge                     
-
-                8. Back to main 
+                    How would you like to proceed?""", 'cyan', attrs = ['bold']) +
+               colored('''             
+                    
+                    1. Create Event
                 
-                Enter your preffered operation: """)
+                    2. Create Exhibition   
+                
+                    3. Create Workshop
+                
+                    4. Create Pro-Nite
+                
+                    5. Create Organiser
+                
+                    6. Create Event Co-ordinator 
+                
+                    7. Create Judge                     
+
+                    8. Back to main 
+                    
+                    Enter your preffered operation: ''', 'grey', attrs = ['bold']))
 
         if user_input == '1':
             self.create_event()
@@ -146,31 +147,32 @@ class Admin:
         print(colored('''
                 Going back to main crud... ''', 'cyan'))
     def read(self):
-        user_input = input("""  
+        user_input = input(colored("""  
 
-                How would you like to proceed?
-                        
-                1. Read Event
-               
-                2. Read Exhibiution   
-               
-                3. Read Workshop
-               
-                4. Read Pro-Nite
-               
-                5. Read Organisers
-
-                6. Read Judges
-
-                7. Read Co-ordinators
-
-                8. Read All the Roles
-                           
-                9. Read Participants
-
-               10. Back to main
+                    How would you like to proceed?""" , 'cyan', attrs = ['bold']) +
+                colored('''
+                            
+                    1. Read Event
                 
-                Enter your preffered operation: """)
+                    2. Read Exhibition   
+                
+                    3. Read Workshop
+                
+                    4. Read Pro-Nite
+                
+                    5. Read Organisers
+
+                    6. Read Judges
+
+                    7. Read Co-ordinators
+
+                    8. Read All the Roles
+                            
+                    9. Read Participants
+
+                    10. Back to main
+                    
+                    Enter your preffered operation: ''', 'grey', attrs =['bold']))
 
         if user_input == '1':
             self.read_event()
@@ -194,15 +196,17 @@ class Admin:
             self.back()
             return False
         else:
-            print('No such operation available !!')
+            print(colored(
+             '''No such operation available !!''', 'red', attrs = ['bold']))
     def back(self):
         print(colored('''
-                Going back to main crud... ''', 'cyan'))
+                Going back to main crud... ''', 'green', attrs =['bold']))
     def read_participants(self):
-        user_input = input("""  
+        user_input = input(colored("""  
 
-                How would you like to proceed?
-                        
+                How would you like to proceed?""", 'cyan', attrs =['bold'])+
+        
+        colored("""               
                 1. Read Event Participants
                
                 2. Read Exhibition Participants   
@@ -211,7 +215,7 @@ class Admin:
                
                 4. Back to main
                 
-                Enter your preffered operation: """)
+                Enter your preffered operation: """, 'grey', attrs = ['bold']))
 
         if user_input == '1':
             self.read_event_parts()
@@ -223,7 +227,8 @@ class Admin:
             self.back()
             return False
         else:
-            print('No such operation available !!')
+            print(colored('''
+                No such operation available !!''', 'red',attrs =['bold']))
     def back(self):
         print(colored('''
                 Going back... ''', 'cyan'))
@@ -238,7 +243,7 @@ class Admin:
 
     def read_exhibition_parts(self):
         print('\n')
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_details.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv', 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
             print(colored('''Participants in each Event is described as: ''', 'green', attrs = ['bold']))
@@ -246,19 +251,20 @@ class Admin:
 
     def read_workshop_parts(self):
         print('\n')
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_details.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate', 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
             print(colored('''Participants in each Event is described as: ''', 'green', attrs = ['bold']))
             print(x)
 
     def update(self):
-        user_input = input(""" 
-                How would you like to proceed?
-                
+        user_input = input(colored(""" 
+                How would you like to proceed?""", 'cyan', attrs = ['bold'])+
+
+            colored("""    
                 1. Update Event
                 
-                2. Update Exhibiution   
+                2. Update Exhibition   
                 
                 3. Update Workshop
                 
@@ -272,7 +278,7 @@ class Admin:
 
                 8. Back to main
                 
-                Enter your preffered operation: """)
+                Enter your preffered operation: """, 'grey', attrs = ['bold']))
         if user_input == '1':
             self.update_event()
         elif user_input == '2':
@@ -291,16 +297,17 @@ class Admin:
             self.back()
             return False
         else:
-            print(colored('No such operation available !!', 'red'))
+            print(colored('''
+                No such operation available !!''', 'red', attrs = ['bold']))
 
     def delete(self):
-        user_input = input("""  
+        user_input = input(colored("""  
 
-                How would you like to proceed?
-                        
+                How would you like to proceed?""", 'cyan', attrs = ['bold'])+   
+          colored("""              
                 1. Delete Event
                 
-                2. Delete Exhibiution   
+                2. Delete Exhibition   
                 
                 3. Delete Workshop
                 
@@ -314,7 +321,7 @@ class Admin:
 
                 8. Back to main
                 
-                Enter your preffered operation: """)
+                Enter your preffered operation: """, 'grey', attrs = ['bold']))
 
         if user_input == '1':
             self.delete_event()
@@ -334,7 +341,8 @@ class Admin:
             self.back()
             return False
         else:
-            print('No such operation available !!')
+            print(colored('''
+                No such operation available !!''', 'red', attrs = ['bold']))
 
   ########################################################################################################
   #                                                                                                      #
@@ -347,31 +355,32 @@ class Admin:
     def create_event(self):
         self.events_list = []
 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 self.events_list.append(row['Event Name'])
 
         while True:
-            self.event_name = input('''
-            Event name: ''')
+            self.event_name = input(colored('''
+                Event name: ''', 'grey', attrs = ['bold']))
 
             if self.event_name.lower() in (name.lower() for name in self.events_list):
                 print(colored('Sorry, The event you entered is already present. Please enter another event..', 'red'))
             else:
                 while True:
                     try:
-                        self.event_time = input('''
-                  Event Time (e.g., 08:30 PM/AM): ''')
+                        self.event_time = input(colored('''
+                Event Time (e.g., 08:30 PM/AM): ''', 'grey', attrs =['bold']))
                         datetime.strptime(self.event_time, "%I:%M %p")
                         break 
                     except ValueError:
-                        print(colored('Invalid time format. Please enter time again.', 'red'))
-                self.event_venue = input('''
-                # Event place: ''')
+                        print(colored('''
+                Invalid time format. Please enter time again.''', 'red', attrs = ['bold']))
+                self.event_venue = input(colored('''
+                Event place: ''', 'grey', attrs = ['bold']))
                 # self.event_time = input('''
                 # Event Time: ''')
-                self.path = "/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv"
+                self.path = "/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv"
                 self.is_file_empty = os.stat(self.path).st_size == 0
 
                 with open(self.path, 'a', newline='') as file:
@@ -383,11 +392,11 @@ class Admin:
 
                     self.writer.writerow({'Event Name': self.event_name, 'Venue': self.event_venue, 'Time': self.event_time})
 
-                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv", "r") as fp:
+                with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print("\n")
-                    print(colored('Event created successfully', 'green'))
+                    print(colored('''Event created successfully''', 'green', attrs = ['bold']))
                     print(x)
                     
                 break
@@ -401,17 +410,18 @@ class Admin:
             for row in reader:
                 self.judges_list.append(row['Name'])
         while True:
-            self.judge_name = input('''
-                Judge name: ''')
+            self.judge_name = input(colored('''
+                Judge name: ''', 'grey', attrs = ['bold']))
             if self.judge_name.lower() in (name.lower() for name in self.judges_list):
-                print(colored('Sorry, The Judge is already there, Enter another..', 'red'))
-            else:
-                self.judge_event_name = input('''
-                Event to be Judged: ''')
-                self.judge_pass = input('''
-                Set password: ''')
                 print(colored('''
-                Judge created successfully''', 'green'))
+                Sorry, The Judge is already there, Enter another..''', 'red', attrs = ['bold']))
+            else:
+                self.judge_event_name = input(colored('''
+                Event to be Judged: ''', 'grey', attrs = ['bold']))
+                self.judge_pass = input(colored('''
+                Set password: ''', 'grey', attrs = ['bold']))
+                print(colored('''
+                Judge created successfully''', 'green', attrs = ['bold']))
 
                 self.path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
                 self.path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/judge.csv'
@@ -427,7 +437,7 @@ class Admin:
                         writer.writerow(["Name", "Event", "Password"])
 
                     writer.writerow([self.judge_name, self.judge_pass, 'Judge'])
-                    print(colored('The list of all the Judges: ', 'green'))
+                    print(colored('The list of all the Judges: ', 'green', attrs = ['bold']))
 
                 with open(self.path_1, 'r', newline='') as file:
                     x = from_csv(file)
@@ -438,7 +448,7 @@ class Admin:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
-                    print(colored('All the roles active now: ', 'green'))
+                    print(colored('''All the roles active now: ''', 'green', attrs = ['bold']))
                     print(x)
                 break
  # -------------------------------------    CREATE EXHIBITIONS BY ADMIN    ------------------------------------- #
@@ -450,27 +460,28 @@ class Admin:
             for row in reader:
                 self.exhibitions_list.append(row['Exhibition'])
         while True:
-            self.ex_name = input('''
-                Set exhibition name: ''')
+            self.ex_name = input(colored('''
+                    Set exhibition name: ''', 'grey', attrs = ['bold']))
             if self.ex_name.lower() in (name.lower() for name in self.exhibitions_list):
                 print(colored('''
-                Sorry, The Exhibition already exist, Enter another..''', 'red'))
+                    Sorry, The Exhibition already exist, Enter another..''', 'red', attrs =['bold']))
             else:
-                self.ex_venue = input('''
-                Exhibition place: ''')
+                self.ex_venue = input(colored('''
+                Exhibition place: ''', 'grey', attrs = ['bold']))
                 while True:
                     try:
-                        self.ex_time = input('''
-                  What will be time (e.g., 08:30 PM/AM): ''')
+                        self.ex_time = input(colored('''
+                    What will be time (e.g., 08:30 PM/AM): ''', 'grey', attrs =['bold']))
                         datetime.strptime(self.event_time, "%I:%M %p")
                         break 
                     except ValueError:
-                        print(colored('Invalid time format. Please enter time again.', 'red'))
+                        print(colored('''
+                    Invalid time format. Please enter time again.''', 'red', attrs =['bold']))
 
                 # self.ex_time = input('''
                 # What will be time: ''')
                 print(colored('''
-                Exhibition created succesfully''', 'green'))
+                    Exhibition created succesfully''', 'green', attrs =['bold']))
                 self.path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
                 self.is_file_empty = os.stat(self.path).st_size == 0
                 if self.is_file_empty:
@@ -482,7 +493,7 @@ class Admin:
                     x = from_csv(fp)
                     x.hrules = ALL
                     print('\n')
-                    print(colored('Exhibtion Created: ', 'green'))
+                    print(colored('''Exhibtion Created: ''', 'green', attrs = ['bold']))
                     print(x)
                 break
 
@@ -661,7 +672,7 @@ class Admin:
 # -------------------------------------    READ EVENTS BY ADMIN    ------------------------------------- #
 
     def read_event(self):
-        print(colored('The Events we are organising are: \n',
+        print(colored('The Events we are organising are: ',
               'magenta', attrs=['reverse', 'blink']))
         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
             x = from_csv(fp)
@@ -671,7 +682,7 @@ class Admin:
 # -------------------------------------    READ EXHIBITON BY ADMIN    ------------------------------------- #
 
     def read_exhibition(self):
-        print(colored('The Exhibitions are scheduled as: \n',
+        print(colored('The Exhibitions are scheduled as: ',
               'magenta', attrs=['reverse', 'blink']))
         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
             x = from_csv(fp)
@@ -681,7 +692,7 @@ class Admin:
 # -------------------------------------    READ WORKSHOPS BY ADMIN    ------------------------------------- #
 
     def read_workshop(self):
-        print(colored('The Workshops are scheduled as : \n',
+        print(colored('The Workshops are scheduled as : ',
               'magenta', attrs=['reverse', 'blink']))
         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", "r") as fp:
             x = from_csv(fp)
@@ -691,7 +702,7 @@ class Admin:
 # -------------------------------------    READ PRO-NITES BY ADMIN    ------------------------------------- #
 
     def read_pro_nite(self):
-        print(colored('The Pro-Nites are scheduled as: \n',
+        print(colored('The Pro-Nites are scheduled as: ',
               'magenta', attrs=['reverse', 'blink']))
         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv", "r") as fp:
             x = from_csv(fp)
@@ -701,7 +712,7 @@ class Admin:
 # -------------------------------------    READ ROLES BY ADMIN    ------------------------------------- #
 
     def read_all_roles(self):
-        print(colored('The role distribution is as follows: \n',
+        print(colored('The role distribution is as follows: ',
               'magenta', attrs=['reverse', 'blink']))
         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv", "r") as fp:
             x = from_csv(fp)
@@ -712,7 +723,7 @@ class Admin:
 # -------------------------------------    READ ORGANISERS BY ADMIN    --------------------------------- #
     
     def read_organisers(self):
-        print(colored('The Organisers are: \n','magenta'))
+        print(colored('The Organisers are: ','magenta', attrs=['reverse', 'blink']))
         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/jorganiser.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
@@ -722,7 +733,7 @@ class Admin:
 # -------------------------------------    READ JUDGES BY ADMIN    --------------------------------- #
     
     def read_judges(self):
-        print(colored('The Judges are: \n','magenta'))
+        print(colored('The Judges are: ','magenta', attrs=['reverse', 'blink']))
         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
@@ -732,7 +743,7 @@ class Admin:
 # -------------------------------------    READ COORDINATORS BY ADMIN    --------------------------------- #
     
     def read_coordinators(self):
-        print(colored('The Co-ordinators are: \n','magenta'))
+        print(colored('The Co-ordinators are: ','magenta', attrs=['reverse', 'blink']))
         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL

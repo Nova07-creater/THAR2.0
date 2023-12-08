@@ -95,7 +95,8 @@ class Organiser:
         user_input = input(colored('''  
  
                     How would you like to proceed?''', 'cyan', attrs = ['bold']) +
-          colored('''            
+          colored('''           
+                   
                     1. Read Event
                
                     2. Read Exhibition  
@@ -109,8 +110,10 @@ class Organiser:
                     6. Read Co-ordinators
  
                     7. Read All the Roles
- 
-                    8. Back to main
+
+                    8. Read Participants
+
+                    9. Back to main
                    
                     Enter your preffered operation: ''', attrs =['bold']))
  
@@ -129,6 +132,8 @@ class Organiser:
         elif user_input == '7':
             self.read_all_roles()
         elif user_input == '8':
+            self.read_participants()
+        elif user_input == '9':
             self.back()
             return False
         else:
@@ -140,6 +145,7 @@ class Organiser:
                                    
                     How would you like to proceed?''', 'cyan', attrs = ['bold']) + colored('''
  
+                                                                                           
                     1. Update Event
                    
                     2. Update Exhibition  
@@ -503,3 +509,187 @@ class Organiser:
             x.hrules = ALL
         print(colored('New Role added: ', 'green', attrs = ['bold']))
         print(x)
+
+
+
+
+
+  ########################################################################################################
+  #                                                                                                      #
+  #                             <--------- READ STARTED HERE --------->                                  #
+  #                                                                                                      #
+  ########################################################################################################
+
+
+
+# -------------------------------------    READ PARTS BY ORGANISER    ------------------------------------- #
+
+    def read_participants(self):
+        user_input = input(colored("""  
+
+                How would you like to proceed?""", 'cyan', attrs =['bold'])+
+        
+        colored("""    
+                           
+                1. Read Event Participants
+               
+                2. Read Exhibition Participants   
+               
+                3. Read Workshop participants
+               
+                4. Back to main
+                
+                Enter your preffered operation: """, 'grey', attrs = ['bold']))
+
+        if user_input == '1':
+            self.read_event_parts()
+        elif user_input == '2':
+            self.read_exhibition_parts()
+        elif user_input == '3':
+            self.read_workshop_parts()
+        elif user_input == '4':
+            self.back()
+            return False
+        else:
+            print(colored('''
+                No such operation available !!''', 'red',attrs =['bold']))
+    def back(self):
+        print(colored('''
+                Going back... ''', 'cyan'))
+        
+    def read_event_parts(self):
+        print('\n')
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_details.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('''Participants in each Event is described as: ''', 'green', attrs = ['bold']))
+            print(x)
+
+    def read_exhibition_parts(self):
+        print('\n')
+        print(colored('Exhibitions being organised', 'green', attrs = ['bold']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(x)
+            print('\n')
+        partis_list = []            
+        exhibition = input(colored(
+             '''Please specify which Exhibition: ''', 'grey', attrs = ['bold']))
+        print('\n')
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv", 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if exhibition in row[1]:
+                    partis_list.append(row[0])
+        for i, name in enumerate(partis_list, start =1):
+            print(colored(f'{i}. {name}\n'), attrs = ['bold'])
+        print('\n')
+        # with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv', 'r') as file:
+        #     x = from_csv(file)
+        #     x.hrules = ALL
+        #     print(colored('''Participants in each Event is described as: ''', 'green', attrs = ['bold']))
+        #     print(x)
+
+    def read_workshop_parts(self):
+        print('\n')
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(x)
+            print('\n')
+        partis_list = []            
+        exhibition = input(colored(
+             '''Please specify which Workshop: ''', 'grey', attrs = ['bold']))
+        print('\n')
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv", 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if exhibition in row[1]:
+                    partis_list.append(row[0])
+        for i, name in enumerate(partis_list, start =1):
+            print(colored(f'{i}. {name}', attrs = ['bold']))
+        print('\n')
+
+
+
+
+# -------------------------------------    READ EVENTS BY ORGANISER    ------------------------------------- #
+
+    def read_event(self):
+        print(colored('The Events we are organising are: \n',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+# -------------------------------------    READ EXHIBITON BY ORGANISER    ------------------------------------- #
+
+    def read_exhibition(self):
+        print(colored('The Exhibitions are scheduled as: \n',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+# -------------------------------------    READ WORKSHOPS BY ORGANISER    ------------------------------------- #
+
+    def read_workshop(self):
+        print(colored('The Workshops are scheduled as : \n',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+# -------------------------------------    READ PRO-NITES BY ORGANISER    ------------------------------------- #
+
+    def read_pro_nite(self):
+        print(colored('The Pro-Nites are scheduled as: \n',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+# -------------------------------------    READ ROLES BY ORGANISER    ------------------------------------- #
+
+    def read_all_roles(self):
+        print(colored('The role distribution is as follows: \n',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+
+# -------------------------------------    READ ORGANISERS BY ORGANISER    --------------------------------- #
+    
+    def read_organisers(self):
+        print(colored('The Organisers are: \n','magenta'))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/jorganiser.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+
+# -------------------------------------    READ JUDGES BY ORGANISER    --------------------------------- #
+    
+    def read_judges(self):
+        print(colored('The Judges are: \n','magenta'))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+
+# -------------------------------------    READ COORDINATORS BY ORGANISER    --------------------------------- #
+    
+    def read_coordinators(self):
+        print(colored('The Co-ordinators are: \n','magenta'))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
