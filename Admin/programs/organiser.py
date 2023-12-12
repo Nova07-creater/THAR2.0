@@ -47,7 +47,52 @@ class Organiser:
     def exit(self):
         print(colored('''
                     Exiting from Organiser operations... ''', 'green', attrs =['bold']))
+
+
+    def change_pass(self):
+        org_csv_path = "/home/narayanj/Practice/THAR2.0/Admin/csvs/organiser.csv"
+        everyone_csv_path = "/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv"
        
+        with open(org_csv_path, 'r') as file:
+            reader = csv.DictReader(file)
+            orgs_data = list(reader)
+ 
+        for org in orgs_data:
+            if org['Name'] == self.part_name:
+                self.part_pass = org['Password']
+                new_password = input(colored('Enter your new password: ', 'grey', attrs=['bold']))
+                org['Password'] = new_password
+ 
+                with open(org_csv_path, 'w', newline='') as file:
+                    fieldnames = ['Name', 'Password', 'Role']
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(orgs_data)
+ 
+                print(colored('Password updated successfully!', 'green', attrs=['bold']))
+ 
+                with open(everyone_csv_path, 'r') as file:
+                    reader = csv.DictReader(file)
+                    data = list(reader)
+ 
+                for everyone in data:
+                    if everyone['Name'] == self.part_name:
+                        self.part_pass = everyone['Password']
+                        everyone['Password'] = new_password
+ 
+                with open(everyone_csv_path, 'w', newline='') as file:
+                    fieldnames = ['Name', 'Password', 'Role']
+                    writer = csv.DictWriter(file, fieldnames=fieldnames)
+                    writer.writeheader()
+                    writer.writerows(data)
+ 
+                print(colored('Password updated successfully in everyone file', 'green', attrs=['bold']))
+                return
+ 
+        print(colored('Organiser not found!', 'red', attrs=['bold']))
+
+
+
  
     def create(self):
         user_input = input(colored('''
@@ -103,7 +148,7 @@ class Organiser:
                
                     3. Read Workshop
                
-                    4. Read Pro-Nite
+                    4. Read Pro-Nite'/home/narayanj/Practice/THAR2.0/Admin/csvs/event_results.csv', 'r'
                
                     5. Read Judges
  
@@ -111,9 +156,11 @@ class Organiser:
  
                     7. Read All the Roles
 
-                    8. Read Participants
+                    8. Read Participation
 
-                    9. Back to main
+                    9. Read Participants Details 
+                  
+                   10. Back to main
                    
                     Enter your preffered operation: ''', attrs =['bold']))
  
@@ -134,51 +181,14 @@ class Organiser:
         elif user_input == '8':
             self.read_participants()
         elif user_input == '9':
+            self.read_part_details()
+        elif user_input == '10':
             self.back()
             return False
         else:
             print(colored('''
                     No such operation available !!''', 'red', attrs = ['bold']))
  
-    def update(self):
-        user_input = input(colored('''
-                                   
-                    How would you like to proceed?''', 'cyan', attrs = ['bold']) + colored('''
- 
-                                                                                           
-                    1. Update Event
-                   
-                    2. Update Exhibition  
-                   
-                    3. Update Workshop
-                   
-                    4. Update Pro-Nite
-                   
-                    5. Update Event Co-ordinator
-                   
-                    6. Update Judge                  
- 
-                    7. Back to main
-                   
-                    Enter your preffered operation: ''', attrs = ['bold']))
-        if user_input == '1':
-            self.update_event()
-        elif user_input == '2':
-            self.update_exhibition()
-        elif user_input == '3':
-            self.update_workshop()
-        elif user_input == '4':
-            self.update_pro_nite()
-        elif user_input == '5':
-            self.update_coordinator()
-        elif user_input == '6':
-            self.update_judge()
-        elif user_input == '7':
-            self.back()
-            return False
-        else:
-            print(colored('''
-                    No such operation available !!''', 'red', attrs =['bold']))
  
     def delete(self):
         user_input = input(colored('''  
@@ -531,11 +541,11 @@ class Organiser:
         
         colored("""    
                            
-                1. Read Event Participants
+                1. Event Participation
                
-                2. Read Exhibition Participants   
+                2. Exhibition Participation   
                
-                3. Read Workshop participants
+                3. Workshop participation
                
                 4. Back to main
                 
@@ -559,7 +569,7 @@ class Organiser:
         
     def read_event_parts(self):
         print('\n')
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_details.csv', 'r') as file:
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
             print(colored('''Participants in each Event is described as: ''', 'green', attrs = ['bold']))
@@ -573,43 +583,28 @@ class Organiser:
             x.hrules = ALL
             print(x)
             print('\n')
-        partis_list = []            
-        exhibition = input(colored(
-             '''Please specify which Exhibition: ''', 'grey', attrs = ['bold']))
-        print('\n')
-        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv", 'r') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if exhibition in row[1]:
-                    partis_list.append(row[0])
-        for i, name in enumerate(partis_list, start =1):
-            print(colored(f'{i}. {name}\n'), attrs = ['bold'])
-        print('\n')
-        # with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv', 'r') as file:
-        #     x = from_csv(file)
-        #     x.hrules = ALL
-        #     print(colored('''Participants in each Event is described as: ''', 'green', attrs = ['bold']))
-        #     print(x)
+
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('''Participants in Exhibitions: ''', 'green', attrs = ['bold']))
+            print(x)
 
     def read_workshop_parts(self):
         print('\n')
         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
+            print(colored('Workshops being organised: ', 'green', attrs = ['bold']))
             print(x)
             print('\n')
-        partis_list = []            
-        exhibition = input(colored(
-             '''Please specify which Workshop: ''', 'grey', attrs = ['bold']))
-        print('\n')
+
         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv", 'r') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                if exhibition in row[1]:
-                    partis_list.append(row[0])
-        for i, name in enumerate(partis_list, start =1):
-            print(colored(f'{i}. {name}', attrs = ['bold']))
-        print('\n')
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('Participants in Workshops:', 'green', attrs = ['bold']))
+            print(x)
+            print('\n')
 
 
 
@@ -689,7 +684,314 @@ class Organiser:
     
     def read_coordinators(self):
         print(colored('The Co-ordinators are: \n','magenta'))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
+            print(x)
+
+
+    def read_part_details(self):
+        print()
+        print(colored('All participants details ','magenta'))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/partbasicdetails.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(x)
+
+
+
+
+
+
+  ########################################################################################################
+  #                                                                                                      #
+  #                             <--------- DELETION STARTED HERE --------->                              #
+  #                                                                                                      #
+  ########################################################################################################
+
+# -------------------------------------    DELETE EVENTS BY ADMIN    ------------------------------------- #
+
+    def delete_event(self):
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv'
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+
+        with open(filePath, 'r') as file:
+            reader_1 = csv.DictReader(file)
+            event_names = []
+            for col in reader_1:
+                event_names.append(col['Event Name'])
+
+        print(colored('List of Events: \n', 'green'))
+        for i, item in enumerate(event_names):
+            print(f'{i+1}.{item}\n')
+
+        rem_event = input(colored('Which event you want to remove: ', 'green'))
+        print(colored('Events before deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+        for row in data:
+            if rem_event in row:
+                data.remove(row)
+
+        with open(filePath, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+            print(colored('Events after deletion: ',
+                  'magenta', attrs=['reverse', 'blink']))
+            print(x)
+
+
+# -------------------------------------    DELETE EXHIBITION BY ADMIN    ------------------------------------- #
+
+    def delete_exhibition(self):
+
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
+        with open(filePath, 'r') as file:
+            reader_1 = csv.DictReader(file)
+            exhibitions = []
+            for col in reader_1:
+                exhibitions.append(col['Exhibition'])
+            print(colored('List of exhibitions: \n', 'green'))
+        for i, item in enumerate(exhibitions):
+            print(f'{i+1}.{item}\n')
+
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+        del_exhibition = input(
+            colored('Which exhibtion you want to delete: ', 'green'))
+        print('\n')
+        print(colored('Exhibitions before deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+        for row in data:
+            if del_exhibition in row:
+                data.remove(row)
+        with open(filePath, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+
+        with open(filePath, 'r') as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print('\n')
+        print(colored('Exhibitions after deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        print(x)
+
+
+# -------------------------------------    DELETE WORKSHOP BY ADMIN    ------------------------------------- #
+
+    def delete_workshop(self):
+
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv'
+        with open(filePath, 'r') as file:
+            reader_1 = csv.DictReader(file)
+            Workshop = []
+            for col in reader_1:
+                Workshop.append(col['Workshop'])
+            print(colored('List of Workshops: \n', 'green'))
+        for i, item in enumerate(Workshop):
+            print(f'{i+1}.{item}\n')
+
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+        del_workshop = input(
+            colored('Which Workshop you want to delete: ', 'green'))
+        print(colored('Workshop before deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+        for row in data:
+            if del_workshop in row:
+                data.remove(row)
+        with open(filePath, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+
+        with open(filePath, 'r') as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print('\n')
+        print(colored('Workshop after deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        print(x)
+
+
+# -------------------------------------    DELETE PRO-NITE BY ADMIN    ------------------------------------- #
+
+    def delete_pro_nite(self):
+
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv'
+        with open(filePath, 'r') as file:
+            reader_1 = csv.DictReader(file)
+            pronites = []
+            for col in reader_1:
+                pronites.append(col['Pro Nite'])
+            print(colored('List of Pro-Nites: \n', 'green'))
+        for i, item in enumerate(pronites):
+            print(f'{i+1}.{item}\n')
+
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+        del_pronite = input(
+            colored('Which Pro Nite you want to delete: ', 'green'))
+        print(colored('Pro Nites before deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/pronite.csv", "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+        for row in data:
+            if del_pronite in row:
+                data.remove(row)
+        with open(filePath, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+
+        with open(filePath, 'r') as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print('\n')
+        print(colored('Pro Nites after deletion: ',
+              'magenta', attrs=['reverse', 'blink']))
+        print(x)
+
+
+# -------------------------------------    DELETE CO-ORDINATOR BY ADMIN    ------------------------------------- #
+
+
+    def delete_coordinator(self):
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv'
+        with open(filePath, 'r') as file:
+            reader_1 = csv.DictReader(file)
+            coordinators = []
+            for col in reader_1:
+                coordinators.append(col['Name'])
+            print(colored('List of Co-ordinators: \n', 'green'))
+        for i, item in enumerate(coordinators):
+            print(f'{i+1}.{item}\n')
+
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+        del_coordinator = input(
+            colored('Which Co-ordinator you want to delete: ', 'green'))
+        
+        with open(filePath, "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print('\n')
+        print(colored('Co-ordinators before deletion: ', 'green'))
+        print(x)
+
+        for row in data:
+            if del_coordinator in row:
+                data.remove(row)
+        with open(filePath, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+
+        with open(filePath, 'r') as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print('\n')
+        print(colored('Co-ordinators after deletion: ', 'green'))
+        print(x)
+
+        print('\n')
+
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'r') as file:
+            read = csv.reader(file)
+            DATA = list(read)
+
+            for row in DATA:
+                if del_coordinator in row:
+                    DATA.remove(row)
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'w') as file:
+            writer = csv.writer(file)
+            writer.writerows(DATA)
+
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('Roles active after deletion of Organiser: ', 'green'))
+            print(x)
+
+
+# -------------------------------------    DELETE JUDGE BY ADMIN    ------------------------------------- #
+
+
+    def delete_judge(self):
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibions.csv'
+        with open(filePath, 'r') as file:
+            reader_1 = csv.DictReader(file)
+            judges = []
+            for col in reader_1:
+                judges.append(col['Name'])
+            print(colored('List of Judges: \n', 'green'))
+        for i, item in enumerate(judges):
+            print(f'{i+1}.{item}\n')
+
+        with open(filePath, 'r') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+        del_judges = input(
+            colored('Which Judge you want to delete: ', 'green'))
+        print(colored('Judges before deletion: ', 'green'))
+        with open(filePath, "r") as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print(x)
+
+        for row in data:
+            if del_judges in row:
+                data.remove(row)
+        with open(filePath, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerows(data)
+
+        with open(filePath, 'r') as fp:
+            x = from_csv(fp)
+            x.hrules = ALL
+        print('\n')
+        print(colored('Judges after deletion: ', 'green'))
+        print(x)
+
+        print('\n')
+
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'r') as file:
+            read = csv.reader(file)
+            DATA = list(read)
+
+            for row in DATA:
+                if del_judges in row:
+                    DATA.remove(row)
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'w') as file:
+            writer = csv.writer(file)
+            writer.writerows(DATA)
+
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('Roles active after deletion of Organiser: ', 'green'))
             print(x)

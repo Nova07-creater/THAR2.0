@@ -141,9 +141,14 @@ class Participant:
                     Enter Password:  ''', 'grey', attrs=['bold']))
 
                             if row['Password'] == self.part_pass:
+                                print('\n')
+                                print(colored('''
+                                         >>>-- PARTICIPANT DASHBOARD --<<<''', 'green', attrs=['bold']))
                                 print(colored(f'''
-                    Heartiest Welcome {self.part_name.upper()}, In our National Level Techno-Management Fest.
-                    Please proceed further with the operations accordingly \U0001F607''', 'cyan', attrs=['bold']))
+                The chief Patreon Mr. A.K. Dwivedi (Dean SW) & the Team THAR-2024 Welcomes you {self.part_name.upper()} ''', 'cyan', attrs=['bold']))
+                                print(colored(f'''
+                                                                                                      
+                               Please proceed further with the operations accordingly \U0001F607''', 'yellow', attrs=['bold']))
                                 self.participant_operations()
                                 return 
 
@@ -642,7 +647,7 @@ class Participant:
                     writer.writerow(["Name", "Participate Pro-Nite (Yes/No)"])
                 writer.writerow([self.part_name, yesORno.capitalize()])
 
-            with open('participate_pro_nite.csv', 'r') as file:
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/participate_pro_nite.csv', 'r') as file:
                 x = from_csv(file)
                 x.hrules = ALL
                 print(colored('Participant details:', 'green', attrs=['bold']))
@@ -682,13 +687,16 @@ class Participant:
                     workshops = row['Workshop Participated']
                     print(colored(f'''
                     3. Workshops Participated: {workshops}''', attrs=['bold']))
-        with open('participate_pro_nite.csv', 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row['Name'] == self.part_name:
-                    pronite = row['Participate Pro-Nite (Yes/No)']
-                    print(colored(f'''
+        if os.path.exists('/home/narayanj/Practice/THAR2.0/Admin/csvs/participate_pro_nite.csv'):
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/participate_pro_nite.csv', 'r') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    if row['Name'] == self.part_name:
+                        pronite = row['Participate Pro-Nite (Yes/No)']
+                        print(colored(f'''
                     4. Attending in Pro-Nite: {pronite}''', attrs=['bold']))
+        else:
+            print(colored('Look at line 699 in participant.py', 'red', attrs = ['bold']))
         personal_details = {}
         with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/partbasicdetails.csv', 'r') as file:
             reader = csv.DictReader(file)

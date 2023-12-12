@@ -1,4 +1,5 @@
 import csv
+import os
 from prettytable import PrettyTable, from_csv, ALL
 from termcolor import colored
 # ------------------------------------- JUDGE CLASS ------------------------------------- #
@@ -82,7 +83,7 @@ class Judge:
             x.hrules = ALL
             print(x)
  
-    def workshop_results(self):
+    def workshop_result(self):
         print('\n')
         print(colored('''Workshop Results ''', 'cyan', attrs = ['bold']))            
    
@@ -157,7 +158,7 @@ class Judge:
    
                     2. IN WORKSHOPS
                                          
-                    4. EXIT
+                    3. EXIT
                                
                     Enter your preferred operation: ''', 'grey', attrs=['bold']))
             print('\n')
@@ -179,138 +180,6 @@ class Judge:
                     Exiting the Judge class''', 'red', attrs = ['bold']))
        
  
-# ------------------------------------- JUDGE EVENTS ------------------------------------- #
- 
- 
-#     def event_judge(self):
-#         with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
-#             x = from_csv(file)
-#             x.hrules = ALL
-#             print(x)
-#             print("\n")
-#         self.part_name = input(colored('''
-#                     Whom do you want to give score: ''', 'cyan', attrs=['bold']))
-#         print(colored(f'''
-#                     {self.part_name} is to be judged in events:''', 'green', attrs=['bold']))
-#         events_participated = []
- 
-#         with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
-#             reader = csv.DictReader(file)
- 
-#             for row in reader:
-#                 if row['Name'] == self.part_name:
-#                     events_participated = row['Event Participated'].split(', ')
- 
-#             print(colored(f'''
-#                     {self.part_name} has participated in: {events_participated}''', 'yellow', attrs=['bold']))
- 
-#             scores = self.load_existing_scores()
- 
-#             for event in events_participated:
-#                 existing_score = scores.get(event)
-#                 if existing_score is not None:
-#                     overwrite = input(colored(f'Scores already exist for {event} ({existing_score}). Do you want to overwrite? (y/n): ', 'yellow', attrs=['bold']))
-#                     if overwrite.lower() != 'y':
-#                         continue
-#                 while True:
-#                     score = float(input(f'''
-#                         Enter the score for {event} (0-10): '''))
-#                     if score >=0 and score <= 10:
-#                         scores[event] = score
-#                         break
-#                     else:
-#                         print(colored('''Please follow scoring criteria ''', 'red', attrs =['bold']))
-#                         continue
-#             self.update_scores_in_csv(scores)
- 
-#     def load_existing_scores(self):
-#         scores = {}
-#         with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
-#             reader = csv.DictReader(file)
-#             for row in reader:
-#                 if row['Name'] == self.part_name:
-#                     scores_str = row.get('Scores', '{}')
-#                     scores = ast.literal_eval(scores_str)
-#         return scores
- 
-#     def update_scores_in_csv(self, scores):
-#         df = pd.read_csv('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv')
-#         for index, row in df.iterrows():
-#             if row['Name'] == self.part_name:
-#                 row['Scores'] = str(scores)
- 
-#         df.to_csv('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', index=False)
-#         print(colored('''Scores have been updated''', 'green', attrs=['bold']))
-#         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv", 'r') as file:
-#             x = from_csv(file)
-#             x.hrules =ALL
-#             print(x)
- 
- 
- 
-# # ------------------------------------- JUDGE WORKDHOPS ------------------------------------- #
- 
- 
-#     def workshop_judge(self):
-#         with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv', 'r') as file:
-#             x = from_csv(file)
-#             x.hrules = ALL
-#             print(x)
-#             print("\n")
-#         self.part_name = input(colored('''
-#                     Whom do you want to give score: ''', 'cyan', attrs=['bold']))
-#         print(colored(f'''
-#                     {self.part_name} is to be judged in workshops:''', 'green', attrs=['bold']))
-#         workshops_participated = []
- 
-#         with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv', 'r') as file:
-#             reader = csv.DictReader(file)
- 
-#             for row in reader:
-#                 if row['Name'] == self.part_name:
-#                     workshops_participated = row['Workshop Participated'].split(', ')
- 
-#             print(colored(f'''
-#                     {self.part_name} has participated in: {workshops_participated}''', 'yellow', attrs=['bold']))
- 
-#             scores = self.load_existing_scores()
- 
-#             for workshop in workshops_participated:
-#                 existing_score = scores.get(workshop)
-#                 if existing_score is not None:
-#                     overwrite = input(colored(f'Scores already exist for {workshop} ({existing_score}). Do you want to overwrite? (y/n): ', 'yellow', attrs=['bold']))
-#                     if overwrite.lower() != 'y':
-#                         continue
- 
-#                 score = float(input(f'''
-#                     Enter the score for {workshop} (0-10): '''))
-#                 scores[workshop] = score
- 
-#             self.update_scores_in_csv(scores)
- 
-#     def load_existing_scores(self):
-#         scores = {}
-#         with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv', 'r') as file:
-#             reader = csv.DictReader(file)
-#             for row in reader:
-#                 if row['Name'] == self.part_name:
-#                     scores_str = row.get('Scores', '{}')
-#                     scores = ast.literal_eval(scores_str)
-#         return scores
- 
-#     def update_scores_in_csv(self, scores):
-#         df = pd.read_csv('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv')
-#         for index, row in df.iterrows():
-#             if row['Name'] == self.part_name:
-#                 row['Scores'] = str(scores)
- 
-#         df.to_csv('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv', index=False)
-#         print(colored('''Scores have been updated''', 'green', attrs=['bold']))
-#         with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv", 'r') as file:
-#             x = from_csv(file)
-#             x.hrules =ALL
-#             print(x)
- 
  
  
 # ------------------------------------- JUDGE EVENTS ------------------------------------- #
@@ -318,97 +187,260 @@ class Judge:
  
     def event_judge(self):
         event_results_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/event_results.csv'
- 
+        if not os.path.exists(event_results_path):
+            with open(event_results_path, 'a', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(['Event Name', 'Winner', 'Runner Up'])
+        
         with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
             print(colored('The events available to be judged: ', 'green', attrs=['bold']))
             print(x)
- 
-        event_judge = input(colored('Which event you want to judge:  ', 'grey', attrs=['bold']))
- 
-        all_parts = []
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_details.csv', 'r') as file:
+
+        events = []
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'r') as file:
             reader = csv.reader(file)
-            all_parts = [part.strip() for row in reader if row[1] == event_judge for part in row[3].split(',')]
- 
-        participants_scores = {participant: float(input(f"Enter score for {participant} (0-10): ")) for participant in all_parts}
- 
-        print(colored(f'Participants for {event_judge}:', 'cyan', attrs=['bold']))
-        for i, participant in enumerate(all_parts, start=1):
-            print(f"{i}. {participant}: Score = {participants_scores[participant]}")
- 
-        sorted_participants = sorted(participants_scores.items(), key=lambda x: x[1], reverse=True)
- 
-        if sorted_participants:
-            print(colored('Results:', 'cyan', attrs=['bold']))
- 
-            # Agar tie hua
-            top_score = sorted_participants[0][1]
-            top_participants = [part for part, score in sorted_participants if score == top_score]
- 
-            winners = ', '.join(top_participants)
-            print(f"Winner(s): {winners} with a score of {top_score}")
- 
-            runner_up = sorted_participants[len(top_participants)][0] if len(sorted_participants) > len(top_participants) else None
-            print(f"1st Runner-up(s): {runner_up} with a score of {sorted_participants[len(top_participants)][1]}" if runner_up else colored('Not enough participants for 1st Runner-up.', 'yellow', attrs=['bold']))
- 
-            with open(event_results_path, 'a', newline='') as results_file:
-                writer = csv.writer(results_file)
-                if results_file.tell() == 0:
-                    writer.writerow(['Event Name', 'Winner', 'Runner Up'])
-                writer.writerow([event_judge, winners, runner_up])
- 
-            print(colored(f'Results added to {event_results_path}', 'green', attrs=['bold']))
-        else:
-            print(colored('No participants found for the specified event.', 'red', attrs=['bold']))
- 
+            for row in reader:
+                events.append(row[0])
+        print('\n')
+        while True:
+            event_judge = input(colored('Which event you want to judge:  ', 'grey', attrs=['bold']))
+            if event_judge in events:
+                events_already_judged = []
+                
+                with open(event_results_path, 'r') as file:
+                    reader = csv.reader(file)
+                    for row in reader:
+                        events_already_judged.append(row[0])
+
+                if event_judge not in events_already_judged:
+                    all_parts = []
+                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        for row in reader:
+                            if event_judge in row[1]:
+                                all_parts.append(row[0])
+
+                    print(colored(f'The participants in {event_judge} are: \n'))
+                    for i, name in enumerate(all_parts, start=1):
+                        print(f'{i}. {name}\n')
+
+                    participants_scores = {}
+                    for participant in all_parts:
+                        while True:
+                            score = input(f"Enter score for {participant} (1-10): ")
+                            if score.isdigit() and 1 <= int(score) <= 10:
+                                participants_scores[participant] = int(score)
+                                break
+                            else:
+                                print(colored('Invalid input. Please enter a numeric score between 1 and 10.', 'red', attrs=['bold']))
+                    sorted_participants = sorted(participants_scores.items(), key=lambda x: x[1], reverse=True)
+                    if sorted_participants:
+                        print(colored('Results:', 'cyan', attrs=['bold']))
+                        
+                        top_score = sorted_participants[0][1]
+                        top_participants = [part for part, score in sorted_participants if score == top_score]
+                        
+                        winners = ', '.join(top_participants)
+                        print(f"Winner(s): {winners} with a score of {top_score}")
+
+                                                
+                        if len(sorted_participants)> len(top_participants):
+                            runner_up = sorted_participants[len(top_participants)][0]
+                            print(f"1st Runner-up(s): {runner_up} ")
+                        else:
+                            print(colored('Not Enough participants', 'red', attrs =['bold']))
+
+                        with open(event_results_path, 'a', newline='') as results_file:
+                            writer = csv.writer(results_file)
+                            if os.stat(event_results_path).st_size == 0:
+                                writer.writerow(['Event Name', 'Winner', 'Runner Up'])
+                            writer.writerow([event_judge, winners, runner_up])
+
+                        with open(event_results_path, 'r') as file:
+                            x = from_csv(file)
+                            x.hrules = ALL
+                            print(colored('Result Declared', 'green', attrs=['bold']))
+                            print(x)
+                        break        
+                    else:
+                        print(colored('No participants found for the specified event.', 'red', attrs=['bold']))
+                else:
+                    all_parts = []
+                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        for row in reader:
+                            if event_judge in row[1]:
+                                all_parts.append(row[0])
+
+                    print(colored(f'The participants in {event_judge} are: '))
+                    for i, name in enumerate(all_parts, start=1):
+                        print(f'{i}. {name}')
+
+                    participants_scores = {}
+                    for participant in all_parts:
+                        while True:
+                            score = input(f"Enter score for {participant} (1-10): ")
+                            if score.isdigit() and 1 <= int(score) <= 10:
+                                participants_scores[participant] = int(score)
+                                break
+                            else:
+                                print(colored('Invalid input. Please enter a numeric score between 1 and 10.', 'red', attrs=['bold']))                    
+                    sorted_participants = sorted(participants_scores.items(), key=lambda x: x[1], reverse=True)
+                    if sorted_participants:
+                        print(colored('Results:', 'cyan', attrs=['bold']))
+                        
+                        top_score = sorted_participants[0][1]
+                        top_participants = [part for part, score in sorted_participants if score == top_score]
+                        
+                        winners = ', '.join(top_participants)
+                        print(f"Winner(s): {winners} with a score of {top_score}")
+
+                        if len(sorted_participants)> len(top_participants):
+                            runner_up = sorted_participants[len(top_participants)][0]
+                            print(f"1st Runner-up(s): {runner_up} ")
+                        else:
+                            print(colored('Not Enough participants', 'red', attrs =['bold']))
+
+                        with open(event_results_path, 'r') as file:
+                            reader = csv.reader(file)
+                            rows = [row for row in reader]
+                            for row in rows:
+                                if row[0] == event_judge:
+                                    row[1] = winners
+                                    row[2] = runner_up  
+                        with open(event_results_path, 'w', newline='') as file:
+                            writer = csv.writer(file)
+                            writer.writerows(rows)
+                        break
+            else:
+                print(colored(f'{event_judge} does not exist, Try another..', 'red', attrs=['bold']))
+                continue
+                  
+        
 # ------------------------------------- JUDGE WORKSHOPS ------------------------------------- #
  
  
     def workshop_judge(self):
         workshop_results_path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_results.csv'
- 
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshops.csv', 'r') as file:
+
+        if not os.path.exists(workshop_results_path):
+            with open(workshop_results_path, 'a', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(['Workshop Name', 'Winner', 'Runner Up'])
+
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'r') as file:
             x = from_csv(file)
             x.hrules = ALL
             print(colored('The workshops available to be judged: ', 'green', attrs=['bold']))
             print(x)
- 
-        workshop_judge = input(colored('Which workshop you want to judge:  ', 'grey', attrs=['bold']))
- 
-        all_parts = []
-        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_details.csv', 'r') as file:
+
+        workshops = []
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/wrokshops.csv', 'r') as file:
             reader = csv.reader(file)
-            all_parts = [part.strip() for row in reader if row[1] == workshop_judge for part in row[3].split(',')]
- 
-        participants_scores = {participant: float(input(f"Enter score for {participant} (0-10): ")) for participant in all_parts}
- 
-        print(colored(f'Participants for {workshop_judge}:', 'cyan', attrs=['bold']))
-        for i, participant in enumerate(all_parts, start=1):
-            print(f"{i}. {participant}: Score = {participants_scores[participant]}")
- 
-        sorted_participants = sorted(participants_scores.items(), key=lambda x: x[1], reverse=True)
- 
-        if sorted_participants:
-            print(colored('Results:', 'cyan', attrs=['bold']))
- 
-            top_score = sorted_participants[0][1]
-            top_participants = [part for part, score in sorted_participants if score == top_score]
- 
-            winners = ', '.join(top_participants)
-            print(f"Winner(s): {winners} with a score of {top_score}")
- 
-            runner_up = sorted_participants[len(top_participants)][0] if len(sorted_participants) > len(top_participants) else None
-            print(f"1st Runner-up(s): {runner_up} with a score of {sorted_participants[len(top_participants)][1]}" if runner_up else colored('Not enough participants for 1st Runner-up.', 'yellow', attrs=['bold']))
- 
-            with open(workshop_results_path, 'a', newline='') as results_file:
-                writer = csv.writer(results_file)
-                if results_file.tell() == 0:
-                    writer.writerow(['Workshop Name', 'Winner', 'Runner Up'])
-                writer.writerow([workshop_judge, winners, runner_up])
- 
-            print(colored(f'Results added to {workshop_results_path}', 'green', attrs=['bold']))
-        else:
-            print(colored('No participants found for the specified workshop.', 'red', attrs=['bold']))
- 
+            for row in reader:
+                workshops.append(row[0])
+
+        while True:
+            workshop_judge = input(colored('Which workshop do you want to judge:  ', 'grey', attrs=['bold']))
+            if workshop_judge not in workshops:
+                print(colored(f'{workshop_judge} does not exist. Please enter another...', 'red', attrs=['bold']))
+            else:
+                workshop_already_judged = []
+                with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_results.csv', 'r') as file:
+                    reader = csv.reader(file)
+                    for row in reader:
+                        workshop_already_judged.append(row[0])
+
+                if workshop_judge not in workshop_already_judged:
+                    all_parts = []
+                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        for row in reader:
+                            if workshop_judge in row[1]:
+                                all_parts.append(row[0])
+                    print(colored(f'The participants in {workshop_judge} are: '))
+                    for i, name in enumerate(all_parts, start=1):
+                        print(f'{i}. {name}')
+                    participants_scores = {}
+                    for participant in all_parts:
+                        while True:
+                            score = input(f"Enter score for {participant} (1-10): ")
+                            if score.isdigit() and 1 <= int(score) <= 10:
+                                participants_scores[participant] = int(score)
+                                break
+                            else:
+                                print(colored('Invalid input. Please enter a numeric score between 1 and 10.', 'red', attrs=['bold']))
+                    sorted_participants = sorted(participants_scores.items(), key=lambda x: x[1], reverse=True)
+                    if sorted_participants:
+                        print(colored(f'Participants for {workshop_judge}:', 'cyan', attrs=['bold']))
+                        for i, participant in enumerate(all_parts, start=1):
+                            print(f"{i}. {participant}: Score = {participants_scores[participant]}")
+
+                        top_score = sorted_participants[0][1]
+                        top_participants = [part for part, score in sorted_participants if score == top_score]
+
+                        winners = ', '.join(top_participants)
+                        print(f"Winner(s): {winners} with a score of {top_score}")
+
+                        if len(sorted_participants)> len(top_participants):
+                            runner_up = sorted_participants[len(top_participants)][0]
+                            print(f"1st Runner-up(s): {runner_up} ")
+                        else:
+                            print(colored('Not Enough participants', 'red', attrs =['bold']))
+
+                        with open(workshop_results_path, 'a', newline='') as results_file:
+                            writer = csv.writer(results_file)
+                            if os.stat(workshop_results_path).st_size == 0:
+                                writer.writerow(['Workshop Name', 'Winner', 'Runner Up'])
+                            writer.writerow([workshop_judge, winners, runner_up])
+
+                    else:
+                        print(colored('No participants found for the specified workshop.', 'red', attrs=['bold']))
+                elif workshop_judge in workshop_already_judged:
+                    all_parts = []
+                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        for row in reader:
+                            if workshop_judge in row[1]:
+                                all_parts.append(row[0])
+                    print(colored(f'The participants in {workshop_judge} are: '))
+                    for i, name in enumerate(all_parts, start=1):
+                        print(f'{i}. {name}')
+                    for participant in all_parts:
+                        while True:
+                            score = input(f"Enter score for {participant} (1-10): ")
+                            if score.isdigit() and 1 <= int(score) <= 10:
+                                participants_scores[participant] = int(score)
+                                break
+                            else:
+                                print(colored('Invalid input. Please enter a numeric score between 1 and 10.', 'red', attrs=['bold']))
+                    print(colored(f'Participants for {workshop_judge}:', 'cyan', attrs=['bold']))
+                    for i, participant in enumerate(all_parts, start=1):
+                        print(f"{i}. {participant}: Score = {participants_scores[participant]}")
+
+                    sorted_participants = sorted(participants_scores.items(), key=lambda x: x[1], reverse=True)
+
+                    if sorted_participants:
+                        top_score = sorted_participants[0][1]
+                        top_participants = [part for part, score in sorted_participants if score == top_score]
+
+                        winners = ', '.join(top_participants)
+                        print(f"Winner(s): {winners} with a score of {top_score}")
+
+                        if len(sorted_participants)> len(top_participants):
+                            runner_up = sorted_participants[len(top_participants)][0]
+                            print(f"1st Runner-up(s): {runner_up} ")
+                        else:
+                            print(colored('Not Enough participants', 'red', attrs =['bold']))
+                        with open(workshop_results_path, 'r') as file:
+                            reader = csv.reader(file)
+                            for row in reader:
+                                if row[0] == workshop_judge:
+                                    row = [workshop_judge, winners, runner_up]
+                        with open(workshop_results_path, 'w', newline='') as file:
+                            writer = csv.writer(file)
+                            writer.writerows(reader)
+
+                break

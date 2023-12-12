@@ -167,10 +167,12 @@ class Admin:
                     7. Read Co-ordinators
 
                     8. Read All the Roles
+                    
+                    9. Read Results
                             
-                    9. Read Participants
+                   10. Read Participants
 
-                    10. Back to main
+                   11. Back to main
                     
                     Enter your preffered operation: ''', 'grey', attrs =['bold']))
 
@@ -191,8 +193,10 @@ class Admin:
         elif user_input == '8':
             self.read_all_roles()
         elif user_input == '9':
-            self.read_participants()
+            self.read_results()
         elif user_input == '10':
+            self.read_participants()
+        elif user_input == '11':
             self.back()
             return False
         else:
@@ -206,24 +210,32 @@ class Admin:
 
                 How would you like to proceed?""", 'cyan', attrs =['bold'])+
         
-        colored("""               
-                1. Read Event Participants
+        colored("""
+                 
+                1. Read Each Participant Details
+                              
+                2. Read Event Participants
                
-                2. Read Exhibition Participants   
+                3. Read Exhibition Participants   
                
-                3. Read Workshop participants
+                4. Read Workshop participants
                
-                4. Back to main
+                5. Event Wise Participants
+               
+                6. Back to main
                 
                 Enter your preffered operation: """, 'grey', attrs = ['bold']))
-
         if user_input == '1':
-            self.read_event_parts()
+            self.each_part_details()
         elif user_input == '2':
-            self.read_exhibition_parts()
+            self.read_event_parts()
         elif user_input == '3':
-            self.read_workshop_parts()
+            self.read_exhibition_parts()
         elif user_input == '4':
+            self.read_workshop_parts()
+        elif user_input == '5':
+            self.read_part_details()
+        elif user_input == '6':
             self.back()
             return False
         else:
@@ -232,7 +244,79 @@ class Admin:
     def back(self):
         print(colored('''
                 Going back... ''', 'cyan'))
-        
+    def each_part_details(self):
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/participants.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('All Participants', 'green', attrs = ['bold']))
+            print(x)
+        WHO = input(colored('Who\'s data you want to fetch: ', 'grey', attrs = ['bold']))
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == WHO:
+                    events = row['Event Participated']
+                    print(colored(f'''
+                    1. Events Participated: {events}''', attrs=['bold']))
+                
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/exhibition_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == WHO:
+                    exhibitions_ = row['Exhibition Participated']
+                    print(colored(f'''
+                    2. Exhibitions Participated: {exhibitions_}''', attrs=['bold']))
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_participate.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == WHO:
+                    workshops = row['Workshop Participated']
+                    print(colored(f'''
+                    3. Workshops Participated: {workshops}''', attrs=['bold']))
+
+        if os.path.exists('/home/narayanj/Practice/THAR2.0/Admin/csvs/participate_pro_nite.csv'):
+            with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/participate_pro_nite.csv', 'r') as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    if row['Name'] == WHO:
+                        pronite = row['Participate Pro-Nite (Yes/No)']
+                        print(colored(f'''
+                    4. Attending Pro-Nite: {pronite}''', attrs=['bold']))
+      
+        personal_details = {}
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/partbasicdetails.csv', 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Name'] == WHO:
+                    personal_details = row
+        print('\n')
+        print(colored('''
+                    Personal Details ''', 'green', attrs=['bold']))
+        for key, value in personal_details.items():
+            print(colored(f"""
+                {key.ljust(20)}: {value}""", attrs =['bold']))
+    def read_part_details(self):
+        print('\n')
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_results.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print(colored('All partcipant details', 'green', attrs = ['bold']))
+            print(x)
+    def read_results(self):
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_results.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print('\n')
+            print(colored('The result of Events', 'green', attrs = ['bold']))
+            print(x)
+
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/workshop_results.csv', 'r') as file:
+            x = from_csv(file)
+            x.hrules = ALL
+            print('\n')
+            print(colored('The result of Workshops', 'green', attrs = ['bold']))
+            print(x)
+
     def read_event_parts(self):
         print('\n')
         with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/event_details.csv', 'r') as file:
@@ -262,6 +346,7 @@ class Admin:
                 How would you like to proceed?""", 'cyan', attrs = ['bold'])+
 
             colored("""    
+                    
                 1. Update Event
                 
                 2. Update Exhibition   
@@ -304,7 +389,8 @@ class Admin:
         user_input = input(colored("""  
 
                 How would you like to proceed?""", 'cyan', attrs = ['bold'])+   
-          colored("""              
+          colored("""        
+                        
                 1. Delete Event
                 
                 2. Delete Exhibition   
@@ -472,7 +558,7 @@ class Admin:
                     try:
                         self.ex_time = input(colored('''
                     What will be time (e.g., 08:30 PM/AM): ''', 'grey', attrs =['bold']))
-                        datetime.strptime(self.event_time, "%I:%M %p")
+                        datetime.strptime(self.ex_time, "%I:%M %p")
                         break 
                     except ValueError:
                         print(colored('''
@@ -519,7 +605,7 @@ class Admin:
                     try:
                         self.work_time = input('''
                   What will be time (e.g., 08:30 PM/AM): ''')
-                        datetime.strptime(self.event_time, "%I:%M %p")
+                        datetime.strptime(self.work_time, "%I:%M %p")
                         break 
                     except ValueError:
                         print(colored('Invalid time format. Please enter time again.', 'red'))
@@ -601,67 +687,94 @@ class Admin:
 # -------------------------------------    CREATE ORGANISER BY ADMIN    ------------------------------------- #
 
     def create_organiser(self):
-        self.org_name = input('Name of Organiser: ')
-        self.org_pass = input('Set Password: ')
-        print('\n')
-        self.path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
-        self.path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/jorganiser.csv'
-        with open(self.path, 'a', newline='') as file:
-            self.writer = csv.writer(file)
-            self.writer.writerow([self.org_name, self.org_pass, 'Organiser'])
+        organisers = []
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/organiser.csv', 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                organisers.append(row[0])
+        
+        while True:
+            org_name = input(colored('''
+            Name of Organiser: ''', 'grey', attrs = ['bold']))
+            if org_name in organisers:
+                print(colored('''
+            Organiser already exist, Enter another name.. ''', 'red', attrs = ['bold']))
+            else:
+                org_pass = input(colored('''
+            Set Password: ''', 'grey', attrs =['bold']))
+                print('\n')
+                path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
+                path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/organiser.csv'
+                with open(path, 'a', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow([org_name, org_pass, 'Organiser'])
 
-        with open(self.path_1, 'a', newline='') as file:
-            is_file_empty = os.stat(self.path_1).st_size == 0
-            writer = csv.writer(file)
-            if is_file_empty:
-                writer.writerow(["Name", "Password", 'Role'])
-            writer.writerow([self.org_name, self.org_pass, 'Organiser'])
-            print(colored('The list of all the Organisers: ', 'green'))
+                with open(path_1, 'a', newline='') as file:
+                    is_file_empty = os.stat(self.path_1).st_size == 0
+                    writer = csv.writer(file)
+                    if is_file_empty:
+                        writer.writerow(["Name", "Password", 'Role'])
+                    writer.writerow([org_name, org_pass, 'Organiser'])
+                    print(colored('The list of all the Organisers: ', 'green', attrs = ['bold']))
 
-        with open(self.path_1, 'r', newline='') as file:
-            x = from_csv(file)
-            x.hrules = ALL
-            print(x)
-            print('\n')
-        with open(self.path, "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-        print(colored('New Role added: ', 'green'))
-        print(x)
-
+                with open(path_1, 'r', newline='') as file:
+                    x = from_csv(file)
+                    x.hrules = ALL
+                    print(x)
+                    print('\n')
+                with open(path, "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(colored('New Role added: ', 'green', attrs = ['bold']))
+                    print(x)
+                break
 # -------------------------------------    CREATE CO-ORDINATOR BY ADMIN    ------------------------------------- #
 
     def create_event_coordinator(self):
-        self.cor_name = input('Name of Coordinator: ')
-        self.cor_event = input('Coordinate which event: ')
-        self.cor_pass = input('Set password: ')
-        print('\n')
-        self.path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
-        self.path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv'
-        with open(self.path, 'a', newline='') as file:
-            self.writer = csv.writer(file)
-            self.writer.writerow(
-                [self.cor_name, self.cor_pass, 'Co-ordinator'])
+        corrs = []
+        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv', 'r') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                corrs.append(row[0])
 
-        with open(self.path_1, 'a', newline='') as file:
-            is_file_empty = os.stat(self.path_1).st_size == 0
-            writer = csv.writer(file)
-            if is_file_empty:
-                writer.writerow(["Name", "Event", "Password"])
+        while True:
+            cor_name = input(colored('''
+            Name of Coordinator: ''', 'grey', attrs = ['bold']))
+            if cor_name in corrs:
+                print(colored('''
+            Coordinator already exist ''', 'red', attrs = ['bold']))
+            else:
+                cor_event = input(colored('''
+            Coordinate which event: ''', 'grey', attrs = ['bold']))
+                cor_pass = input('Set password: ')
+                print('\n')
+                path = '/home/narayanj/Practice/THAR2.0/Admin/csvs/everyone.csv'
+                path_1 = '/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv'
+                with open(path, 'a', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerow(
+                        [cor_name, cor_pass, 'Co-ordinator'])
 
-            writer.writerow([self.cor_name, self.cor_event, self.cor_pass])
-            print(colored('The list of all the Co-ordinators: ', 'green'))
+                with open(path_1, 'a', newline='') as file:
+                    is_file_empty = os.stat(path_1).st_size == 0
+                    writer = csv.writer(file)
+                    if is_file_empty:
+                        writer.writerow(["Name", "Event", "Password"])
 
-        with open(self.path_1, 'r', newline='') as file:
-            x = from_csv(file)
-            x.hrules = ALL
-            print(x)
-            print('\n')
-        with open(self.path, "r") as fp:
-            x = from_csv(fp)
-            x.hrules = ALL
-        print(colored('New Role added: ', 'green'))
-        print(x)
+                    writer.writerow([cor_name, cor_event, cor_pass])
+
+                with open(path_1, 'r', newline='') as file:
+                    x = from_csv(file)
+                    x.hrules = ALL
+                    print(colored('The list of all the Co-ordinators: ', 'green', attrs = ['bold']))
+                    print(x)
+                    print('\n')
+                with open(path, "r") as fp:
+                    x = from_csv(fp)
+                    x.hrules = ALL
+                    print(colored('New Role added: ', 'green', attrs =['bold']))
+                    print(x)
+                break
 
   ########################################################################################################
   #                                                                                                      #
@@ -724,7 +837,7 @@ class Admin:
     
     def read_organisers(self):
         print(colored('The Organisers are: ','magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/jorganiser.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/organiser.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(x)
@@ -744,7 +857,7 @@ class Admin:
     
     def read_coordinators(self):
         print(colored('The Co-ordinators are: ','magenta', attrs=['reverse', 'blink']))
-        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv", "r") as fp:
+        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv", "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
             print(x)
@@ -783,31 +896,32 @@ class Admin:
                     x.hrules= ALL
                     print(x)
                     print('\n')
-                ch_event = input(
+                while True:
+                    ch_event = input(
                     (colored('Which event name you want to change: ', 'yellow')))
-                if ch_event in event_name_list:
-                    chd_event = input(
+                    if ch_event not in event_name_list:
+                        print(colored('Event entered is not present try another..', 'yellow'))
+                    else:   
+                        chd_event = input(
                         colored('Enter the event name reaplace value: ', 'yellow'))
+                        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'r') as file:
+                            reader = csv.DictReader(file)
+                            rows = list(reader)
+                        for row in rows:
+                            if row['Event Name'] == ch_event:
+                                row['Event Name'] = chd_event
+                        fieldnames = reader.fieldnames
+                        with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'w', newline='') as file:
+                            writer = csv.DictWriter(file, fieldnames=fieldnames)
+                            writer.writeheader()
+                            writer.writerows(rows)
 
-                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'r') as file:
-                        reader = csv.DictReader(file)
-                        rows = list(reader)
-                    for row in rows:
-                        if row['Event Name'] == ch_event:
-                            row['Event Name'] = chd_event
-                    fieldnames = reader.fieldnames
-                    with open('/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv', 'w', newline='') as file:
-                        writer = csv.DictWriter(file, fieldnames=fieldnames)
-                        writer.writeheader()
-                        writer.writerows(rows)
-
-                    with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
-                        x = from_csv(fp)
-                        x.hrules = ALL
-                        print(colored('Events after update are as follows: \n'))
-                        print(x)
-                else:
-                    print(colored('The entered event not found ', 'red'))
+                        with open("/home/narayanj/Practice/THAR2.0/Admin/csvs/events.csv", "r") as fp:
+                            x = from_csv(fp)
+                            x.hrules = ALL
+                            print(colored('Events after update are as follows: \n'))
+                            print(x)
+                        break
 
             elif self.user_input == '2':
 
@@ -861,7 +975,7 @@ class Admin:
 
                 # for i, item in enumerate(time_list):
                 #     print(f'{i+1}.{item}\n')
-                with open('file_path', 'r') as file:
+                with open(file_path, 'r') as file:
                     x = from_csv(file)
                     x.hrules= ALL
                     print(x)
@@ -869,7 +983,7 @@ class Admin:
                 while True:
                     try:
                         ch_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
-                        datetime.strptime(self.event_time, "%I:%M %p")
+                        datetime.strptime(ch_time, "%I:%M %p")
                         break 
                     except ValueError:
                         print(colored('Invalid time format. Please enter time again.', 'red'))
@@ -879,7 +993,7 @@ class Admin:
                     while True:
                         try:
                             chd_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
-                            datetime.strptime(self.event_time, "%I:%M %p")
+                            datetime.strptime(chd_time, "%I:%M %p")
                             break 
                         except ValueError:
                             print(colored('Invalid time format. Please enter time again.', 'red'))
@@ -1020,7 +1134,7 @@ class Admin:
             while True:
                 try:
                     ch_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
-                    datetime.strptime(self.event_time, "%I:%M %p")
+                    datetime.strptime(ch_time, "%I:%M %p")
                     break 
                 except:
                     print(colored('Invalid time format. Please enter time again.', 'red'))
@@ -1030,7 +1144,7 @@ class Admin:
                 while True:
                     try:
                         chd_time = input('Enter the time replace value (e.g., 08:30 PM/AM): ')
-                        datetime.strptime(self.event_time, "%I:%M %p")
+                        datetime.strptime(chd_time, "%I:%M %p")
                         break 
                     except ValueError:
                         print(colored('Invalid time format. Please enter time again.', 'red'))
@@ -1175,7 +1289,7 @@ class Admin:
             while True:
                  try:
                     ch_time = input('What time you want to change (e.g., 08:30 PM/AM): ')
-                    datetime.strptime(self.event_time, "%I:%M %p")
+                    datetime.strptime(ch_time, "%I:%M %p")
                     break 
                  except:
                      print(colored('Invalid time format. Please enter time again.', 'red'))
@@ -1185,7 +1299,7 @@ class Admin:
                 while True:
                     try:
                         chd_time = input('Enter the time replace value (e.g., 08:30 PM/AM): ')
-                        datetime.strptime(self.event_time, "%I:%M %p")
+                        datetime.strptime(chd_time, "%I:%M %p")
                         break 
                     except:
                         print(colored('Invalid time format. Please enter time again.', 'red'))
@@ -2165,7 +2279,7 @@ class Admin:
 
 
     def delete_coordinator(self):
-        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs//home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv'
+        filePath = '/home/narayanj/Practice/THAR2.0/Admin/csvs/coordinator.csv'
         with open(filePath, 'r') as file:
             reader_1 = csv.DictReader(file)
             coordinators = []
@@ -2180,10 +2294,12 @@ class Admin:
             data = list(reader)
         del_coordinator = input(
             colored('Which Co-ordinator you want to delete: ', 'green'))
-        print(colored('Co-ordinators before deletion: ', 'green'))
+        
         with open(filePath, "r") as fp:
             x = from_csv(fp)
             x.hrules = ALL
+        print('\n')
+        print(colored('Co-ordinators before deletion: ', 'green'))
         print(x)
 
         for row in data:
