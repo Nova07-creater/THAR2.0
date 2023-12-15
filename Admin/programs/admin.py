@@ -143,6 +143,8 @@ class Admin:
             return False
         else:
             print('No such operation available !!')
+
+
     def back(self):
         print(colored('''
                 Going back to main crud... ''', 'cyan'))
@@ -153,7 +155,7 @@ class Admin:
                 colored('''
                             
                     1. Read Event
-                
+                                        
                     2. Read Exhibition   
                 
                     3. Read Workshop

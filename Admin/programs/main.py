@@ -5,7 +5,7 @@ from participant import Participant
 from organiser import Organiser
 from coordinators import Coordinator
 from judge import Judge
- 
+import mysql.connector
 class UserAuthenticator:
     def __init__(self):
         self.authenticate_user()
@@ -69,6 +69,24 @@ class UserAuthenticator:
  
  
 if __name__ == "__main__":
+
+
+    # mydb = mysql.connector.connect(
+    # host="localhost",
+    # user="root",
+    # password="root",
+    # database = 'THAR'
+    # )
+    # mycursor = mydb.cursor()
+
+    # mycursor.execute("SELECT * FROM THAR.everyone")
+
+    # myresult = mycursor.fetchall()
+    # print(type(myresult))
+    # print(type(myresult[0]))
+    # for x in myresult:
+    #     print(x)
+
 
     for i in range(220):
         print('-', end='')
